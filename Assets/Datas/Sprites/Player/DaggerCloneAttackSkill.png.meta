@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: 2e101ab6bff3bcd4cb20499121c4407f
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.28942418, y: 0.023267856}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86de7b50861a8e74f9bb55f09de90272
+      internalID: 16694890
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_1
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.26435542, y: 0.023697615}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b9b00793b51df84c80ccdb28f9f7258
+      internalID: 1375833468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_2
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.26435566, y: 0.033725023}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64111c963b57a8d47bb6dc63f04decd6
+      internalID: 1476100185
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_3
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.31950665, y: 0.04375249}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b56897b9fdc10d479d2782b392304f3
+      internalID: -1233301805
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_4
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 19
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.22925949, y: 0.033724904}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69ae80a3db1498f479d11b662db57d61
+      internalID: -1264623294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_5
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 19
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.21923256, y: 0.0287112}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b4803833c3b87641940c2520be7bb4b
+      internalID: -859355935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_6
+      rect:
+        serializedVersion: 2
+        x: 494
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.25432873, y: 0.028711319}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62b8513f1d3f2cd4c9c7c0621132fe3c
+      internalID: -1181349646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_7
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.27438354, y: 0.048766196}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 210a526b33c5c314c8f3729c4d5436a0
+      internalID: 1637020705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_8
+      rect:
+        serializedVersion: 2
+        x: 654
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.26936913, y: 0.038738728}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 562c7a608fbcb4b48adff01d69ba35e0
+      internalID: 1024096735
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_9
+      rect:
+        serializedVersion: 2
+        x: 734
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.2643566, y: 0.038738728}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 716c98694fce10849bd22fc5805da609
+      internalID: -1745419542
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_10
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.19416428, y: 0.023697495}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83f90040ba7009a489bdb30289452d4d
+      internalID: -1952387941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_11
+      rect:
+        serializedVersion: 2
+        x: 895
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.22925949, y: 0.038738728}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8e2767201b0f48e47a7929740304e6a0
+      internalID: 608097834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_12
+      rect:
+        serializedVersion: 2
+        x: 975
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.21923256, y: 0.028711319}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4980ebf1f3a6134ab06ac9f2fff293b
+      internalID: -88975806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DaggerCloneAttackSkill_13
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 21
+        width: 32
+        height: 32
+      alignment: 9
+      pivot: {x: 0.25432968, y: 0.023697615}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb1b064daccc1dd45b0bceb2c722ec07
+      internalID: -1883293652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      DaggerCloneAttackSkill_0: 16694890
+      DaggerCloneAttackSkill_1: 1375833468
+      DaggerCloneAttackSkill_7: 1637020705
+      DaggerCloneAttackSkill_10: -1952387941
+      DaggerCloneAttackSkill_4: -1264623294
+      DaggerCloneAttackSkill_12: -88975806
+      DaggerCloneAttackSkill_6: -1181349646
+      DaggerCloneAttackSkill_9: -1745419542
+      DaggerCloneAttackSkill_11: 608097834
+      DaggerCloneAttackSkill_5: -859355935
+      DaggerCloneAttackSkill_3: -1233301805
+      DaggerCloneAttackSkill_2: 1476100185
+      DaggerCloneAttackSkill_13: -1883293652
+      DaggerCloneAttackSkill_8: 1024096735
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

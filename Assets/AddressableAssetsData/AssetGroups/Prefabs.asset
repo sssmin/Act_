@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Prefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: Prefabs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 1bd6d27e5f9365b4ab24c78f830c0ee0
+  m_SerializeEntries:
+  - m_GUID: f7fac39b521a12f49b6dee3cd9f58ec5
+    m_Address: Arrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 549261f5166e4404eb8d81596016d93e
+    m_Address: Dagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: b115a7f75d246ff4889afe827205a37b
+    m_Address: PlayerClone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 78489e8be25458044bd4db722e16a0a4
+    m_Address: Player
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 0d35d052f9715394b9bad0f8fdac4eaf
+    m_Address: DaggerUlt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 92b3ac94e3233c044b3b64a91fa6bab8
+    m_Address: DaggerBall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 669c10058db8ce04693e14d72009b50f, type: 2}
+    - {fileID: 11400000, guid: 2ca92b6cb8908ff4da1f9ba783520171, type: 2}
