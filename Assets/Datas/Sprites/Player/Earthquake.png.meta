@@ -1,0 +1,499 @@
+fileFormatVersion: 2
+guid: 8fd6d4e746565984296ba8a848aad51b
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Earthquake_0
+      rect:
+        serializedVersion: 2
+        x: 30
+        y: 148
+        width: 33
+        height: 27
+      alignment: 9
+      pivot: {x: 0.50000024, y: 0.051477503}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13c354d5b9aac7849ab2a9916d1202a1
+      internalID: -445784947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 148
+        width: 30
+        height: 31
+      alignment: 9
+      pivot: {x: 0.51583, y: 0.025093816}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c633a4eebf9b38048910993ebf0e5587
+      internalID: 727488412
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_2
+      rect:
+        serializedVersion: 2
+        x: 254
+        y: 148
+        width: 27
+        height: 34
+      alignment: 9
+      pivot: {x: 0.412054, y: 0.039061602}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15f3cbddf1969cd4292bc479bede0060
+      internalID: 485864835
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_3
+      rect:
+        serializedVersion: 2
+        x: 369
+        y: 148
+        width: 23
+        height: 35
+      alignment: 9
+      pivot: {x: 0.31416652, y: 0.031878226}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d91b49e5c40f02646a41648b265d11fa
+      internalID: 1938763081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_4
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 65
+        width: 31
+        height: 32
+      alignment: 9
+      pivot: {x: 0.63467777, y: 0.035205126}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffe5246acb9bf59459bafcfdef669c64
+      internalID: -2025765792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_5
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 65
+        width: 35
+        height: 31
+      alignment: 9
+      pivot: {x: 0.6938394, y: 0.028629426}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f5bced6b9ff9b0a459b216102c6e3614
+      internalID: 154485385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_6
+      rect:
+        serializedVersion: 2
+        x: 262
+        y: 65
+        width: 37
+        height: 29
+      alignment: 9
+      pivot: {x: 0.7256758, y: 0.050108284}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b9c2ab59d52c184aae7858daab4eff7
+      internalID: 227370730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_7
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 65
+        width: 38
+        height: 28
+      alignment: 9
+      pivot: {x: 0.82273865, y: 0.05267879}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98e9450b043ea6d46a8c05154df36ade
+      internalID: -4267265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_8
+      rect:
+        serializedVersion: 2
+        x: 498
+        y: 65
+        width: 36
+        height: 27
+      alignment: 9
+      pivot: {x: 0.8696611, y: 0.0457758}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9f2d82c696d49734684e9dc27dd8e35f
+      internalID: 1871467589
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_9
+      rect:
+        serializedVersion: 2
+        x: 605
+        y: 65
+        width: 35
+        height: 32
+      alignment: 9
+      pivot: {x: 0.60437536, y: 0.05151391}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 539ec17f70cfaf948b52ce4002792966
+      internalID: 1205887854
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_10
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 65
+        width: 42
+        height: 24
+      alignment: 9
+      pivot: {x: 0.046466645, y: 0.05423196}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 74c5349c82abfb34fb452dddb0cb44ed
+      internalID: -771014781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_11
+      rect:
+        serializedVersion: 2
+        x: 821
+        y: 65
+        width: 41
+        height: 22
+      alignment: 9
+      pivot: {x: 0.06086247, y: 0.06115133}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b555264e62d5f7d499e47be1d277d870
+      internalID: -342919967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_12
+      rect:
+        serializedVersion: 2
+        x: 916
+        y: 65
+        width: 41
+        height: 21
+      alignment: 9
+      pivot: {x: 0.04176889, y: 0.08995601}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 141ce22fa3c10864dac6d3ca0f921133
+      internalID: 1458273438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_13
+      rect:
+        serializedVersion: 2
+        x: 1031
+        y: 65
+        width: 41
+        height: 20
+      alignment: 9
+      pivot: {x: 0.04813441, y: 0.0564064}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 573813499ab1b8a4395f57955b63dee6
+      internalID: -202627238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_14
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 65
+        width: 41
+        height: 20
+      alignment: 9
+      pivot: {x: 0.04813441, y: 0.0564064}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 504b689fa06d3ad4f875ca1af0aef463
+      internalID: -396313265
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Earthquake_15
+      rect:
+        serializedVersion: 2
+        x: 1255
+        y: 65
+        width: 41
+        height: 20
+      alignment: 9
+      pivot: {x: 0.04813441, y: 0.06945343}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc15856873faaac4ea20bc54023128b6
+      internalID: 838861549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Earthquake_6: 227370730
+      Earthquake_8: 1871467589
+      Earthquake_15: 838861549
+      Earthquake_7: -4267265
+      Earthquake_12: 1458273438
+      Earthquake_10: -771014781
+      Earthquake_2: 485864835
+      Earthquake_1: 727488412
+      Earthquake_0: -445784947
+      Earthquake_13: -202627238
+      Earthquake_4: -2025765792
+      Earthquake_9: 1205887854
+      Earthquake_14: -396313265
+      Earthquake_11: -342919967
+      Earthquake_5: 154485385
+      Earthquake_3: 1938763081
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

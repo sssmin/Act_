@@ -1,0 +1,455 @@
+fileFormatVersion: 2
+guid: e5a41a3ad47ee1c439c01b640b154c08
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMasterTextureLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ThrowAxeSkill_0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 171
+        width: 31
+        height: 26
+      alignment: 9
+      pivot: {x: 0.5417462, y: 0.052035406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d356399870b9f3d43b0809177e52f068
+      internalID: 452110422
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 171
+        width: 30
+        height: 28
+      alignment: 9
+      pivot: {x: 0.54313713, y: 0.05630166}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25af2cb2159002945991409acbedf176
+      internalID: 1390205598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_2
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 171
+        width: 33
+        height: 29
+      alignment: 9
+      pivot: {x: 0.59411716, y: 0.035901826}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 06ef7eb1b5fb47d42a7d2a29a85379e9
+      internalID: -1706543949
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_3
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 171
+        width: 37
+        height: 30
+      alignment: 9
+      pivot: {x: 0.60492766, y: 0.051371764}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a645217a84baa704fb31602ffb5d7f75
+      internalID: 1848354758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_4
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 171
+        width: 39
+        height: 29
+      alignment: 9
+      pivot: {x: 0.6061832, y: 0.035901826}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d93c2ac678a12a54ba2e1484f4d49f5c
+      internalID: 1492413222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_5
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 171
+        width: 43
+        height: 28
+      alignment: 9
+      pivot: {x: 0.61436284, y: 0.028570993}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db750c3c8de47334badc6c606beddfff
+      internalID: -1028084200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_6
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 38
+        width: 23
+        height: 37
+      alignment: 9
+      pivot: {x: 0.11739134, y: 0.03831451}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 624e322c703308047adce433d5318e09
+      internalID: 1812179223
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_7
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 38
+        width: 26
+        height: 40
+      alignment: 9
+      pivot: {x: 0.05203658, y: 0.040588}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e505ad0f8ce2dba49b807a5f74b3137b
+      internalID: -1396139004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_8
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 38
+        width: 33
+        height: 27
+      alignment: 9
+      pivot: {x: 0.31176433, y: 0.030282762}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca49282d9909108428dae4e6894dd861
+      internalID: 822320799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_9
+      rect:
+        serializedVersion: 2
+        x: 351
+        y: 38
+        width: 33
+        height: 25
+      alignment: 9
+      pivot: {x: 0.34313595, y: 0.04447067}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0a1811879345334f88a29c944c4db53
+      internalID: 931594763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_10
+      rect:
+        serializedVersion: 2
+        x: 474
+        y: 38
+        width: 31
+        height: 24
+      alignment: 9
+      pivot: {x: 0.4499039, y: 0.05784321}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a635b029c5b41cb41a4b180b4cf0bd35
+      internalID: -591164769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_11
+      rect:
+        serializedVersion: 2
+        x: 574
+        y: 38
+        width: 30
+        height: 23
+      alignment: 9
+      pivot: {x: 0.44823405, y: 0.049872026}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a742cfee4a81093449f853354382dfdd
+      internalID: 1178374582
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_12
+      rect:
+        serializedVersion: 2
+        x: 687
+        y: 38
+        width: 30
+        height: 23
+      alignment: 9
+      pivot: {x: 0.44823405, y: 0.038618833}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8803c2260feebd0409efdc8b1564a811
+      internalID: 913986009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ThrowAxeSkill_13
+      rect:
+        serializedVersion: 2
+        x: 819
+        y: 38
+        width: 30
+        height: 25
+      alignment: 9
+      pivot: {x: 0.4396057, y: 0.04447067}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fda6e3388b752a34c872a705edd65e5f
+      internalID: 1959791193
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      ThrowAxeSkill_6: 1812179223
+      ThrowAxeSkill_11: 1178374582
+      ThrowAxeSkill_12: 913986009
+      ThrowAxeSkill_3: 1848354758
+      ThrowAxeSkill_7: -1396139004
+      ThrowAxeSkill_2: -1706543949
+      ThrowAxeSkill_5: -1028084200
+      ThrowAxeSkill_0: 452110422
+      ThrowAxeSkill_9: 931594763
+      ThrowAxeSkill_1: 1390205598
+      ThrowAxeSkill_10: -591164769
+      ThrowAxeSkill_4: 1492413222
+      ThrowAxeSkill_13: 1959791193
+      ThrowAxeSkill_8: 822320799
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
