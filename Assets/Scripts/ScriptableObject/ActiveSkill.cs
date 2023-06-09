@@ -5,16 +5,16 @@ using UnityEngine.Serialization;
 
 public class ScriptableObjectType : ScriptableObject
 {
-    public Define.ScriptableObjectType scriptableObjectType;
+    public Define.EScriptableObjectType scriptableObjectType;
 }
 
 public class ActiveSkill : ScriptableObjectType
 {
-    public Define.SkillId skillId;
+    public Define.ESkillId skillId;
     //public string skillId; //고유 id. 무기도 이 skillid를 동일하게 가진다.
     public float skillCooltime;
     public float baseDamage;
-    private int skillLevel;
+    public int skillLevel;
     [Range(1.8f, 2f)]
     public float minRangeCoef; //스킬마다 랜덤 계수 최소 범위
     [Range(1.8f, 2f)]
@@ -27,6 +27,10 @@ public class ActiveSkill : ScriptableObjectType
     [HideInInspector]
     public float calcBaseDamage;
     public Define.EPlayerState skillState;
+    
+    //only charge skill
+    public bool isChargeSkill;
+    public float maxChargingTime = 2.5f;
     
     
     /*
@@ -48,7 +52,7 @@ public class ActiveSkill : ScriptableObjectType
         calcBaseDamage = baseDamage + (skillLevel * maxRangeCoef) * minRangeCoef;
     }
 
-    public virtual void ExecuteSkill(StatManager castStatManager, Transform spawnPoint, PlayerController playerController)
+    public virtual void ExecuteSkill(StatManager castStatManager, PlayerController playerController)
     {
         
     }

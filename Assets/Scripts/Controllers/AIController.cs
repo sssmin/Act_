@@ -7,7 +7,7 @@ public class AIController : BaseController
     //몬스터마다 컨트롤러 들고 있음. 여기에서 상태 제어
     public Player Target { get; private set; }
     private Monster ControlledMonster { get; set; }
-    private Define.EMonsterState stateBeforeFreeze;
+    private Define.EMonsterState stateBeforeCrowdControl;
 
     public bool IsFrontWall { get; private set; }
     public bool IsFrontGround { get; private set; }
@@ -38,7 +38,7 @@ public class AIController : BaseController
 
     void Start()
     {
-        
+        ;
     }
 
     void Update()
@@ -68,18 +68,34 @@ public class AIController : BaseController
         CurrentDir = new Vector2(CurrentDir.x * -1, CurrentDir.y);
     }
     
-    public void FreezeMonster()
+    
+    public void SetDisableState(Define.EMonsterState monsterState) //아무것도 못하는 상태
     {
         ControlledMonster.Animator.speed = 0f;
-        MonsterState currentState = (MonsterState)ControlledMonster.StateMachine.CurrentState;
-        stateBeforeFreeze = currentState.monsterStateType;
-        ControlledMonster.TransitionState(Define.EMonsterState.Freeze);
+        SetBeforeState();
+        ControlledMonster.TransitionState(monsterState);
     }
 
-    public void UnfreezeMonster()
+    public void RevertState()
     {
         ControlledMonster.Animator.speed = 1f;
-        ControlledMonster.TransitionState(stateBeforeFreeze);
-        stateBeforeFreeze = Define.EMonsterState.None;
+        ControlledMonster.TransitionState(stateBeforeCrowdControl);
+        stateBeforeCrowdControl = Define.EMonsterState.None;
+    }
+
+    void SetBeforeState()
+    {
+        MonsterState currentState = (MonsterState)ControlledMonster.StateMachine.CurrentState;
+        //DisableState 걸때 이전 상태로 돌아가도록 이전 상태 저장하는데,
+        //만약 DisableState 걸린 상태에서 DisableState를 걸면 DisableState를 이전 상태로 저장해버리기 때문에 그걸 방지하기 위함
+        if (!IsDisableState(currentState)) 
+            stateBeforeCrowdControl = currentState.monsterStateType;
+    }
+
+    bool IsDisableState(MonsterState currentState)
+    {
+        bool condition = currentState.monsterStateType == Define.EMonsterState.Freeze ||
+                         currentState.monsterStateType == Define.EMonsterState.Suppression;
+        return condition;
     }
 }

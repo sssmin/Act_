@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,8 +7,6 @@ public class SkillAbility_ThrowDagger : MonoBehaviour
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private RuntimeAnimatorController AnimatorController { get; set; }
-    private int Damage { get; set; }
-    private bool IsCritical { get; set; }
     private DamageInfo DamageInfo { get; set; }
     public float speed;
     private Coroutine CoDestroy;
@@ -35,19 +32,19 @@ public class SkillAbility_ThrowDagger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (OwnerController.CompareTag(other.tag)) return; //자기자신이면 return
-        
         if (other.CompareTag("Monster"))
         {
             other.GetComponent<StatManager>()?.OnDamage(DamageInfo, OwnerController.gameObject);
             prenetrationCount++;
             if (prenetrationCount > maxPenetrationNum) //최대 5명 관통가능이라면 6명째에서 파괴.
             {
+                StopCoroutine(CoDestroy);
                 GI.Inst.ResourceManager.Destroy(gameObject);
             }
         }
         else //벽 같은데에 부딪히면 파괴
         {
+            StopCoroutine(CoDestroy);
             GI.Inst.ResourceManager.Destroy(gameObject);
         }
     }
@@ -55,9 +52,9 @@ public class SkillAbility_ThrowDagger : MonoBehaviour
     IEnumerator CoDestroyMyself()
     {
         yield return new WaitForSeconds(.7f);
-        //todo 여기서 만약 파괴할 때 폭발하는 아이템 효과가 있으면
+        
         Rb.velocity = new Vector2(0f, 0f);
-        Animator.SetTrigger(AnimHash.daggerExplosionTrigger);
+        Animator.SetTrigger(AnimHash.daggerExplosionTrg);
         
         float animationEndTime = 0f;
         foreach (var clip in AnimatorController.animationClips)

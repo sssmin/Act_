@@ -10,7 +10,7 @@ using UnityEngine;
 public struct SkillIdentify : IEquatable<SkillIdentify>
 {
     public KeyCode keyCode;
-    public Define.SkillId skillId;
+    public Define.ESkillId skillId;
     
     public bool Equals(SkillIdentify other)
     {
@@ -51,6 +51,8 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.getSkill += GetSkill;
         GI.Inst.ListenerManager.onExecPlayerClone -= ExecPlayerClone;
         GI.Inst.ListenerManager.onExecPlayerClone += ExecPlayerClone;
+        GI.Inst.ListenerManager.onExecEarthquake -= ExecEarthquake;
+        GI.Inst.ListenerManager.onExecEarthquake += ExecEarthquake;
     }
     
 
@@ -60,39 +62,100 @@ public class SkillManager : MonoBehaviour
         //todo 인벤토리 추가되면 해야할 것
         //todo 무기에 저장되어있는 스킬 id 가져와서 
         //todo resource manager에서 스킬 id로 skills에서 skill SO 가져와야함 이때 복사본으로 해야한다.
-        
-        //test
+
+        #region Dagger skill test
+        // SkillIdentify identify = new SkillIdentify();
+        // identify.keyCode = KeyCode.Q;
+        // identify.skillId = Define.SkillId.ThrowDagger;
+        // ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.ThrowDagger) as ActiveSkill;
+        // temp.Init(1);
+        // AvailableSkills.Add(identify, temp);
+        //
+        // SkillIdentify identify2 = new SkillIdentify();
+        // identify2.keyCode = KeyCode.W;
+        // identify2.skillId = Define.SkillId.PlayerClone;
+        // ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.PlayerClone) as ActiveSkill;
+        // temp2.Init(1);
+        // AvailableSkills.Add(identify2, temp2);
+        //
+        // SkillIdentify identify3 = new SkillIdentify();
+        // identify3.keyCode = KeyCode.R;
+        // identify3.skillId = Define.SkillId.DaggerUlt;
+        // ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerUlt) as ActiveSkill;
+        // temp3.Init(1);
+        // AvailableSkills.Add(identify3, temp3);
+        //
+        // SkillIdentify identify4 = new SkillIdentify();
+        // identify4.keyCode = KeyCode.E;
+        // identify4.skillId = Define.SkillId.DaggerBall;
+        // ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerBall) as ActiveSkill;
+        // temp4.Init(1);
+        // AvailableSkills.Add(identify4, temp4);
+        #endregion
+
+        #region Axe skill test
+        // SkillIdentify identify = new SkillIdentify();
+        // identify.keyCode = KeyCode.Q;
+        // identify.skillId = Define.SkillId.FireStrike;
+        // ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.FireStrike) as ActiveSkill;
+        // temp.Init(1);
+        // AvailableSkills.Add(identify, temp);
+        //
+        // SkillIdentify identify2 = new SkillIdentify();
+        // identify2.keyCode = KeyCode.W;
+        // identify2.skillId = Define.SkillId.Earthquake;
+        // ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.Earthquake) as ActiveSkill;
+        // temp2.Init(1);
+        // AvailableSkills.Add(identify2, temp2);
+        //
+        // SkillIdentify identify3 = new SkillIdentify();
+        // identify3.keyCode = KeyCode.E;
+        // identify3.skillId = Define.SkillId.ThrowAxe;
+        // ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.ThrowAxe) as ActiveSkill;
+        // temp3.Init(1);
+        // AvailableSkills.Add(identify3, temp3);
+        //
+        // SkillIdentify identify4 = new SkillIdentify();
+        // identify4.keyCode = KeyCode.R;
+        // identify4.skillId = Define.SkillId.AxeUlt;
+        // ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.AxeUlt) as ActiveSkill;
+        // temp4.Init(1);
+        // AvailableSkills.Add(identify4, temp4);
+        #endregion
+       
+        #region Bow skill test
         SkillIdentify identify = new SkillIdentify();
         identify.keyCode = KeyCode.Q;
-        identify.skillId = Define.SkillId.ThrowDagger;
-        ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.ThrowDagger) as ActiveSkill;
+        identify.skillId = Define.ESkillId.ArrowRain;
+        ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.ArrowRain) as ActiveSkill;
         temp.Init(1);
         AvailableSkills.Add(identify, temp);
         
         SkillIdentify identify2 = new SkillIdentify();
         identify2.keyCode = KeyCode.W;
-        identify2.skillId = Define.SkillId.PlayerClone;
-        ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.PlayerClone) as ActiveSkill;
+        identify2.skillId = Define.ESkillId.PiercingArrow;
+        ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.PiercingArrow) as ActiveSkill;
         temp2.Init(1);
         AvailableSkills.Add(identify2, temp2);
         
         SkillIdentify identify3 = new SkillIdentify();
-        identify3.keyCode = KeyCode.R;
-        identify3.skillId = Define.SkillId.DaggerUlt;
-        ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerUlt) as ActiveSkill;
+        identify3.keyCode = KeyCode.E;
+        identify3.skillId = Define.ESkillId.ArrowBuff;
+        ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.ArrowBuff) as ActiveSkill;
         temp3.Init(1);
         AvailableSkills.Add(identify3, temp3);
         
         SkillIdentify identify4 = new SkillIdentify();
-        identify4.keyCode = KeyCode.E;
-        identify4.skillId = Define.SkillId.DaggerBall;
-        ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerBall) as ActiveSkill;
+        identify4.keyCode = KeyCode.R;
+        identify4.skillId = Define.ESkillId.DistortionArrow;
+        ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.DistortionArrow) as ActiveSkill;
         temp4.Init(1);
         AvailableSkills.Add(identify4, temp4);
-        
+
+        #endregion
     }
 
-    void ExecuteSkill(int instanceId, Define.SkillId skillId)
+    void ExecuteSkill(int instanceId, Define.ESkillId skillId)
     {
         if (Player.InstId != instanceId) return;
       
@@ -100,7 +163,7 @@ public class SkillManager : MonoBehaviour
         {
             if (pair.Key.skillId == skillId)
             {
-                pair.Value.ExecuteSkill(Player.StatManager, Player.arrowSpawnPoint, Player.PlayerController);
+                pair.Value.ExecuteSkill(Player.StatManager, Player.PlayerController);
             }
         }
     }
@@ -139,6 +202,38 @@ public class SkillManager : MonoBehaviour
     
 
     #endregion
-    
-    
+    #region Earthquake
+    public void ExecEarthquake(int instanceId, StatManager castStatManager, DamageInfo damageInfo)
+    {
+        if (Player.InstId != instanceId) return;
+        StartCoroutine(CoSpawnEarthquake(castStatManager, damageInfo));
+    }
+
+    IEnumerator CoSpawnEarthquake(StatManager castStatManager, DamageInfo damageInfo)
+    {
+        Vector2 spawnPos = GetEarthquakeSpawnPos();
+        if (spawnPos == new Vector2(10000, 10000)) 
+            yield break;
+        
+        for (int i = 0; i < 3; i++)
+        {
+           GameObject earthquakeObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.Earthquake, spawnPos, quaternion.identity);
+           SkillAbility_Earthquake earthquake = earthquakeObj.GetComponent<SkillAbility_Earthquake>();
+           earthquake.Init(Player.PlayerController, damageInfo);
+           spawnPos.x = spawnPos.x + (earthquake.Sr.bounds.size.x * Player.PlayerController.CurrentDir.x);
+           yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    Vector3 GetEarthquakeSpawnPos()
+    {
+        RaycastHit2D hitResult =
+            Physics2D.Raycast(Player.arrowSpawnPoint.position + new Vector3(Player.PlayerController.CurrentDir.x * 2f, 0f, 0f), Vector2.down, Player.CapsuleCollider.size.y, LayerMask.GetMask("Ground"));
+        if (hitResult)
+        {
+            return hitResult.point;
+        }
+        return new Vector3(10000, 10000, 10000);
+    }
+    #endregion
 }

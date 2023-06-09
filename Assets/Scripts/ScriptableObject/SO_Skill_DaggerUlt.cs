@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Skill_", menuName ="Data/Skill/DaggerUlt")]
 public class SO_Skill_DaggerUlt : ActiveSkill
 {
-    public override void ExecuteSkill(StatManager castStatManager, Transform spawnPoint, PlayerController playerController)
+    public override void ExecuteSkill(StatManager castStatManager, PlayerController playerController)
     {
         Vector3 spawnPos = Util.GetCenterWorldPos() + Vector3.up * 3f;
         GameObject daggerUltObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.DaggerUlt, spawnPos, quaternion.identity);

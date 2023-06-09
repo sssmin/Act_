@@ -9,10 +9,13 @@ public class ResourceManager : MonoBehaviour
 {
     //prefabs
     private Dictionary<EPrefabId, Object> prefabs = new Dictionary<EPrefabId, Object>();
+    public Dictionary<EPrefabId, Object> Prefabs => prefabs;
+    
     //skill scriptable objects
-    private Dictionary<Define.SkillId, Object> skills = new Dictionary<Define.SkillId, Object>();
+    private Dictionary<Define.ESkillId, Object> skills = new Dictionary<Define.ESkillId, Object>();
+
     //base stats scriptable objects
-    private Dictionary<Define.BaseStatOwnerId, Object> baseStats = new Dictionary<Define.BaseStatOwnerId, Object>();
+    private Dictionary<Define.EBaseStatOwnerId, Object> baseStats = new Dictionary<Define.EBaseStatOwnerId, Object>();
     
     //data only
     //private Dictionary<string, Object> datas = new Dictionary<string, Object>();
@@ -136,7 +139,7 @@ public class ResourceManager : MonoBehaviour
                 
                 switch (type.scriptableObjectType)
                 {
-                    case Define.ScriptableObjectType.Skill:
+                    case Define.EScriptableObjectType.Skill:
                     {
                         ActiveSkill skill = op.Result as ActiveSkill;
                         if (skills.TryGetValue(skill.skillId, out Object data))
@@ -148,7 +151,7 @@ public class ResourceManager : MonoBehaviour
                     }
                         break;
                     
-                    case Define.ScriptableObjectType.Stat:
+                    case Define.EScriptableObjectType.Stat:
                     {
                         BaseStats stats = op.Result as BaseStats;
                         if (baseStats.TryGetValue(stats.ownerIdId, out Object data))
@@ -212,16 +215,17 @@ public class ResourceManager : MonoBehaviour
         };
     }
 
-    public ScriptableObject GetSkillDataCopy(Define.SkillId skillId)
+    public ScriptableObject GetSkillDataCopy(Define.ESkillId skillId)
     {
         if (skills.TryGetValue(skillId, out Object newObj))
         {
-            ScriptableObject skillData = ScriptableObject.CreateInstance<ScriptableObject>();
-            skillData = newObj as ScriptableObject;
+            ScriptableObject skillData = Instantiate(newObj) as ScriptableObject;
             return skillData;
         }
         return null;
     }
+    
+    
 
     #endregion
 

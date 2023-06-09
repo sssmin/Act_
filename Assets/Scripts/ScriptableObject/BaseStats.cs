@@ -3,7 +3,7 @@
 [CreateAssetMenu(fileName = "Stats_", menuName = "CharacterStats")]
 public class BaseStats : ScriptableObjectType
 {
-    public Define.BaseStatOwnerId ownerIdId;
+    public Define.EBaseStatOwnerId ownerIdId;
     public int level;
     public int attack;
     public int defence;

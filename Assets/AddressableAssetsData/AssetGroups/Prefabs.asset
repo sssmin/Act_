@@ -47,6 +47,46 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+  - m_GUID: 0feb6a5d31154264d8cf2645f40debac
+    m_Address: FireStrike
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: c9e72000e2325964a9c30e7ca3f4054d
+    m_Address: Earthquake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: f965709a80a39ea48a3d4feb757ef68c
+    m_Address: Axe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 3fd81b591f5ec004ca125d588920c7e0
+    m_Address: AxeUlt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: ca6529768b672aa41bac5efd38e39b85
+    m_Address: ArrowRain
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 094b48b4a48cc10449170b3711e91434
+    m_Address: PierceArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 692c3c0c24b824044ad0d12a9447690d
+    m_Address: ArrowBuff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 35f67ec78d0ce8a449fa71eb24f48a63
+    m_Address: DistortionArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

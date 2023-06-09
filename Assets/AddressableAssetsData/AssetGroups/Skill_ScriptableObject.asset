@@ -38,6 +38,46 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Skill
+  - m_GUID: eaa73e92f5610584f850f5dc690ff417
+    m_Address: Skill_FireStrike
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: cddf0e54e3012d24a9ac9dc914d24525
+    m_Address: Skill_Earthquake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: a1173e1570f36f94da4a6afdc9c894dd
+    m_Address: Skill_ThrowAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 2d4444c0b4f18e547accb23d78273d2b
+    m_Address: Skill_AxeUlt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 2e8f13a278506424abec8d4c9edfa87e
+    m_Address: Skill_ArrowRain
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 4b042ddf2825cbe40965680df593c1da
+    m_Address: Skill_PiercingArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 061a87793054d9e40a020c213d33946a
+    m_Address: Skill_ArrowBuff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: d717a18d496af2745a6fb934dd911d91
+    m_Address: Skill_DistotionArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

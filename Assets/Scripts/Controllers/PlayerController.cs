@@ -26,6 +26,29 @@ public class PlayerController : BaseController
     private float normalAttackReserveDuration;
     private float normalAttackReserveTimer;
     public Player ControlledPlayer { get; private set; }
+    private bool bIsCharging;
+    public bool IsCharging
+    {
+        get => bIsCharging;
+        private set => bIsCharging = value;
+    }
+    private bool bChargeCompleted;
+    public bool ChargeCompleted
+    {
+        get => bChargeCompleted;
+        private set => bChargeCompleted = value;
+    }
+    
+    private float currentChargeAmount;
+    public float CurrentChargeAmount
+    {
+        get => currentChargeAmount;
+        private set => currentChargeAmount = value;
+    }
+    private float chargeTimer;
+    private float maxChargingTime;
+    private KeyCode chargeKeyCode;
+    
     
     public Vector2 AttackDir { get; private set; }
 
@@ -88,6 +111,7 @@ public class PlayerController : BaseController
         WallDetectDist = 0.3f;
     }
     
+    
     private void OnEnable()
     {
         PlayerControl.Enable();
@@ -117,8 +141,8 @@ public class PlayerController : BaseController
     {
         InitDelegate();
     }
-    
 
+    
     void Update()
     {
         MoveDir = MoveInputValue.ReadValue<Vector2>();
@@ -127,6 +151,26 @@ public class PlayerController : BaseController
         {
             IsReserveNormalAttack = false;
         }
+
+        if (bIsCharging)
+        {
+            if (Input.GetKey(chargeKeyCode))
+            {
+                chargeTimer += Time.deltaTime;
+                CurrentChargeAmount = Mathf.Clamp(CurrentChargeAmount + (Time.deltaTime / maxChargingTime) * 100f, 0f, 100f);
+                
+                if (chargeTimer >= maxChargingTime)
+                {
+                    bChargeCompleted = true;
+                }
+            }
+            else
+            {
+                bIsCharging = false;
+            }
+        }
+        
+        
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -167,7 +211,6 @@ public class PlayerController : BaseController
             //todo 장착 무기가 Dagger인지 Axe인지에 따라
             //TransitionState(Define.EPlayerState.DaggerNormalAttack);
             TransitionState(Define.EPlayerState.AxeNormalAttack);
-            ;
             //TransitionState(Define.EPlayerState.BowNormalAttack);
         }
         else if (ControlledPlayer.StateMachine.CurrentState.IsAttacking)
@@ -251,40 +294,62 @@ public class PlayerController : BaseController
         return CheckCurrentState(Define.EPlayerState.Dead);
     }
 
-    public void QSkill(InputAction.CallbackContext context)
+    private void QSkill(InputAction.CallbackContext context)
     {
         //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
         AttackDir = CurrentDir;
         
         ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.Q);
+        if (skill.isChargeSkill)
+            ChargeSetting(KeyCode.Q, skill.maxChargingTime);
+        
         ControlledPlayer.TransitionState(skill.skillState);
     }
     
-    public void WSkill(InputAction.CallbackContext context)
+    private void WSkill(InputAction.CallbackContext context)
     {
         //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
         AttackDir = CurrentDir;
         
         ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.W);
+        if (skill.isChargeSkill)
+            ChargeSetting(KeyCode.W, skill.maxChargingTime);
+        
         ControlledPlayer.TransitionState(skill.skillState);
     }
     
-    public void ESkill(InputAction.CallbackContext context)
+    private void ESkill(InputAction.CallbackContext context)
     {
         //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
         AttackDir = CurrentDir;
         
         ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.E);
+        if (skill.isChargeSkill)
+            ChargeSetting(KeyCode.E, skill.maxChargingTime);
+        
         ControlledPlayer.TransitionState(skill.skillState);
     }
     
-    public void RSkill(InputAction.CallbackContext context)
+    private void RSkill(InputAction.CallbackContext context)
     {
         //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
         AttackDir = CurrentDir;
         
         ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.R);
+        if (skill.isChargeSkill)
+            ChargeSetting(KeyCode.R, skill.maxChargingTime);
+        
         ControlledPlayer.TransitionState(skill.skillState);
+    }
+
+    private void ChargeSetting(KeyCode keycode, float skillMaxChargeTime)
+    {
+        bIsCharging = true;
+        maxChargingTime = skillMaxChargeTime;
+        chargeKeyCode = keycode;
+        bChargeCompleted = false;
+        chargeTimer = 0f;
+        CurrentChargeAmount = 0f;
     }
     
     protected void TransitionState(Define.EPlayerState playerState)
@@ -296,8 +361,12 @@ public class PlayerController : BaseController
     {
         ControlledPlayer.TransitionState(Define.EPlayerState.Idle);
     }
-    
-    
+
+    public void PiercingArrowEnd()
+    {
+        IsCharging = false;
+        ChargeCompleted = false;
+    }
     
     
 

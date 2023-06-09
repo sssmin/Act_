@@ -1,15 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillAbility_DaggerUlt : MonoBehaviour
 {
-    //스폰 되면 주변 몬스터 움직임 멈추고
-    //어느정도 있다가
-    //폭발 애니메이션
-    //그 움직임 멈춘 몬스터들 대미지 주고. 화면에 보이는 모든 적이였으면 좋겠는데
-    //플레이어 daggerUltNum 2로 해줘야함.
     private PlayerController OwnerPlayerController { get; set; }
     private DamageInfo DamageInfo { get; set; }
     private Animator Animator { get; set; }
@@ -36,7 +30,7 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
             tempAIControllers.Add(aiController);
             tempMonsterStats.Add(statManager);
           
-            aiController.FreezeMonster();
+            aiController.SetDisableState(Define.EMonsterState.Freeze);
         }
 
         StartCoroutine(CoExplosion());
@@ -69,7 +63,7 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
     {
         foreach (AIController aiController in tempAIControllers)
         {
-            aiController.UnfreezeMonster();
+            aiController.RevertState();
         }
      
         OwnerPlayerController.DaggerUltEnd();

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skill_DaggerUlt
   m_EditorClassIdentifier: 
   scriptableObjectType: 0
-  skillId: 2
+  skillId: 3
   skillCooltime: 30
   baseDamage: 35
   minRangeCoef: 1.968

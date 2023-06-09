@@ -29,6 +29,7 @@ public class Monster : BaseCharacter
         States.Add(Define.EMonsterState.Patrol, new Monster_PatrolState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Chase, new Monster_ChaseState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Freeze, new Monster_FreezeState(Animator, Rb, this, AIController));
+        States.Add(Define.EMonsterState.Suppression, new Monster_SuppressionState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.CrowdControl, new Monster_IdleState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.NormalAttack, new Monster_IdleState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.Dead, new Monster_IdleState(Animator, Rb, this, AIController));

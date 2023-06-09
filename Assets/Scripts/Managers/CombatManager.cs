@@ -61,7 +61,7 @@ public class CombatManager : MonoBehaviour
             if (collider == null) break;
             GameObject enemyGo = collider.gameObject;
             StatManager enemyStatManager = enemyGo.GetComponent<StatManager>();
-            PlayerController.ControlledPlayer.StatManager.CalcDmgNormalAttack(enemyStatManager, NormalAttackCoefficient);
+            PlayerController.ControlledPlayer.StatManager.CauseNormalAttack(enemyStatManager, NormalAttackCoefficient);
         }
     }
 

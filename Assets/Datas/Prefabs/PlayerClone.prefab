@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b339bb8481c4ba245ba8da1a382ec1d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolingNum: 5
 --- !u!1 &6144095702421508874
 GameObject:
   m_ObjectHideFlags: 0

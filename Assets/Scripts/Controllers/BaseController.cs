@@ -11,7 +11,7 @@ public class BaseController : MonoBehaviour
     [SerializeField] protected GameObject wallDetectObject;
     public float GroundDetectDist { get; private set; }
     protected float WallDetectDist { get; set; }
-    private Vector2 currentDir;
+    private Vector2 currentDir = Vector2.right;
     public virtual Vector2 CurrentDir
     {
         get => currentDir;

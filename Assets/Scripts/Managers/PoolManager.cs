@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PoolManager
@@ -68,9 +69,8 @@ public class PoolManager
             root.name = "Pool_Root";
             Object.DontDestroyOnLoad(root);
         }
-        CreatePoolAdvanced(EPrefabId.Arrow, 5);
-        CreatePoolAdvanced(EPrefabId.Dagger, 2);
-        CreatePoolAdvanced(EPrefabId.PlayerClone, 5);
+        
+        CreatePoolAdvanced();
     }
 
     public void CreatePool(GameObject origin, int count = 5)
@@ -126,6 +126,19 @@ public class PoolManager
         {
             GameObject origin = GI.Inst.ResourceManager.Load<GameObject>(name);
             CreatePool(origin, count);
+        }
+    }
+
+    public void CreatePoolAdvanced()
+    {
+        foreach (KeyValuePair<EPrefabId, Object> pair in GI.Inst.ResourceManager.Prefabs)
+        {
+            GameObject prefab = (GameObject)pair.Value;
+            Poolable poolable = prefab.GetComponent<Poolable>();
+            if (poolable)
+            {
+                CreatePool(prefab, poolable.poolingNum);
+            }
         }
     }
     

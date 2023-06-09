@@ -11,6 +11,7 @@ public class Player : BaseCharacter
     public PlayerController PlayerController { get; set; }
     public CombatManager CombatManager { get; private set; }
     public StatManager StatManager { get; private set; }
+    public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
     
     public float JumpForce { get; private set; }
@@ -24,6 +25,7 @@ public class Player : BaseCharacter
         PlayerController = GetComponent<PlayerController>();
         CombatManager = GetComponent<CombatManager>();
         StatManager = GetComponent<StatManager>();
+        CapsuleCollider = GetComponent<CapsuleCollider2D>();
 
         MoveSpeed = 5f;
         JumpForce = 5f;
@@ -58,6 +60,14 @@ public class Player : BaseCharacter
         States.Add(Define.EPlayerState.PlayerCloneSkill, new PlayerCloneSkillState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.DaggerUlt, new DaggerUltState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.DaggerBall, new DaggerBallSkillState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.FireStrike, new FireStrikeState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.Earthquake, new EarthquakeState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.ThrowAxe, new ThrowAxeSkillState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.AxeUlt, new AxeUltState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.ArrowRain, new ArrowRainState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.PiercingArrow, new PiercingArrowState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.ArrowBuff, new ArrowBuffState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.DistortionArrow, new DistortionArrowState(Animator, Rb, this, PlayerController));
 
         foreach (var pair in States)
         {

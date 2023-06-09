@@ -15,7 +15,15 @@ using UnityEngine.Serialization;
         Player,
         NightBorne,
         DaggerUlt,
-        DaggerBall
+        DaggerBall,
+        FireStrike,
+        Earthquake,
+        Axe,
+        AxeUlt,
+        ArrowRain,
+        PiercingArrow,
+        ArrowBuff,
+        DistortionArrow
     }
 
 

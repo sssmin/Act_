@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Skill_", menuName ="Data/Skill/ThrowDaggerSkill")]
+[CreateAssetMenu(fileName = "Skill_", menuName ="Data/Skill/ThrowDagger")]
 public class SO_Skill_ThrowDagger : ActiveSkill
 {
-    public override void ExecuteSkill(StatManager castStatManager, Transform spawnPoint, PlayerController playerController)
+    public override void ExecuteSkill(StatManager castStatManager, PlayerController playerController)
     {
-        GameObject daggerObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.Dagger, spawnPoint.position, quaternion.identity);
+        GameObject daggerObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.Dagger, playerController.ControlledPlayer.arrowSpawnPoint.position, playerController.transform.rotation);
         SkillAbility_ThrowDagger skillAbilityThrowDagger = daggerObj.GetComponent<SkillAbility_ThrowDagger>();
        
         DamageInfo damageInfo = castStatManager.GetDefaultDamage();
