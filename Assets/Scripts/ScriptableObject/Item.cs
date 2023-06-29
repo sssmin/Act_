@@ -16,20 +16,7 @@ public enum EEquipmentType
     Max
 }
 
-//스탯 
-/*
- * 물리공격력
- * 물리방어력
- * 마법공격력
- * 마법저항력
- * 체력
- * 크리티컬 확률
- * 회피율
- * 스킬쿨타임증감율
- * 이동속도
- */
-
-
+[CreateAssetMenu(fileName = "")]
 public class Equipment : ScriptableObject
 {
     public EEquipmentType equipmentType;
