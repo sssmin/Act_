@@ -1,0 +1,210 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Prefabs_UI
+  m_EditorClassIdentifier: 
+  m_GroupName: Prefabs_UI
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 7ec79ccaa4201904ca6a215b569e2730
+  m_SerializeEntries:
+  - m_GUID: 09c63ef460ea1684d904f13b6b9d6f92
+    m_Address: UI_Inven_StatsContent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: c9e2e48d573d0f6458036e9fc69a3ff6
+    m_Address: UI_Inven_ItemSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: d17346590007a114cba48aba74742f63
+    m_Address: UI_MainMenu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 16b69a43973e94c478cd1343523cfb88
+    m_Address: UI_Inven_CategoryButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 8de4195a669bd99408ed10a5c5a102d2
+    m_Address: UI_Inven_StatSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: bfd1a31b3f835da4d88e9c0fea1def20
+    m_Address: UI_Skill_SkillContent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 0938669ac8c5efd46b942a6c8306a15e
+    m_Address: UI_Skill_ActiveSkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 33ad3ab298f8adc41bef4e4a2f3c01eb
+    m_Address: UI_Main
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: f4e94f9946e994940a88e8d3ed07db13
+    m_Address: UI_Main_MonsterInfo
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 5f47a3a9776138f47930c26c16de66fa
+    m_Address: UI_Main_SkillHotkeySlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: a73751692ceefa742aa8ac1e9263f549
+    m_Address: UI_ItemTooltip
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 56f5e50e224aade4b83de2052599d239
+    m_Address: UI_ItemTooltip_ItemStats
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 8a606d6128ef5db45aa5aa881ba37711
+    m_Address: UI_ItemTooltip_EffectDescObject
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 49ff08041a8b1e748b27c0dfa71ff4fa
+    m_Address: UI_ItemTooltip_DescText
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 6531804efe00a3e44900b0a590f4fd83
+    m_Address: UI_Inven_Popup
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 5eb6f4a46cb704d46b9d1a6e2e0f549a
+    m_Address: UI_Inven_PopupButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 4ff2ddd149757054085d4eb5eaee3402
+    m_Address: UI_TB_Amount
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 2e698f0a27d32b0479b1b77452ea0b06
+    m_Address: UI_TB_ConfirmButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 0aa17969dde4f114c9fc462482851d81
+    m_Address: UI_TB_Price
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: e97be1a8f952ca54da94fe7d731aedff
+    m_Address: UI_TB_IconDesc
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 8d1ef7792fd06874d8fef5a47f8b13d6
+    m_Address: UI_TB_Popup
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 04da43e709a84114f9280151cf849e29
+    m_Address: UI_Inven_ConsumableItemSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: ab6a3f4a3f70c134d85a8ddaa18300ad
+    m_Address: UI_Main_ItemHotkeySlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 08ae682d817dfbd4c87345d5df26755b
+    m_Address: UI_Main_EffectSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 69c93a59494b9824c919ccd7e4f49f92
+    m_Address: UI_Skill_EquipPassiveSkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 633c9ebd9a1fe5547af635077b7acdde
+    m_Address: UI_Skill_PassiveSkillSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: bdc8fbee01b15c14ba7e8ea68172df1a
+    m_Address: UI_Skill_MoveSkillIcon
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 84a414ea03782e942ad70b84f78d8da9
+    m_Address: UI_SkillTooltip
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 504167f26c456a34a9853025fc2b3969
+    m_Address: UI_Main_UltHotkeySlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 9060a65e82ab12c40a48c2ec91829dcd
+    m_Address: UI_Merchant_ItemLine
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: d0287a4448d398849a01b7b3711f22e7
+    m_Address: UI_Merchant_ItemLineParent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 3d3b90614890245418313aa331faed04
+    m_Address: UI_Merchant_Menu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 8b7f25ebb3a5518458a1218057f789dc
+    m_Address: UI_InventoryWrapper
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 21c8b12c7c5c8274bb2a0f9a3f57fb88
+    m_Address: UI_Merchant_CraftLineParent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 28c85fae2ecc2d142bf8c91dabd99799
+    m_Address: UI_Merchant_Result
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 98e3e93c5a03d124bb119b1f91c6557a
+    m_Address: UI_Merchant_CraftLine
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 3c78689268344294cbc54e0210fba390
+    m_Address: DamageText
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8bf487ace37a32d49b442bfac0ed1774, type: 2}
+    - {fileID: 11400000, guid: f57d6e342f1cdbd459837a61f99e874d, type: 2}

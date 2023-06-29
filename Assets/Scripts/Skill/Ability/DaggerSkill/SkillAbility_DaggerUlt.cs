@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkillAbility_DaggerUlt : MonoBehaviour
 {
     private PlayerController OwnerPlayerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private DamageInfo DamageInfo { get; set; }
     private Animator Animator { get; set; }
     private SpriteRenderer Sr { get; set; }
@@ -18,17 +19,18 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
     }
     
 
-    public void Init(PlayerController playerController, DamageInfo damageInfo, List<Transform> monsters)
+    public void Init(PlayerController playerController, StatManager statManager, DamageInfo damageInfo, List<Transform> monsters)
     {
         OwnerPlayerController = playerController;
+        OwnerStatManager = statManager;
         DamageInfo = damageInfo;
         
         foreach (Transform monster in monsters)
         {
             AIController aiController = monster.GetComponent<AIController>();
-            StatManager statManager = monster.GetComponent<StatManager>();
+            StatManager monsterStatManager = monster.GetComponent<StatManager>();
             tempAIControllers.Add(aiController);
-            tempMonsterStats.Add(statManager);
+            tempMonsterStats.Add(monsterStatManager);
           
             aiController.SetDisableState(Define.EMonsterState.Freeze);
         }
@@ -53,7 +55,7 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         foreach (StatManager monsterStatManager in tempMonsterStats)
         {
-            monsterStatManager.OnDamage(DamageInfo, OwnerPlayerController.gameObject);
+            monsterStatManager.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
         }
 
         SkillEnd();

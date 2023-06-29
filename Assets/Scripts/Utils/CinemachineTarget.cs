@@ -8,6 +8,7 @@ public class CinemachineTarget : MonoBehaviour
 {
     private CinemachineTargetGroup CinemachineTargetGroup { get; set; }
     [SerializeField] Transform cursorTransform;
+    private Transform CameraFoucs { get; set; }
 
     private void Awake()
     {
@@ -20,19 +21,25 @@ public class CinemachineTarget : MonoBehaviour
 
     public void Init()
     {
-        CinemachineTargetGroup.Target targetPlayer = new CinemachineTargetGroup.Target
-            { weight = 1f, radius = 2.5f, target = GI.Inst.Player.transform.Find("CameraFocus") };
+        CameraFoucs = GI.Inst.Player.transform.Find("CameraFocus");
         
-        CinemachineTargetGroup.Target targetCursor = new CinemachineTargetGroup.Target
-            { weight = 0.5f, radius = 1f, target = cursorTransform };
-
-        CinemachineTargetGroup.Target[] targets = new CinemachineTargetGroup.Target[] { targetPlayer, targetCursor };
-        CinemachineTargetGroup.m_Targets = targets;
-
+        ActivateCamera();
     }
 
     private void Update()
     {
         cursorTransform.position = Util.GetMouseWorldPos();
+    }
+
+    public void ActivateCamera()
+    {
+        CinemachineTargetGroup.AddMember(CameraFoucs, 1f, 2.5f);
+        CinemachineTargetGroup.AddMember(cursorTransform, 0.5f, 1f);
+    }
+
+    public void DeactivateCamera()
+    {
+        CinemachineTargetGroup.RemoveMember(CameraFoucs);
+        CinemachineTargetGroup.RemoveMember(cursorTransform);
     }
 }

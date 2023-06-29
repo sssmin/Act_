@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd1dd80d7d25b8c42969d7c3d617715c, type: 3}
+  m_Name: Skill_FireStrike
+  m_EditorClassIdentifier: 
+  skillId: 4
+  skillName: "\uD30C\uC774\uC5B4 \uC2A4\uD2B8\uB77C\uC774\uD06C"
+  skillCooltime: 12
+  skillLevel: 0
+  icon: {fileID: 21300000, guid: ae3d7a6003f95a4459676624412f616b, type: 3}
+  bCanLevelUp: 0
+  itemIdForLevelUp: 0
+  activeSkillOrder: 0
+  coef:
+  - 178
+  - 188
+  - 199
+  - 219
+  - 230
+  - 242
+  - 263
+  - 273
+  - 284
+  - 292
+  skillState: 16
+  isChargeSkill: 0
+  maxChargingTime: 2.5

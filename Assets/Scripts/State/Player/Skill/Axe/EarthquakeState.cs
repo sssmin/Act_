@@ -20,7 +20,7 @@ public class EarthquakeState : PlayerState
         if (bIsAnimTrigger)
         {
             bIsAnimTrigger = false;
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.Earthquake);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.Earthquake);
         }
        
     }

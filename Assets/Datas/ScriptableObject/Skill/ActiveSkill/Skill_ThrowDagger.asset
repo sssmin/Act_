@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90012694c4c120f449ad20747e939d09, type: 3}
+  m_Name: Skill_ThrowDagger
+  m_EditorClassIdentifier: 
+  skillId: 0
+  skillName: "\uB300\uAC70 \uC5B4\uC370\uD2B8"
+  skillCooltime: 8
+  skillLevel: 0
+  icon: {fileID: 21300000, guid: bf3eab1c01e6fdc4c9d5f3c3a636085d, type: 3}
+  bCanLevelUp: 0
+  itemIdForLevelUp: 0
+  activeSkillOrder: 0
+  coef:
+  - 153
+  - 162
+  - 173
+  - 195
+  - 204
+  - 215
+  - 237
+  - 246
+  - 257
+  - 270
+  skillState: 12
+  isChargeSkill: 0
+  maxChargingTime: 2.5

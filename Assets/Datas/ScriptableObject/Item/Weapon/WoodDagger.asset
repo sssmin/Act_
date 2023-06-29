@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92661daed3b35ab4abcf15ca24404e10, type: 3}
+  m_Name: WoodDagger
+  m_EditorClassIdentifier: 
+  itemId: WoodDagger
+  ItemCategory: 0
+  itemName: "\uC6B0\uB4DC \uB300\uAC70"
+  itemDesc: "\uB098\uBB34\uB85C \uB9CC\uB4E4\uC5B4\uC9C4 \uB300\uAC70"
+  itemIcon: {fileID: -961260038, guid: fe0f2fb492b4a3e4da2ba1ec004d5d26, type: 3}
+  bIsCanStack: 0
+  amount: 0
+  maxStackSize: 1
+  bIsEquipped: 0
+  rarity: 0
+  itemStats:
+  - statType: 1
+    statValue: 80
+  weaponType: 1

@@ -82,7 +82,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""QSkill"",
+                    ""name"": ""FirstSkill"",
                     ""type"": ""Button"",
                     ""id"": ""d89e32f4-5346-4c59-b5a4-e495bfd906c9"",
                     ""expectedControlType"": ""Button"",
@@ -91,7 +91,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""WSkill"",
+                    ""name"": ""SecondSkill"",
                     ""type"": ""Button"",
                     ""id"": ""c0521f02-22f0-469b-a51b-dcce169353bd"",
                     ""expectedControlType"": ""Button"",
@@ -100,7 +100,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ESkill"",
+                    ""name"": ""ThirdSkill"",
                     ""type"": ""Button"",
                     ""id"": ""3e8c7bbb-e171-4fac-8a71-b56d5619fae9"",
                     ""expectedControlType"": ""Button"",
@@ -109,9 +109,81 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RSkill"",
+                    ""name"": ""FourthSkill"",
                     ""type"": ""Button"",
                     ""id"": ""715478da-c1f7-467f-b76a-522be15e5b01"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InventoryWindow"",
+                    ""type"": ""Button"",
+                    ""id"": ""612055d4-06c4-4587-b75e-6f0326a3403e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SkillWindow"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd256d57-8aa3-482d-91db-c07d4d099c86"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FirstItemHotkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c6c5ff5-5e3f-4e68-92ad-3dd88c568786"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondItemHotkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""6e97729b-1c08-4066-b1dc-f5dfcdb89a51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ThirdItemHotkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""c590f364-d62f-454f-be9b-f36575a16d72"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FourthItemHotkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""85fc4e33-dce0-4711-939e-4d2a43340849"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FifthItemHotkey"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6d4ce5b-2e8a-4b8a-bad0-833c1befc151"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interaction"",
+                    ""type"": ""Button"",
+                    ""id"": ""f14378a7-b0a2-4501-8cae-e8e8a158817f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -379,7 +451,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""QSkill"",
+                    ""action"": ""FirstSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -390,7 +462,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""WSkill"",
+                    ""action"": ""SecondSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -401,7 +473,7 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ESkill"",
+                    ""action"": ""ThirdSkill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -412,7 +484,95 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""RSkill"",
+                    ""action"": ""FourthSkill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1467a2b-badc-4984-bc5b-bcff28c10f91"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""InventoryWindow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0e0e00ec-604a-4f3c-9a02-48df9165b53c"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""SkillWindow"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f652cb38-01be-4364-b735-821c8b3dd424"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""FirstItemHotkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9d4aa4c-4394-496f-9407-3f27acccc815"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""SecondItemHotkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f1624704-d6b2-43ff-b3f6-9e214df4c743"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ThirdItemHotkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cac15eb-8e69-4552-a291-e5ad5504bf8f"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""FourthItemHotkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""286962c2-368a-4372-8ed6-42a836a80fce"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""FifthItemHotkey"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13f60e68-81b9-43b4-ba80-dfc93c219702"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Interaction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1006,10 +1166,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_NormalAttack = m_Player.FindAction("NormalAttack", throwIfNotFound: true);
-        m_Player_QSkill = m_Player.FindAction("QSkill", throwIfNotFound: true);
-        m_Player_WSkill = m_Player.FindAction("WSkill", throwIfNotFound: true);
-        m_Player_ESkill = m_Player.FindAction("ESkill", throwIfNotFound: true);
-        m_Player_RSkill = m_Player.FindAction("RSkill", throwIfNotFound: true);
+        m_Player_FirstSkill = m_Player.FindAction("FirstSkill", throwIfNotFound: true);
+        m_Player_SecondSkill = m_Player.FindAction("SecondSkill", throwIfNotFound: true);
+        m_Player_ThirdSkill = m_Player.FindAction("ThirdSkill", throwIfNotFound: true);
+        m_Player_FourthSkill = m_Player.FindAction("FourthSkill", throwIfNotFound: true);
+        m_Player_InventoryWindow = m_Player.FindAction("InventoryWindow", throwIfNotFound: true);
+        m_Player_SkillWindow = m_Player.FindAction("SkillWindow", throwIfNotFound: true);
+        m_Player_FirstItemHotkey = m_Player.FindAction("FirstItemHotkey", throwIfNotFound: true);
+        m_Player_SecondItemHotkey = m_Player.FindAction("SecondItemHotkey", throwIfNotFound: true);
+        m_Player_ThirdItemHotkey = m_Player.FindAction("ThirdItemHotkey", throwIfNotFound: true);
+        m_Player_FourthItemHotkey = m_Player.FindAction("FourthItemHotkey", throwIfNotFound: true);
+        m_Player_FifthItemHotkey = m_Player.FindAction("FifthItemHotkey", throwIfNotFound: true);
+        m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1087,10 +1255,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_NormalAttack;
-    private readonly InputAction m_Player_QSkill;
-    private readonly InputAction m_Player_WSkill;
-    private readonly InputAction m_Player_ESkill;
-    private readonly InputAction m_Player_RSkill;
+    private readonly InputAction m_Player_FirstSkill;
+    private readonly InputAction m_Player_SecondSkill;
+    private readonly InputAction m_Player_ThirdSkill;
+    private readonly InputAction m_Player_FourthSkill;
+    private readonly InputAction m_Player_InventoryWindow;
+    private readonly InputAction m_Player_SkillWindow;
+    private readonly InputAction m_Player_FirstItemHotkey;
+    private readonly InputAction m_Player_SecondItemHotkey;
+    private readonly InputAction m_Player_ThirdItemHotkey;
+    private readonly InputAction m_Player_FourthItemHotkey;
+    private readonly InputAction m_Player_FifthItemHotkey;
+    private readonly InputAction m_Player_Interaction;
     public struct PlayerActions
     {
         private @PlayerControl m_Wrapper;
@@ -1101,10 +1277,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @NormalAttack => m_Wrapper.m_Player_NormalAttack;
-        public InputAction @QSkill => m_Wrapper.m_Player_QSkill;
-        public InputAction @WSkill => m_Wrapper.m_Player_WSkill;
-        public InputAction @ESkill => m_Wrapper.m_Player_ESkill;
-        public InputAction @RSkill => m_Wrapper.m_Player_RSkill;
+        public InputAction @FirstSkill => m_Wrapper.m_Player_FirstSkill;
+        public InputAction @SecondSkill => m_Wrapper.m_Player_SecondSkill;
+        public InputAction @ThirdSkill => m_Wrapper.m_Player_ThirdSkill;
+        public InputAction @FourthSkill => m_Wrapper.m_Player_FourthSkill;
+        public InputAction @InventoryWindow => m_Wrapper.m_Player_InventoryWindow;
+        public InputAction @SkillWindow => m_Wrapper.m_Player_SkillWindow;
+        public InputAction @FirstItemHotkey => m_Wrapper.m_Player_FirstItemHotkey;
+        public InputAction @SecondItemHotkey => m_Wrapper.m_Player_SecondItemHotkey;
+        public InputAction @ThirdItemHotkey => m_Wrapper.m_Player_ThirdItemHotkey;
+        public InputAction @FourthItemHotkey => m_Wrapper.m_Player_FourthItemHotkey;
+        public InputAction @FifthItemHotkey => m_Wrapper.m_Player_FifthItemHotkey;
+        public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1132,18 +1316,42 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @NormalAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNormalAttack;
                 @NormalAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNormalAttack;
                 @NormalAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNormalAttack;
-                @QSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQSkill;
-                @QSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQSkill;
-                @QSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnQSkill;
-                @WSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWSkill;
-                @WSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWSkill;
-                @WSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWSkill;
-                @ESkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnESkill;
-                @ESkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnESkill;
-                @ESkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnESkill;
-                @RSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRSkill;
-                @RSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRSkill;
-                @RSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRSkill;
+                @FirstSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstSkill;
+                @FirstSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstSkill;
+                @FirstSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstSkill;
+                @SecondSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondSkill;
+                @SecondSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondSkill;
+                @SecondSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondSkill;
+                @ThirdSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdSkill;
+                @ThirdSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdSkill;
+                @ThirdSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdSkill;
+                @FourthSkill.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthSkill;
+                @FourthSkill.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthSkill;
+                @FourthSkill.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthSkill;
+                @InventoryWindow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryWindow;
+                @InventoryWindow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryWindow;
+                @InventoryWindow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInventoryWindow;
+                @SkillWindow.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkillWindow;
+                @SkillWindow.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkillWindow;
+                @SkillWindow.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSkillWindow;
+                @FirstItemHotkey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstItemHotkey;
+                @FirstItemHotkey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstItemHotkey;
+                @FirstItemHotkey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFirstItemHotkey;
+                @SecondItemHotkey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondItemHotkey;
+                @SecondItemHotkey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondItemHotkey;
+                @SecondItemHotkey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSecondItemHotkey;
+                @ThirdItemHotkey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdItemHotkey;
+                @ThirdItemHotkey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdItemHotkey;
+                @ThirdItemHotkey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThirdItemHotkey;
+                @FourthItemHotkey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthItemHotkey;
+                @FourthItemHotkey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthItemHotkey;
+                @FourthItemHotkey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFourthItemHotkey;
+                @FifthItemHotkey.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFifthItemHotkey;
+                @FifthItemHotkey.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFifthItemHotkey;
+                @FifthItemHotkey.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFifthItemHotkey;
+                @Interaction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
+                @Interaction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
+                @Interaction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteraction;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1166,18 +1374,42 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
                 @NormalAttack.started += instance.OnNormalAttack;
                 @NormalAttack.performed += instance.OnNormalAttack;
                 @NormalAttack.canceled += instance.OnNormalAttack;
-                @QSkill.started += instance.OnQSkill;
-                @QSkill.performed += instance.OnQSkill;
-                @QSkill.canceled += instance.OnQSkill;
-                @WSkill.started += instance.OnWSkill;
-                @WSkill.performed += instance.OnWSkill;
-                @WSkill.canceled += instance.OnWSkill;
-                @ESkill.started += instance.OnESkill;
-                @ESkill.performed += instance.OnESkill;
-                @ESkill.canceled += instance.OnESkill;
-                @RSkill.started += instance.OnRSkill;
-                @RSkill.performed += instance.OnRSkill;
-                @RSkill.canceled += instance.OnRSkill;
+                @FirstSkill.started += instance.OnFirstSkill;
+                @FirstSkill.performed += instance.OnFirstSkill;
+                @FirstSkill.canceled += instance.OnFirstSkill;
+                @SecondSkill.started += instance.OnSecondSkill;
+                @SecondSkill.performed += instance.OnSecondSkill;
+                @SecondSkill.canceled += instance.OnSecondSkill;
+                @ThirdSkill.started += instance.OnThirdSkill;
+                @ThirdSkill.performed += instance.OnThirdSkill;
+                @ThirdSkill.canceled += instance.OnThirdSkill;
+                @FourthSkill.started += instance.OnFourthSkill;
+                @FourthSkill.performed += instance.OnFourthSkill;
+                @FourthSkill.canceled += instance.OnFourthSkill;
+                @InventoryWindow.started += instance.OnInventoryWindow;
+                @InventoryWindow.performed += instance.OnInventoryWindow;
+                @InventoryWindow.canceled += instance.OnInventoryWindow;
+                @SkillWindow.started += instance.OnSkillWindow;
+                @SkillWindow.performed += instance.OnSkillWindow;
+                @SkillWindow.canceled += instance.OnSkillWindow;
+                @FirstItemHotkey.started += instance.OnFirstItemHotkey;
+                @FirstItemHotkey.performed += instance.OnFirstItemHotkey;
+                @FirstItemHotkey.canceled += instance.OnFirstItemHotkey;
+                @SecondItemHotkey.started += instance.OnSecondItemHotkey;
+                @SecondItemHotkey.performed += instance.OnSecondItemHotkey;
+                @SecondItemHotkey.canceled += instance.OnSecondItemHotkey;
+                @ThirdItemHotkey.started += instance.OnThirdItemHotkey;
+                @ThirdItemHotkey.performed += instance.OnThirdItemHotkey;
+                @ThirdItemHotkey.canceled += instance.OnThirdItemHotkey;
+                @FourthItemHotkey.started += instance.OnFourthItemHotkey;
+                @FourthItemHotkey.performed += instance.OnFourthItemHotkey;
+                @FourthItemHotkey.canceled += instance.OnFourthItemHotkey;
+                @FifthItemHotkey.started += instance.OnFifthItemHotkey;
+                @FifthItemHotkey.performed += instance.OnFifthItemHotkey;
+                @FifthItemHotkey.canceled += instance.OnFifthItemHotkey;
+                @Interaction.started += instance.OnInteraction;
+                @Interaction.performed += instance.OnInteraction;
+                @Interaction.canceled += instance.OnInteraction;
             }
         }
     }
@@ -1340,10 +1572,18 @@ public partial class @PlayerControl : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnNormalAttack(InputAction.CallbackContext context);
-        void OnQSkill(InputAction.CallbackContext context);
-        void OnWSkill(InputAction.CallbackContext context);
-        void OnESkill(InputAction.CallbackContext context);
-        void OnRSkill(InputAction.CallbackContext context);
+        void OnFirstSkill(InputAction.CallbackContext context);
+        void OnSecondSkill(InputAction.CallbackContext context);
+        void OnThirdSkill(InputAction.CallbackContext context);
+        void OnFourthSkill(InputAction.CallbackContext context);
+        void OnInventoryWindow(InputAction.CallbackContext context);
+        void OnSkillWindow(InputAction.CallbackContext context);
+        void OnFirstItemHotkey(InputAction.CallbackContext context);
+        void OnSecondItemHotkey(InputAction.CallbackContext context);
+        void OnThirdItemHotkey(InputAction.CallbackContext context);
+        void OnFourthItemHotkey(InputAction.CallbackContext context);
+        void OnFifthItemHotkey(InputAction.CallbackContext context);
+        void OnInteraction(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

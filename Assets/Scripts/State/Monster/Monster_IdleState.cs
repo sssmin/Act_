@@ -43,7 +43,7 @@ public class Monster_IdleState : MonsterState
 
     public override void EndState()
     {
-        Animator.SetBool(AnimHash.isIdle, true);
+        Animator.SetBool(AnimHash.isIdle, false);
         idleTimer = 10f;
     }
 }

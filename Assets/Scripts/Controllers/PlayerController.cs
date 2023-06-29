@@ -1,17 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
+using UnityEngine.InputSystem.Controls;
 
-public enum EDir
-{
-    Right,
-    Left
-}
 
 public class PlayerController : BaseController
 {
@@ -80,7 +70,7 @@ public class PlayerController : BaseController
             {
                 if (!ControlledPlayer.DoNotFlipState())
                 {
-                    Flip(true);
+                    Flip(EDir.Left);
                 }
                 if (CheckStateCanMove() && !IsWallDetect())
                 {
@@ -91,7 +81,7 @@ public class PlayerController : BaseController
             {
                 if (!ControlledPlayer.DoNotFlipState())
                 {
-                    Flip(false);
+                    Flip(EDir.Right);
                 }
                 
                 if (CheckStateCanMove() && !IsWallDetect())
@@ -119,10 +109,18 @@ public class PlayerController : BaseController
         PlayerControl.Player.Jump.performed += Jump;
         PlayerControl.Player.Dash.performed += Dash;
         PlayerControl.Player.NormalAttack.performed += NormalAttack;
-        PlayerControl.Player.QSkill.performed += QSkill;
-        PlayerControl.Player.WSkill.performed += WSkill;
-        PlayerControl.Player.ESkill.performed += ESkill;
-        PlayerControl.Player.RSkill.performed += RSkill;
+        PlayerControl.Player.FirstSkill.performed += FirstSkill;
+        PlayerControl.Player.SecondSkill.performed += SecondSkill;
+        PlayerControl.Player.ThirdSkill.performed += ThirdSkill;
+        PlayerControl.Player.FourthSkill.performed += FourthSkill;
+        PlayerControl.Player.InventoryWindow.performed += ToggleInventory;
+        PlayerControl.Player.SkillWindow.performed += ToggleSkill;
+        PlayerControl.Player.FirstItemHotkey.performed += FirstItemHotkey;
+        PlayerControl.Player.SecondItemHotkey.performed += SecondItemHotkey;
+        PlayerControl.Player.ThirdItemHotkey.performed += ThirdItemHotkey;
+        PlayerControl.Player.FourthItemHotkey.performed += FourthItemHotkey;
+        PlayerControl.Player.FifthItemHotkey.performed += FifthItemHotkey;
+        PlayerControl.Player.Interaction.performed += Interaction;
     }
 
     private void OnDisable()
@@ -131,10 +129,18 @@ public class PlayerController : BaseController
         PlayerControl.Player.Jump.performed -= Jump;
         PlayerControl.Player.Dash.performed -= Dash;
         PlayerControl.Player.NormalAttack.performed -= NormalAttack;
-        PlayerControl.Player.QSkill.performed -= QSkill;
-        PlayerControl.Player.WSkill.performed -= WSkill;
-        PlayerControl.Player.ESkill.performed -= ESkill;
-        PlayerControl.Player.RSkill.performed -= RSkill;
+        PlayerControl.Player.FirstSkill.performed -= FirstSkill;
+        PlayerControl.Player.SecondSkill.performed -= SecondSkill;
+        PlayerControl.Player.ThirdSkill.performed -= ThirdSkill;
+        PlayerControl.Player.FourthSkill.performed -= FourthSkill;
+        PlayerControl.Player.InventoryWindow.performed -= ToggleInventory;
+        PlayerControl.Player.SkillWindow.performed -= ToggleSkill;
+        PlayerControl.Player.FirstItemHotkey.performed -= FirstItemHotkey;
+        PlayerControl.Player.SecondItemHotkey.performed -= SecondItemHotkey;
+        PlayerControl.Player.ThirdItemHotkey.performed -= ThirdItemHotkey;
+        PlayerControl.Player.FourthItemHotkey.performed -= FourthItemHotkey;
+        PlayerControl.Player.FifthItemHotkey.performed -= FifthItemHotkey;
+        PlayerControl.Player.Interaction.performed -= Interaction;
     }
 
     void Start()
@@ -169,8 +175,6 @@ public class PlayerController : BaseController
                 bIsCharging = false;
             }
         }
-        
-        
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -181,19 +185,7 @@ public class PlayerController : BaseController
         }
     }
 
-    void Dash(InputAction.CallbackContext context)
-    {
-        //todo 쿨타임 부터 체크
-        
-        if (IsJumpingState())
-        {
-            TransitionState(Define.EPlayerState.Dash);
-        }
-        else if(CheckStateCanGroundSlide())
-        {
-            TransitionState(Define.EPlayerState.GroundSliding);
-        }
-    }
+    
 
     bool IsJumpingState()
     {
@@ -208,10 +200,12 @@ public class PlayerController : BaseController
         if (CheckStateCanNormalAttack())
         {
             AttackDir = CurrentDir;
-            //todo 장착 무기가 Dagger인지 Axe인지에 따라
-            //TransitionState(Define.EPlayerState.DaggerNormalAttack);
-            TransitionState(Define.EPlayerState.AxeNormalAttack);
-            //TransitionState(Define.EPlayerState.BowNormalAttack);
+            if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Dagger)
+                TransitionState(Define.EPlayerState.DaggerNormalAttack);
+            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Axe)
+                TransitionState(Define.EPlayerState.AxeNormalAttack);
+            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Bow)
+                TransitionState(Define.EPlayerState.BowNormalAttack);
         }
         else if (ControlledPlayer.StateMachine.CurrentState.IsAttacking)
         {
@@ -284,6 +278,23 @@ public class PlayerController : BaseController
         return false;
     }
 
+    bool CanDash(EActiveSkillOrder skillOrder)
+    {
+        if (IsDead()) return false;
+        bool condition = (CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move) || IsJumpingState()) 
+                         
+                         && GI.Inst.ListenerManager.IsSkillReady(skillOrder);
+        return condition;
+    }
+    
+    private bool CanUseSkill(EActiveSkillOrder skillOrder)
+    {
+        if (IsDead()) return false;
+        bool condition = (CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move)) 
+                         && GI.Inst.ListenerManager.IsSkillReady(skillOrder);
+        return condition;
+    }
+
     public bool CheckCurrentState(Define.EPlayerState playerState)
     {
         return ControlledPlayer.GetState(playerState) == ControlledPlayer.StateMachine.CurrentState;
@@ -294,55 +305,116 @@ public class PlayerController : BaseController
         return CheckCurrentState(Define.EPlayerState.Dead);
     }
 
-    private void QSkill(InputAction.CallbackContext context)
+    private void FirstSkill(InputAction.CallbackContext context)
     {
-        //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
+        if (!CanUseSkill(EActiveSkillOrder.First)) return;
+        
         AttackDir = CurrentDir;
         
-        ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.Q);
-        if (skill.isChargeSkill)
-            ChargeSetting(KeyCode.Q, skill.maxChargingTime);
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.First);
         
-        ControlledPlayer.TransitionState(skill.skillState);
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+        
+        TransitionState(skill.skillState);
     }
     
-    private void WSkill(InputAction.CallbackContext context)
+
+    private void SecondSkill(InputAction.CallbackContext context)
     {
-        //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
+        if (!CanUseSkill(EActiveSkillOrder.Second)) return;
+        
         AttackDir = CurrentDir;
         
-        ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.W);
-        if (skill.isChargeSkill)
-            ChargeSetting(KeyCode.W, skill.maxChargingTime);
-        
-        ControlledPlayer.TransitionState(skill.skillState);
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Second);
+
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+
+        TransitionState(skill.skillState);
     }
     
-    private void ESkill(InputAction.CallbackContext context)
+    private void ThirdSkill(InputAction.CallbackContext context)
     {
-        //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
+        if (!CanUseSkill(EActiveSkillOrder.Third)) return;
+        
         AttackDir = CurrentDir;
+      
         
-        ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.E);
-        if (skill.isChargeSkill)
-            ChargeSetting(KeyCode.E, skill.maxChargingTime);
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Third);
         
-        ControlledPlayer.TransitionState(skill.skillState);
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+        
+        TransitionState(skill.skillState);
     }
     
-    private void RSkill(InputAction.CallbackContext context)
+    private void FourthSkill(InputAction.CallbackContext context)
     {
-        //todo 조건확인 쿨타임, 내가 사용할 수 있는 상태인지 Idle, Move 
+        if (!CanUseSkill(EActiveSkillOrder.Fourth)) return;
+        
         AttackDir = CurrentDir;
         
-        ActiveSkill skill = GI.Inst.ListenerManager.GetSkill(KeyCode.R);
-        if (skill.isChargeSkill)
-            ChargeSetting(KeyCode.R, skill.maxChargingTime);
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Fourth);
+
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
         
-        ControlledPlayer.TransitionState(skill.skillState);
+        TransitionState(skill.skillState);
+    }
+    
+    void Dash(InputAction.CallbackContext context)
+    {
+        if (!CanDash(EActiveSkillOrder.Fifth)) return;
+
+        if (CheckStateCanGroundSlide())
+        {
+            TransitionState(Define.EPlayerState.GroundSliding);
+        }
+        else
+        {
+            TransitionState(Define.EPlayerState.Dash);
+        }
     }
 
-    private void ChargeSetting(KeyCode keycode, float skillMaxChargeTime)
+    void FirstItemHotkey(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.First);
+    }
+    
+    void SecondItemHotkey(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Second);
+    }
+    
+    void ThirdItemHotkey(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Third);
+    }
+    
+    void FourthItemHotkey(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fourth);
+    }
+    
+    void FifthItemHotkey(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fifth);
+    }
+
+    private void InitCharge(KeyCode keycode, float skillMaxChargeTime)
     {
         bIsCharging = true;
         maxChargingTime = skillMaxChargeTime;
@@ -350,6 +422,15 @@ public class PlayerController : BaseController
         bChargeCompleted = false;
         chargeTimer = 0f;
         CurrentChargeAmount = 0f;
+    }
+    
+    private void ChargeSkill(SO_Skill skill, string keyString)
+    {
+        SO_ActiveSkill activeSkill = skill as SO_ActiveSkill;
+        if (activeSkill && activeSkill.isChargeSkill)
+        {
+            InitCharge(KeyToKeyCode(keyString), activeSkill.maxChargingTime);
+        }
     }
     
     protected void TransitionState(Define.EPlayerState playerState)
@@ -367,9 +448,150 @@ public class PlayerController : BaseController
         IsCharging = false;
         ChargeCompleted = false;
     }
-    
-    
 
+    public void ToggleInventory(InputAction.CallbackContext context)
+    {
+        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Inventory);
+    }
+    
+    public void ToggleSkill(InputAction.CallbackContext context)
+    {
+        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Skill);
+    }
+    
+    public static KeyCode KeyToKeyCode(string key, KeyCode unknownKey = KeyCode.None)
+    {
+        switch (key)
+        {
+            case "None":              return KeyCode.None;
+            case "Space":             return KeyCode.Space;
+            case "Enter":             return KeyCode.Return;
+            case "Tab":               return KeyCode.Tab;
+            case "Backquote":         return KeyCode.BackQuote;
+            case "Quote":             return KeyCode.Quote;
+            case "Semicolon":         return KeyCode.Semicolon;
+            case "Comma":             return KeyCode.Comma;
+            case "Period":            return KeyCode.Period;
+            case "Slash":             return KeyCode.Slash;
+            case "Backslash":         return KeyCode.Backslash;
+            case "LeftBracket":       return KeyCode.LeftBracket;
+            case "RightBracket":      return KeyCode.RightBracket;
+            case "Minus":             return KeyCode.Minus;
+            case "Equals":            return KeyCode.Equals;
+            case "A":                 return KeyCode.A;
+            case "B":                 return KeyCode.B;
+            case "C":                 return KeyCode.C;
+            case "D":                 return KeyCode.D;
+            case "E":                 return KeyCode.E;
+            case "F":                 return KeyCode.F;
+            case "G":                 return KeyCode.G;
+            case "H":                 return KeyCode.H;
+            case "I":                 return KeyCode.I;
+            case "J":                 return KeyCode.J;
+            case "K":                 return KeyCode.K;
+            case "L":                 return KeyCode.L;
+            case "M":                 return KeyCode.M;
+            case "N":                 return KeyCode.N;
+            case "O":                 return KeyCode.O;
+            case "P":                 return KeyCode.P;
+            case "Q":                 return KeyCode.Q;
+            case "R":                 return KeyCode.R;
+            case "S":                 return KeyCode.S;
+            case "T":                 return KeyCode.T;
+            case "U":                 return KeyCode.U;
+            case "V":                 return KeyCode.V;
+            case "W":                 return KeyCode.W;
+            case "X":                 return KeyCode.X;
+            case "Y":                 return KeyCode.Y;
+            case "Z":                 return KeyCode.Z;
+            case "Digit1":            return KeyCode.Alpha1;
+            case "Digit2":            return KeyCode.Alpha2;
+            case "Digit3":            return KeyCode.Alpha3;
+            case "Digit4":            return KeyCode.Alpha4;
+            case "Digit5":            return KeyCode.Alpha5;
+            case "Digit6":            return KeyCode.Alpha6;
+            case "Digit7":            return KeyCode.Alpha7;
+            case "Digit8":            return KeyCode.Alpha8;
+            case "Digit9":            return KeyCode.Alpha9;
+            case "Digit0":            return KeyCode.Alpha0;
+            case "LeftShift":         return KeyCode.LeftShift;
+            case "RightShift":        return KeyCode.RightShift;
+            case "LeftAlt":           return KeyCode.LeftAlt;
+            case "RightAlt":          return KeyCode.RightAlt;
+            case "LeftCtrl":          return KeyCode.LeftControl;
+            case "RightCtrl":         return KeyCode.RightControl;
+            case "LeftCommand":       return KeyCode.LeftCommand;
+            case "RightCommand":      return KeyCode.RightCommand;
+            case "ContextMenu":       return unknownKey;
+            case "Escape":            return KeyCode.Escape;
+            case "LeftArrow":         return KeyCode.LeftArrow;
+            case "RightArrow":        return KeyCode.RightArrow;
+            case "UpArrow":           return KeyCode.UpArrow;
+            case "DownArrow":         return KeyCode.DownArrow;
+            case "Backspace":         return KeyCode.Backspace;
+            case "PageDown":          return KeyCode.PageDown;
+            case "PageUp":            return KeyCode.PageUp;
+            case "Home":              return KeyCode.Home;
+            case "End":               return KeyCode.End;
+            case "Insert":            return KeyCode.Insert;
+            case "Delete":            return KeyCode.Delete;
+            case "CapsLock":          return KeyCode.CapsLock;
+            case "NumLock":           return KeyCode.Numlock;
+            case "PrintScreen":       return KeyCode.Print;
+            case "ScrollLock":        return KeyCode.ScrollLock;
+            case "Pause":             return KeyCode.Pause;
+            case "NumpadEnter":       return KeyCode.KeypadEnter;
+            case "NumpadDivide":      return KeyCode.KeypadDivide;
+            case "NumpadMultiply":    return KeyCode.KeypadMultiply;
+            case "NumpadPlus":        return KeyCode.KeypadPlus;
+            case "NumpadMinus":       return KeyCode.KeypadMinus;
+            case "NumpadPeriod":      return KeyCode.KeypadPeriod;
+            case "NumpadEquals":      return KeyCode.KeypadEquals;
+            case "Numpad0":           return KeyCode.Keypad0;
+            case "Numpad1":           return KeyCode.Keypad1;
+            case "Numpad2":           return KeyCode.Keypad2;
+            case "Numpad3":           return KeyCode.Keypad3;
+            case "Numpad4":           return KeyCode.Keypad4;
+            case "Numpad5":           return KeyCode.Keypad5;
+            case "Numpad6":           return KeyCode.Keypad6;
+            case "Numpad7":           return KeyCode.Keypad7;
+            case "Numpad8":           return KeyCode.Keypad8;
+            case "Numpad9":           return KeyCode.Keypad9;
+            case "F1":                return KeyCode.F1;
+            case "F2":                return KeyCode.F2;
+            case "F3":                return KeyCode.F3;
+            case "F4":                return KeyCode.F4;
+            case "F5":                return KeyCode.F5;
+            case "F6":                return KeyCode.F6;
+            case "F7":                return KeyCode.F7;
+            case "F8":                return KeyCode.F8;
+            case "F9":                return KeyCode.F9;
+            case "F10":               return KeyCode.F10;
+            case "F11":               return KeyCode.F11;
+            case "F12":               return KeyCode.F12;
+            case "OEM1":              return unknownKey;
+            case "OEM2":              return unknownKey;
+            case "OEM3":              return unknownKey;
+            case "OEM4":              return unknownKey;
+            case "OEM5":              return unknownKey;
+            case "IMESelected":       return unknownKey;
+            default:                    return unknownKey;
+        }
+    }
+
+    public void Interaction(InputAction.CallbackContext context)
+    {
+        Collider2D col = Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Merchant"));
+        if (col)
+        {
+            Merchant merchant = col.GetComponent<Merchant>();
+            if (merchant)
+            {
+                GI.Inst.UIManager.VisibleMerchantUI(EMerchantType.Buy, merchant);
+            }
+        }
+
+    }
     // private void OnDrawGizmos()
     // {
     //     Gizmos.color = Color.red;

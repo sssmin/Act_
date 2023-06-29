@@ -13,6 +13,7 @@ TagManager:
   - MinimapPlayer
   - Monster
   - PlayerCameraFoucs
+  - DamageSpawnTransform
   layers:
   - Default
   - TransparentFX
@@ -30,11 +31,11 @@ TagManager:
   - PlayerProjectile
   - MonsterProjectile
   - Ground
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Spawner
+  - UIBackground
+  - MainUI
+  - SubUI
+  - Merchant
   - 
   - 
   - 

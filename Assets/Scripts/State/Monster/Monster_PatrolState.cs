@@ -26,7 +26,6 @@ public class Monster_PatrolState : MonsterState
         ThinkTimer -= Time.deltaTime;
         
         //todo 내 앞 뒤에 적이 있는지
-
         Monster.SetVelocity(Monster.MoveSpeed * AIController.CurrentDir.x);
         //Idle로 전환, 뒤돌기
         if (AIController.IsFrontWall || !AIController.IsFrontGround)

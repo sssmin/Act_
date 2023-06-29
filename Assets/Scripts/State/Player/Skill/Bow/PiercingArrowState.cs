@@ -45,6 +45,6 @@ public class PiercingArrowState : PlayerState
         Animator.SetBool(AnimHash.isPiercingArrowShoot, true);
         bIsExcuted = true;
         PlayerController.PiercingArrowEnd();
-        GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.PiercingArrow);
+        GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.PiercingArrow);
     }
 }

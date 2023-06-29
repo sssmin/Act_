@@ -22,7 +22,7 @@ public class PlayerCloneSkillState : PlayerState
         if (bIsAnimTrigger)
         {
             bIsAnimTrigger = false;
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.PlayerClone);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.PlayerClone);
         }
        
     }

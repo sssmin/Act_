@@ -9,7 +9,7 @@ public class ArrowBuffState : PlayerState
     public override void BeginState()
     {
         Player.SetZeroVelocity();
-        GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.ArrowBuff);
+        GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.ArrowBuff);
         Player.TransitionState(Define.EPlayerState.Idle);
     }
     

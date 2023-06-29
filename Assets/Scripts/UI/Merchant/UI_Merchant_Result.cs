@@ -1,0 +1,27 @@
+using TMPro;
+using UnityEngine;
+
+public class UI_Merchant_Result : MonoBehaviour
+{
+    [SerializeField] private TextMeshProUGUI resultText;
+
+    public void InitOnce()
+    {
+        Clear();
+
+        GI.Inst.UIManager.setCraftResult -= SetCraftResult;
+        GI.Inst.UIManager.setCraftResult += SetCraftResult;
+        GI.Inst.UIManager.clearCraftResult -= Clear;
+        GI.Inst.UIManager.clearCraftResult += Clear;
+    }
+
+    public void SetCraftResult(string itemName)
+    {
+        resultText.text = $"{itemName} 제작 성공";
+    }
+
+    public void Clear()
+    {
+        resultText.text = "";
+    }
+}

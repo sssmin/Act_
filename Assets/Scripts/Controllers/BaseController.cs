@@ -25,12 +25,15 @@ public class BaseController : MonoBehaviour
         GroundDetectDist = 0.3f;
         WallDetectDist = 0.3f;
     }
-    
-    
-    
-    public void Flip(bool cond)
+
+    public enum EDir
     {
-        if (cond)
+        Left,
+        Right
+    }
+    public void Flip(EDir cond)
+    {
+        if (cond == EDir.Left)
         {
             transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         }

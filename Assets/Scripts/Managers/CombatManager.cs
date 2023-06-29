@@ -21,17 +21,20 @@ public class CombatManager : MonoBehaviour
         NormalAttackCoefficient = 1f;
     }
 
-    void Update()
+    private void Start()
     {
-        
+        GI.Inst.ListenerManager.initCombo -= InitCombo;
+        GI.Inst.ListenerManager.initCombo += InitCombo;
     }
 
     public void BowPrimaryAttack()
     {
-        GameObject arrowObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.Arrow, PlayerController.ControlledPlayer.arrowSpawnPoint.position, quaternion.identity);
-        Arrow arrow = arrowObj.GetComponent<Arrow>();
+        GameObject go = GI.Inst.ResourceManager.Instantiate("Arrow", PlayerController.ControlledPlayer.arrowSpawnPoint.position, quaternion.identity);
+        Arrow arrow = go.GetComponent<Arrow>();
+        
         //todo 대미지 받아서 Init으로 넘겨줘야함 
-        //arrow.Init(PlayerController.AttackDir, inOwner: PlayerController); //내가 바라보고 있는 방향, Owner 설정, 대미지 넘겨주기 등등
+       
+        arrow.Init(PlayerController.AttackDir, inOwner: PlayerController, NormalAttackCoefficient); 
     }
     
     

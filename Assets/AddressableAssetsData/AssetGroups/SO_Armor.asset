@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_Armor
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_Armor
+  m_Data:
+    m_SerializedData: []
+  m_GUID: bc459e36d8a76e74c913eac80550327e
+  m_SerializeEntries:
+  - m_GUID: c2994c0e0a825834f989bd9c74b4dfbc
+    m_Address: LeatherArmor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: ab434052ef02bdd4c931eee86476d823
+    m_Address: AvengerArmor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 82c118301daa3534cb1902a6fc8b9b8e
+    m_Address: AvengerBoots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 5b09fbb706eee984788b6382457bdcba
+    m_Address: AvengerGauntlet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 6fff9f4a424c904478061805d47cdcd4
+    m_Address: AvengerHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 75313cb8bf6a887499d790a763f354c6
+    m_Address: IronArmor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: df0b0e2751bc3b6418f4385c01435054
+    m_Address: IronBoots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 11c6e1c1ce695214dae34365f1855bc2
+    m_Address: IronGauntlet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b9e71cb6cd61e51409f5c6390b8f1ca8
+    m_Address: IronHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: ba32c2b69b2b6ad40b7ea72a0cc11ccd
+    m_Address: LeatherBoots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: e2a4f22a005dc3d4fac92d81db3db741
+    m_Address: LeatherGauntlet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 10dd09b6197ca5c41b9337072c3b2cf0
+    m_Address: LeatherHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 978e734f55444914d847e062e619cb09
+    m_Address: ShadowArmor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: eef74f1e1a622394e9fb5ef78ae2301a
+    m_Address: ShadowBoots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 84b646280ebd59e418d49f7b6c9ea5f3
+    m_Address: ShadowGauntlet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 6e76b5ad039a66a4abc619cc33291752
+    m_Address: ShadowHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 821c45cca84d56f46a1c75018744c309
+    m_Address: SupremeArmor
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 0ba7d02c4beb19e48a35133021f62268
+    m_Address: SupremeBoots
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 6880e0e4c2f5cf149be30f4a6fc475a8
+    m_Address: SupremeGauntlet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 016bdddfc8197734dbb36d0cea9744e6
+    m_Address: SupremeHelmet
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d2d19501d1bcd5140993014ad684eace, type: 2}
+    - {fileID: 11400000, guid: 6c5cabf1bcbb1574ea5950020957cf64, type: 2}

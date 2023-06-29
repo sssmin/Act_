@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_Weapon
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_Weapon
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 0b183641547aeaf429dc84a640e2bb9a
+  m_SerializeEntries:
+  - m_GUID: 55d0d81d1350af341acb27b6f3ebb784
+    m_Address: SteelDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b63db276ea77e4843b4f79cf34e73eb5
+    m_Address: WoodAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: cc55e578df11a724898582194b047492
+    m_Address: WoodBow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 76a6964faa1356f48a764c9283db9f64
+    m_Address: WoodDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: ef1ed4805c83db6419979e0b93285350
+    m_Address: GuardiansAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 49ab5f9c31a10194f8bad66ab3dbd0d4
+    m_Address: GuardiansBow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 9e43363abeaecf84e971708d8cb22b7f
+    m_Address: GuardiansDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 8aab8ba8d278a554fa3fc6e1ff1130b5
+    m_Address: HerosAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: d0b6f7a84e34cee4aa1c0f29a8cfa886
+    m_Address: HerosBow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: f2025f2315fee2044a185f0e0345b995
+    m_Address: HerosDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b4fd842d8a20d55419fb3bf1f3d366b5
+    m_Address: InfinityAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 5565695c0e72442448c066867d1fd892
+    m_Address: InfinityBow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 68fec0433b9d5b44a9b3fc4ed285d071
+    m_Address: InfinityDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: da2532f5fc5a8ae43b17d122828d798d
+    m_Address: SteelAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b960f0d0e53cc4e439b0f4fb9b9d291f
+    m_Address: SteelBow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7d1b4785417ed1a4db4ee32e4ef93ec0, type: 2}
+    - {fileID: 11400000, guid: a2f4f90dac491e94d9ab3a2946b468d9, type: 2}

@@ -1,34 +1,29 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GI : MonoBehaviour
 {
-    [SerializeField] GameObject playerStartPoint;
-    [SerializeField] CinemachineTarget cinemachineTarget;
     public static GI Inst { get; private set; }
-
-    private PoolManager poolManager;
-    private ListenerManager listenerManager;
     
-    // public PlayerManager PlayerManager { get; private set; }
-    public ResourceManager ResourceManager { get; private set; }
-    public InventoryManager InventoryManager { get; private set; }
-
-    public PoolManager PoolManager 
-    { 
-        get { return Inst.poolManager; }
-        private set => poolManager = value;
-    }
-
-    public ListenerManager ListenerManager
-    {
-        get { return Inst.listenerManager; }
-        private set => listenerManager = value;
-    }
-
+    [SerializeField] private List<Define.ELabel> labels = new List<Define.ELabel>();
+    [SerializeField] public Camera uiCamrea;
     public Player Player { get; private set; }
     public SkillManager PlayerSkillManager { get; private set; }
-     
+    [SerializeField] GameObject playerStartPoint;
+    [SerializeField] public CinemachineTarget cinemachineTarget;
+    private int initCompleteNum;
+    private int currentInitCount;
+    
+    
+    private PoolManager poolManager;
+    private ListenerManager listenerManager;
+    public PoolManager PoolManager { get => Inst.poolManager; private set => poolManager = value; }
+    public ListenerManager ListenerManager { get => Inst.listenerManager; private set => listenerManager = value; }
+
+    public ResourceManager ResourceManager { get; private set; }
+    public UIManager UIManager { get; private set; }
+    public CooltimeManager CooltimeManager { get; private set; }
 
     void Awake()
     {
@@ -41,11 +36,9 @@ public class GI : MonoBehaviour
         Inst = this;
         DontDestroyOnLoad(this);
         Inst.PoolManager = new PoolManager();
+        Inst.PoolManager.Init();
         Inst.ListenerManager = new ListenerManager();
     }
-
-    private int initCompleteNum;
-    private int currentInitCount;
     
 
     void Start()
@@ -55,101 +48,58 @@ public class GI : MonoBehaviour
     
     void Init()
     {
-
         Inst.ResourceManager = Generate<ResourceManager>("ResourceManager");
-        Inst.ResourceManager.transform.parent = transform;
-       
+        Inst.ResourceManager.transform.SetParent(transform);
+
+        Inst.CooltimeManager = Generate<CooltimeManager>("CooltimeManager");
+        Inst.CooltimeManager.transform.SetParent(transform);
         
-        PrefabLoadAsync();
-        
-        //얘는 일단 보류. 아래 ScriptableObject에 icon을 같이 저장을 했기 때문에.
-        // Inst.ResourceManager.LoadAllAsync<Sprite>("Sprites" , (successful, key, count, totalCount) =>
-        // {
-        //     Debug.Log($"{successful} - {key} : {count}/{totalCount}");
-        //
-        //     if (count == totalCount)
-        //     {
-        //         
-        //     }
-        // });
-        
-        StatLoadAsync();
-        SkillDataLoadAsync();
-        // Inst.PlayerManager = Generate<PlayerManager>("PlayerManager");
-        // Inst.PlayerManager.transform.parent = transform;
+        DownloadAdvance(Synchronization);
     }
 
     void Synchronization()
     {
-        if (++currentInitCount == initCompleteNum)
-        {
-            //todo 여기는 위에서 비동기로 Load한게 모두 끝난 부분
-            //todo 스탯 초기화
-            
-            cinemachineTarget.Init();
-            PlayerSkillManager.InitSkills();
-            
-        }
-
+        Debug.Log("Synchronization");
+        //1. 플레이어 생성. 
+        GameObject go = Inst.ResourceManager.Instantiate("Player", playerStartPoint.transform.position,
+                Quaternion.identity);
+        Player = go.GetComponent<Player>();
+        Player.GetComponent<InventoryManager>()?.BindAction();
+        //2. 시작 베이스 스탯 초기화 todo OR 저장했던 스탯 데이터로 초기화
+        Player.SetBaseStat();
+        //3. UI 초기화(생성만)
+        Inst.UIManager = Generate<UIManager>("UIManager");
+        Inst.UIManager.transform.parent = transform;
+        Inst.UIManager.Init();
+        
+        //4. 플레이어 시작 아이템 초기화, 스탯 수정, UI 갱신 todo OR 저장했던 아이템 데이터로 초기화
+        InventoryManager inventory = go.GetComponent<InventoryManager>();
+        inventory.SetStartItem();
+        
+        PlayerSkillManager = go.GetComponent<SkillManager>();
+        //todo 아마도 스킬 레벨 초기화
+        PlayerSkillManager.InitSkills();
+        
+        
+        
+        cinemachineTarget.Init();
+        
        
+        
+        
+        // 마지막에 UI 세팅
+        Inst.UIManager.RefreshInventoryUI();
+        Inst.UIManager.RefreshGoldInvenCapacityUI();
     }
     
-    private void PrefabLoadAsync()
+
+    private void DownloadAdvance(Action callback)
     {
-        initCompleteNum++;
-        Inst.ResourceManager.LoadAllAsync<GameObject>("Prefab", (successful, key, count, totalCount) =>
-        {
-            //Debug.Log($"{successful} - {key} : {count}/{totalCount}");
-            //모두 로드 완료
-            if (count == totalCount)
-            {
-                //Pooling 할 오브젝트 초기화
-                Inst.PoolManager.Init();
-
-                Inst.InventoryManager = Generate<InventoryManager>("InventoryManager");
-                Inst.InventoryManager.transform.parent = transform;
-
-                GameObject go = Inst.ResourceManager.Instantiate(EPrefabId.Player, playerStartPoint.transform.position,
-                    Quaternion.identity);
-                Player = go.GetComponent<Player>();
-                PlayerSkillManager = go.GetComponent<SkillManager>();
-                
-                Synchronization();
-            }
-        });
-    }
-
-   
-    private void StatLoadAsync()
-    {
-        initCompleteNum++;
-        Inst.ResourceManager.LoadAllAsync<ScriptableObject>("Stat", (successful, key, count, totalCount) =>
-        {
-            //Debug.Log($"{successful} - {key} : {count}/{totalCount}");
-            if (count == totalCount)
-            {
-                //Inst.ListenerManager.OnDataLoadCompleted();
-                Synchronization();
-            }
-        });
+        Debug.Log("DownloadAdvance");
+        Inst.ResourceManager.DownloadAdvance(labels, callback);
     }
     
-    private void SkillDataLoadAsync()
-    {
-        initCompleteNum++;
-        Inst.ResourceManager.LoadAllAsync<ScriptableObject>("Skill", (successful, key, count, totalCount) =>
-        {
-            //Debug.Log($"{successful} - {key} : {count}/{totalCount}");
-            if (count == totalCount)
-            {
-               
-                //Inst.ListenerManager.OnDataLoadCompleted();;
-                Synchronization();
-            }
-        });
-    }
-
-    T Generate<T>(string objectName) where T : UnityEngine.Component
+    T Generate<T>(string objectName) where T : Component
     {
         GameObject go = GameObject.Find(objectName);
         if (go == null)
@@ -161,5 +111,6 @@ public class GI : MonoBehaviour
         
         return go.GetComponent<T>();
     }
+    
     
 }

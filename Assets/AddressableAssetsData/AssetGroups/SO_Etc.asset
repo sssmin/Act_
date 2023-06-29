@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_Etc
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_Etc
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 322e4c1f845cb984c9a8d386afbcaf8e
+  m_SerializeEntries:
+  - m_GUID: 04fcd51effe4ac643a870e2e5daa413e
+    m_Address: NightBorneBoneMeal
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 0e413bb417a7f084e8f347acca7704a5
+    m_Address: AccMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: dbbf0ad4c99142945800ed3739c1d65e
+    m_Address: ActiveUltMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: e9c933d783d067e4ba86da51bd34dc15
+    m_Address: PassiveMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: ff8bd0a3fff626248963559cea2ee2d3
+    m_Address: ArmorMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b8bab55244ce21247ba2897f691ba075
+    m_Address: SharedMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 699f27bb98b58bf41a0009e0a146cb5c
+    m_Address: ActiveNormalMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 76effcee2e1015646b7a7bb546c615fa
+    m_Address: WeaponMat
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 4e4d9a7fd944f9a48bad8cb8389ed7aa, type: 2}
+    - {fileID: 11400000, guid: 37a39e415e09fb34ca2d026dae1b681d, type: 2}

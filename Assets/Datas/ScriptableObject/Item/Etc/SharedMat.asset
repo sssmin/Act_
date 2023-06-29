@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c769dd393cd2d84d948c29673d00f8b, type: 3}
+  m_Name: SharedMat
+  m_EditorClassIdentifier: 
+  itemId: SharedMat
+  ItemCategory: 4
+  itemName: "\uC7A5\uBE44 \uC81C\uC791 \uC7AC\uB8CC"
+  itemDesc: "\uC7A5\uBE44\uB97C \uC81C\uC791\uD558\uB294 \uB370 \uD544\uC694\uD55C
+    \uACF5\uC6A9 \uC7AC\uB8CC"
+  itemIcon: {fileID: 1264841795, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  bIsCanStack: 0
+  amount: 1
+  maxStackSize: 50
+  etcCategory: 2

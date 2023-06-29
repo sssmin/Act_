@@ -23,7 +23,7 @@ public class AxeUltState : PlayerState
         {
             Animator.SetBool(AnimHash.isAxeUltCasting, true);
             bIsAnimTrigger = false;
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.AxeUlt);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.AxeUlt);
         }
        
     }

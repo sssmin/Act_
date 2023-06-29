@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_GroundSlideState : PlayerState
@@ -15,6 +13,7 @@ public class Player_GroundSlideState : PlayerState
         Animator.SetBool(AnimHash.groundSlide, true);
         Player.SetVelocity(PlayerController.MoveDir.x * Player.GroundSlideSpeed);
         groundSlideTimer = groundSlideDuration;
+        GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.Dash);
     }
     
     public override void Update()
@@ -38,7 +37,7 @@ public class Player_GroundSlideState : PlayerState
     public override void EndState()
     {
         Animator.SetBool(AnimHash.groundSlide, false);
-        PlayerController.Flip(false);
+        PlayerController.Flip(BaseController.EDir.Right);
     }
     
     

@@ -3,87 +3,208 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System;
 using System.Collections;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
 public class ResourceManager : MonoBehaviour
 {
-    //prefabs
-    private Dictionary<EPrefabId, Object> prefabs = new Dictionary<EPrefabId, Object>();
-    public Dictionary<EPrefabId, Object> Prefabs => prefabs;
-    
-    //skill scriptable objects
-    private Dictionary<Define.ESkillId, Object> skills = new Dictionary<Define.ESkillId, Object>();
-
-    //base stats scriptable objects
-    private Dictionary<Define.EBaseStatOwnerId, Object> baseStats = new Dictionary<Define.EBaseStatOwnerId, Object>();
-    
-    //data only
-    //private Dictionary<string, Object> datas = new Dictionary<string, Object>();
-    
-    //sprites only.. but not use yet.
-    //private Dictionary<string, Sprite> iconSprites = new Dictionary<string, Sprite>();
-
-    
-    
-
-    public T Load<T>(EPrefabId id) where T : Object
+    public enum SaveType
     {
-        if (prefabs.TryGetValue(id, out Object resource))
-            return resource as T;
+        ScriptableObject,
+        Items,
+        Prefab,
+        PlayerBaseStat
+    }
+   
+    private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
+    private Dictionary<string, Item> ItemData { get; } = new Dictionary<string, Item>();
+    private Dictionary<string, GameObject> Prefabs { get; } = new Dictionary<string, GameObject>();
+    private PlayerBaseStats PlayerBaseStats { get; set; }
+   
+    
+    
+    public void DownloadAdvance(List<Define.ELabel> labels, Action callback)
+    {
+        int completedCount = 0;
+        int totalCount = labels.Count;
         
-        return null;
+        string label;
+        
+        for (int i = 0; i < totalCount; i++)
+        {
+            label = Enum.GetName(typeof(Define.ELabel), labels[i]);
+            Addressables.DownloadDependenciesAsync(label).Completed += (handle) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    //Debug.Log("download completed");
+                    completedCount++;
+                }
+                else
+                {
+                    Debug.Log("download failed.");
+                }
+
+                if (completedCount == totalCount)
+                {
+                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.ScriptableObject);
+                    SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat, SaveType.PlayerBaseStat);
+                    SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
+                    
+                    SaveData<GameObject>(Define.ELabel.Prefab, SaveType.Prefab, callback);
+                }
+                Addressables.Release(handle);
+            };
+        }
+    }
+
+    public void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
+    {
+        string label = Enum.GetName(typeof(Define.ELabel), inLabel);
+        var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
+        opHandle.Completed += (op) =>
+        {
+            int maxNum = op.Result.Count;
+            int currentNum = 0;
+            foreach (var result in op.Result)
+            {
+                currentNum++;
+                LoadAsync<T>(result.PrimaryKey, saveType, maxNum, currentNum, callback);
+            }
+            Addressables.Release(op);
+        };
+    }
+
+    private void LoadAsync<T>(string key, SaveType saveType, int maxNum, int currentNum, Action callback = null) where T : Object
+    {
+        switch (saveType)
+        {
+            case SaveType.ScriptableObject:
+                {
+                    if (SkillData.ContainsKey(key))
+                    {
+                        Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                        return;
+                    }
+                    var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                    asyncOperation.Completed += (op) =>
+                    {
+                        SO_Skill original = op.Result as SO_Skill;
+                        SO_Skill skillCopy = ScriptableObject.Instantiate(original);
+                        SkillData.Add(key, skillCopy);
+                        
+                        Addressables.Release(op);
+                    };
+                }
+                break;
+            case SaveType.Items:
+                {
+                    if (ItemData.ContainsKey(key))
+                    {
+                        Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                        return;
+                    }
+                    var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                    asyncOperation.Completed += (op) =>
+                    {
+                        Item original = op.Result as Item;
+                        Item itemCopy = ScriptableObject.Instantiate(original);
+                        ItemData.Add(key, itemCopy);
+                        
+                        Addressables.Release(op);
+                    };
+                }
+                break;
+            case SaveType.Prefab:
+                {
+                    if (Prefabs.ContainsKey(key))
+                    {Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                        return;
+                    }
+                    var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                    asyncOperation.Completed += (op) =>
+                    {
+                        Poolable poolable = (op.Result as GameObject).GetComponent<Poolable>();
+                        if (poolable)
+                            GI.Inst.PoolManager.CreatePoolAdvanced(poolable ,key);
+                        else
+                            Prefabs.Add(key, op.Result as GameObject);
+                        Addressables.Release(op);
+                        if (maxNum == currentNum)
+                            callback?.Invoke();
+                    };
+                }
+                break;
+            case SaveType.PlayerBaseStat:
+            {
+                if (ItemData.ContainsKey(key))
+                {
+                    Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                    return;
+                }
+                var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                asyncOperation.Completed += (op) =>
+                {
+                    PlayerBaseStats original = op.Result as PlayerBaseStats;
+                    PlayerBaseStats baseStatsCopy = ScriptableObject.Instantiate(original);
+                    PlayerBaseStats = baseStatsCopy;
+                        
+                    Addressables.Release(op);
+                };
+            }
+                break;
+        }
     }
     
-    public GameObject Instantiate(EPrefabId prefabName, Transform parent = null)
+    public GameObject Instantiate(string prefabName, Transform parent = null)
     {
-        GameObject original = Load<GameObject>(prefabName);
-        if (original == null)
+        GameObject go = null;
+        
+        if (GI.Inst.PoolManager.IsPoolable(prefabName))
         {
-            Debug.Log($"Failed to load prefab : {prefabName}");
-            return null;
+            go = GI.Inst.PoolManager.Pop(prefabName, parent).gameObject;
+            go.name = prefabName;
         }
-
-        if (original.GetComponent<Poolable>() != null)
+        else
         {
-            return GI.Inst.PoolManager.Pop(original, parent).gameObject;
+            if (Prefabs.ContainsKey(prefabName))
+            {
+                go = Object.Instantiate(Prefabs[prefabName], parent);
+                go.name = prefabName;
+            }
+            else
+            {
+                Debug.Log($"Instantiate 실패. {prefabName}프리팹이 저장되어있지 않음");
+            }
         }
-
-        GameObject go = Object.Instantiate(original, parent);
-        go.name = original.name;
         return go;
     }
     
-    public GameObject Instantiate(EPrefabId prefabName, Vector3 parentPos, Quaternion parentRotation, Transform parent = null)
+    public GameObject Instantiate(string prefabName, Vector3 parentPos, Quaternion parentRotation ,Transform parent = null)
     {
-        GameObject original = Load<GameObject>(prefabName);
-        if (original == null)
-        {
-            Debug.Log($"Failed to load prefab : {prefabName}");
-            return null;
-        }
-
-        if (original.GetComponent<Poolable>() != null)
-        {
-            GameObject poolableGo = GI.Inst.PoolManager.Pop(original, parent).gameObject;
-            poolableGo.transform.position = parentPos;
-            poolableGo.transform.rotation = parentRotation;
-            return poolableGo;
-        }
+        GameObject go = null;
         
-        GameObject go = Object.Instantiate(original, parentPos, parentRotation, parent);
-        go.name = original.name;
-        
+        if (GI.Inst.PoolManager.IsPoolable(prefabName))
+        {
+            go = GI.Inst.PoolManager.Pop(prefabName, parent).gameObject;
+            go.transform.position = parentPos;
+            go.transform.rotation = parentRotation;
+            go.name = prefabName;
+        }
+        else
+        {
+            if (Prefabs.ContainsKey(prefabName))
+            {
+                go = Object.Instantiate(Prefabs[prefabName], parentPos, parentRotation, parent);
+                go.name = prefabName;
+            }
+            else
+            {
+                Debug.Log($"Instantiate 실패. {prefabName}프리팹이 저장되어있지 않음");
+            }
+        }
         return go;
     }
-    
-    // public ScriptableObject GetData(string dataName)
-    // {
-    //     if (datas.TryGetValue(dataName, out Object newObj))
-    //     {
-    //         return newObj as ScriptableObject;
-    //     }
-    //     return null;
-    // }
 
     public void Destroy(GameObject go, float time = 0f)
     {
@@ -105,130 +226,95 @@ public class ResourceManager : MonoBehaviour
         yield return new WaitForSeconds(time);
         GI.Inst.PoolManager.Restore(poolable);
     }
-
-    #region Addressable
-    //Addressable 저장할 때 Data의 경우 AddressableName에 Data_???? 여기 물음표가 monsterId or itemId
-    //dictionary에 저장할 때 key는 Data_????채로 저장됨. 불러올 때는 Id로만 불러온다.
-    //함수 내에서 Data_를 조립해서 가져온다.
     
-
-    private void LoadAsync<T>(string key, Action<string> callback = null) where T : Object
+    public SO_ActiveSkill GetActiveSkillData(Define.ESkillId skillId)
     {
-        if (typeof(T) == typeof(GameObject))
+        string key = Enum.GetName(typeof(Define.ESkillId), skillId);
+        if (SkillData.ContainsKey(key))
         {
-            var asyncOperation = Addressables.LoadAssetAsync<T>(key);
-            asyncOperation.Completed += (op) =>
-            {
-                PrefabId prefabId = (op.Result as GameObject).GetComponent<PrefabId>();
-                if (prefabs.TryGetValue(prefabId.id, out Object resource))
-                {
-                    callback?.Invoke($"Failed to load. Has same key already. key : {key} ");
-                    return;
-                }
-                prefabs.Add(prefabId.id, op.Result);
-                
-                callback?.Invoke("Load successfully.");
-            };
-        }
-        else if (typeof(T) == typeof(ScriptableObject))
-        {
-            var asyncOperation = Addressables.LoadAssetAsync<T>(key);
-            asyncOperation.Completed += (op) =>
-            {
-                ScriptableObjectType type = op.Result as ScriptableObjectType;
-                
-                switch (type.scriptableObjectType)
-                {
-                    case Define.EScriptableObjectType.Skill:
-                    {
-                        ActiveSkill skill = op.Result as ActiveSkill;
-                        if (skills.TryGetValue(skill.skillId, out Object data))
-                        {
-                            callback?.Invoke($"Failed to load. Has same key already. key : {key} ");
-                            return;
-                        }
-                        skills.Add(skill.skillId, op.Result);
-                    }
-                        break;
-                    
-                    case Define.EScriptableObjectType.Stat:
-                    {
-                        BaseStats stats = op.Result as BaseStats;
-                        if (baseStats.TryGetValue(stats.ownerIdId, out Object data))
-                        {
-                            callback?.Invoke($"Failed to load. Has same key already. key : {key} ");
-                            return;
-                        }
-                        baseStats.Add(stats.ownerIdId, op.Result);
-                    }
-                        break;
-                }
-                callback?.Invoke($"{key} : Load successfully.");
-            };
-            
-            
-            
-            
-        }
-        // else if (typeof(T) == typeof(Sprite))
-        // {
-        //     if (iconSprites.TryGetValue(key, out Sprite value))
-        //     {
-        //         callback?.Invoke($"Failed to load. Has same key already. key : {key} ");
-        //         return;
-        //     }
-        //     
-        //     var asyncOperation = Addressables.LoadAssetAsync<IList<Sprite>>(key);
-        //     asyncOperation.Completed += (aop) =>
-        //     {
-        //         foreach (Sprite spriteValue in aop.Result)
-        //         {
-        //             if (spriteValue.name.Substring(0, 4) == "Use_")
-        //                 iconSprites.Add(spriteValue.name, spriteValue);
-        //         }
-        //         callback?.Invoke("Load successfully.");
-        //     };
-        // }
-    }
-    
-    public void LoadAllAsync<T>(string label, Action<string, string, int, int> callback) where T : Object
-    {
-        //해당하는 라벨이 붙어있는 리소스를 모두 불러온다.
-        var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
-        //모두 불러오는 것이 완료가 되면 호출할 함수를 콜백함수로 정의
-        opHandle.Completed += (op) =>
-        {
-            int loadCount = 0;
-            int totalCount = op.Result.Count;
-            
-            //불러온 리소스 하나하나 돌면서 콜백 호출. multiple 스프라이트는 통채로 하나만 불러온 후 LoadAsync 함수에서 걸러냄 
-            foreach (var result in op.Result)
-            {
-                //LoadAsync 함수 완료 후 실행될 콜백함수 정의
-                //PrimaryKey => Addressable에 저장한 Addressable Name
-                LoadAsync<T>(result.PrimaryKey, (successful) =>
-                {
-                    loadCount++;
-                    callback?.Invoke(successful, result.PrimaryKey, loadCount, totalCount);
-                });
-            }
-        };
-    }
-
-    public ScriptableObject GetSkillDataCopy(Define.ESkillId skillId)
-    {
-        if (skills.TryGetValue(skillId, out Object newObj))
-        {
-            ScriptableObject skillData = Instantiate(newObj) as ScriptableObject;
-            return skillData;
+            return (SO_ActiveSkill)SkillData[key];
         }
         return null;
     }
     
+    public SO_PassiveSkill GetPassiveSkillData(Define.ESkillId skillId)
+    {
+        string key = Enum.GetName(typeof(Define.ESkillId), skillId);
+        if (SkillData.ContainsKey(key))
+        {
+            return (SO_PassiveSkill)SkillData[key];
+        }
+        return null;
+    }
+    
+    public PlayerBaseStats GetPlayerBaseStats()
+    {
+        return PlayerBaseStats;
+    }
+    
+    public Item GetItemData(string itemId)
+    {
+        if (ItemData.ContainsKey(itemId))
+        {
+            return ItemData[itemId];
+        }
+        return null;
+    }
+    
+    public void GetMonsterInfoDataCopy(string monsterPrefabName, Define.ELabel label ,Action<MonsterInfo> callback)
+    {
+        string key = Enum.GetName(typeof(Define.ELabel), label);
+        var opHandle = Addressables.LoadResourceLocationsAsync(key, typeof(ScriptableObject));
+
+        opHandle.Completed += (op) =>
+        {
+            if (op.Status == AsyncOperationStatus.Succeeded)
+            {
+                foreach (var result in op.Result)
+                {
+                    var asyncOperation = Addressables.LoadAssetAsync<ScriptableObject>(result.PrimaryKey);
+                    asyncOperation.Completed += (operationHandle) =>
+                    {
+                        MonsterInfo monsterInfoCopy = ScriptableObject.Instantiate(operationHandle.Result as MonsterInfo);
+                   
+                        if (monsterInfoCopy.monsterPrefabName == monsterPrefabName)
+                        {
+                            callback?.Invoke(monsterInfoCopy);
+                            Addressables.Release(operationHandle);
+                        }
+                    };
+                }
+            }
+            Addressables.Release(op);
+        };
+    }
+    
+    //콜백에 상점 여는거. 열 때 ItemCraft 넘겨주기.
+    public void CreateItemCraft(Define.ELabel label ,Action<ItemCraft> callback)
+    {
+        string key = Enum.GetName(typeof(Define.ELabel), label);
+        var opHandle = Addressables.LoadResourceLocationsAsync(key, typeof(ScriptableObject));
+
+        opHandle.Completed += (op) =>
+        {
+            if (op.Status == AsyncOperationStatus.Succeeded)
+            {
+                foreach (var result in op.Result)
+                {
+                    var asyncOperation = Addressables.LoadAssetAsync<ScriptableObject>(result.PrimaryKey);
+                    asyncOperation.Completed += (operationHandle) =>
+                    {
+                        ItemCraft itemCraft = ScriptableObject.Instantiate(operationHandle.Result as ItemCraft);
+
+                        callback?.Invoke(itemCraft);
+                        Addressables.Release(operationHandle);
+                    };
+                }
+            }
+            Addressables.Release(op);
+        };
+    }
     
 
-    #endregion
-
-    
     
 }

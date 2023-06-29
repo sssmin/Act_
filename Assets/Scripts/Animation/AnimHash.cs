@@ -7,6 +7,7 @@
          */
         public static readonly int isIdle = Animator.StringToHash("isIdle");
         public static readonly int isMove = Animator.StringToHash("isMove");
+        public static readonly int isDead = Animator.StringToHash("isDead");
         public static readonly int xVelocity = Animator.StringToHash("xVelocity");
         public static readonly int yVelocity = Animator.StringToHash("yVelocity");
         
@@ -52,6 +53,12 @@
         public static readonly int activeFireStrike = Animator.StringToHash("activeFireStrike");
         public static readonly int activeEarthquake = Animator.StringToHash("activeEarthquake");
         public static readonly int activeDistortionArrow = Animator.StringToHash("activeDistortionArrow");
+        
+        /*
+         * ui
+         */
+        public static readonly int blink = Animator.StringToHash("blink");
+        public static readonly int temporal = Animator.StringToHash("temporal");
         
         
     }

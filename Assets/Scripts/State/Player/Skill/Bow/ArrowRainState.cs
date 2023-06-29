@@ -20,7 +20,7 @@ public class ArrowRainState : PlayerState
         if (bIsAnimTrigger)
         {
             bIsAnimTrigger = false;
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.ArrowRain);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.ArrowRain);
         }
     }
 

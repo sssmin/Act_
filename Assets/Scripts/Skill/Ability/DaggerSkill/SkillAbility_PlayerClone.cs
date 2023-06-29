@@ -63,7 +63,7 @@ public class SkillAbility_PlayerClone : MonoBehaviour
     
     public void ExecuteCloneAttackNotify()
     {
-        EnemyStatManager.OnDamage(DamageInfo, OwnerStatManager.gameObject);
+        EnemyStatManager.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
     }
 
     public void DestroyCloneNotify()

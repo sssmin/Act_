@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90cdec9af21353a49bb1cc182d0a45c4, type: 3}
+  m_Name: Skill_ArrowRain
+  m_EditorClassIdentifier: 
+  skillId: 8
+  skillName: "\uC560\uB85C\uC6B0 \uB808\uC778"
+  skillCooltime: 12
+  skillLevel: 0
+  icon: {fileID: 21300000, guid: b0fc89766f139a7499d4f0ef0b4e4a36, type: 3}
+  bCanLevelUp: 0
+  itemIdForLevelUp: 0
+  activeSkillOrder: 0
+  coef:
+  - 153
+  - 162
+  - 173
+  - 195
+  - 204
+  - 215
+  - 237
+  - 246
+  - 257
+  - 270
+  skillState: 20
+  isChargeSkill: 0
+  maxChargingTime: 2.5

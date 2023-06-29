@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillAbility_PiercingArrow : MonoBehaviour
 {
-    private PlayerController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private DamageInfo DamageInfo { get; set; }
@@ -24,9 +24,9 @@ public class SkillAbility_PiercingArrow : MonoBehaviour
     }
     
 
-    public void Init(Vector2 dir, PlayerController inOwner, DamageInfo damageInfo)
+    public void Init(Vector2 dir, StatManager inOwner, DamageInfo damageInfo)
     {
-        OwnerController = inOwner;
+        OwnerStatManager = inOwner;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo = damageInfo;
         BoxCollider.enabled = true;
@@ -39,7 +39,7 @@ public class SkillAbility_PiercingArrow : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            other.GetComponent<StatManager>()?.OnDamage(DamageInfo, OwnerController.gameObject);
+            other.GetComponent<StatManager>()?.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
         }
         else
         {

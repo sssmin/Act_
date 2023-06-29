@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cecce74aeea47734e9ccfa9f72181810, type: 3}
+  m_Name: IronNecklace
+  m_EditorClassIdentifier: 
+  itemId: IronNecklace
+  ItemCategory: 2
+  itemName: "\uC544\uC774\uC5B8 \uB124\uD06C\uB9AC\uC2A4"
+  itemDesc: 
+  itemIcon: {fileID: 337457255, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
+  bIsCanStack: 0
+  amount: 0
+  maxStackSize: 0
+  bIsEquipped: 0
+  rarity: 1
+  itemStats:
+  - statType: 1
+    statValue: 60
+  - statType: 2
+    statValue: 20
+  accType: 1

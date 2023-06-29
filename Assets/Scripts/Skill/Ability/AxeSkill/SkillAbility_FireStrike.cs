@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SkillAbility_FireStrike : MonoBehaviour
 {
-    private BaseController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private RuntimeAnimatorController AnimatorController { get; set; }
@@ -20,9 +20,9 @@ public class SkillAbility_FireStrike : MonoBehaviour
         AnimatorController = Animator.runtimeAnimatorController;
     }
 
-    public void Init(Vector2 dir, BaseController inOwner, DamageInfo damageInfo)
+    public void Init(Vector2 dir, StatManager inOwner, DamageInfo damageInfo)
     {
-        OwnerController = inOwner;
+        OwnerStatManager = inOwner;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo = damageInfo;
         CoDestroy = StartCoroutine(CoDestroyMyself());
@@ -33,7 +33,7 @@ public class SkillAbility_FireStrike : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            other.GetComponent<StatManager>()?.OnDamage(DamageInfo, OwnerController.gameObject);
+            other.GetComponent<StatManager>()?.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
             DamageInfo temp = DamageInfo;
             temp.damage = DamageInfo.damage - Mathf.RoundToInt(DamageInfo.damage * 0.1f);
             temp.bIsCritical = DamageInfo.bIsCritical;

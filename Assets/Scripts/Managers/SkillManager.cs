@@ -4,180 +4,329 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
-
-public struct SkillIdentify : IEquatable<SkillIdentify>
+public struct ActiveSkillIdentify : IEquatable<ActiveSkillIdentify>
 {
-    public KeyCode keyCode;
+    public EActiveSkillOrder skillOrder;
     public Define.ESkillId skillId;
     
-    public bool Equals(SkillIdentify other)
+    public bool Equals(ActiveSkillIdentify other)
     {
-        return keyCode == other.keyCode || skillId == other.skillId;
+        return skillOrder == other.skillOrder || skillId == other.skillId;
     }
 
     public override int GetHashCode()
     {
-        return keyCode.GetHashCode() ^ skillId.GetHashCode();
+        return HashCode.Combine((int)skillOrder, (int)skillId);
     }
 }
 
 
+//player only
 public class SkillManager : MonoBehaviour
 {
-    private Dictionary<SkillIdentify, ActiveSkill> AvailableSkills { get; set; } = new Dictionary<SkillIdentify, ActiveSkill>();
-    //todo 여기 맵에 넣을 때 Skill 복사본으로 넣어야함!
+    private Dictionary<ActiveSkillIdentify, SO_ActiveSkill> ActiveSkills { get; set; } = new Dictionary<ActiveSkillIdentify, SO_ActiveSkill>();
+    private int[] ActiveSkillLevels { get; set; } = new int[5] { 1, 1, 1, 1, 1 };
 
-    private float qSkillTimer;
-    private float wSkillTimer;
-    private float eSkillTimer;
-    private float rSkillTimer;
-    
-    
+    private Dictionary<Define.ESkillId, SO_PassiveSkill> PassiveSkills { get; set; } =
+        new Dictionary<Define.ESkillId, SO_PassiveSkill>();
+
+    private Dictionary<Define.ESkillId, SO_PassiveSkill> EquippedPassiveSkills { get; set; } =
+        new Dictionary<Define.ESkillId, SO_PassiveSkill>();
+
     private Player Player { get; set; }
+    public float UltSkillChargeAmount { get; set; } //대미지 받는 쪽에서 
     
 
     private void Awake()
     {
         Player = GetComponent<Player>();
+        BindAction();
     }
 
-    void Start()
+    private void BindAction()
     {
-        GI.Inst.ListenerManager.onExecuteSkill -= ExecuteSkill;
-        GI.Inst.ListenerManager.onExecuteSkill += ExecuteSkill;
+        GI.Inst.ListenerManager.onExecuteActiveSkill -= ExecuteActiveSkill;
+        GI.Inst.ListenerManager.onExecuteActiveSkill += ExecuteActiveSkill;
         GI.Inst.ListenerManager.getSkill -= GetSkill;
         GI.Inst.ListenerManager.getSkill += GetSkill;
         GI.Inst.ListenerManager.onExecPlayerClone -= ExecPlayerClone;
         GI.Inst.ListenerManager.onExecPlayerClone += ExecPlayerClone;
         GI.Inst.ListenerManager.onExecEarthquake -= ExecEarthquake;
         GI.Inst.ListenerManager.onExecEarthquake += ExecEarthquake;
+        GI.Inst.ListenerManager.setActiveSkillCuzEquip -= SetActiveSkillCuzEquip;
+        GI.Inst.ListenerManager.setActiveSkillCuzEquip += SetActiveSkillCuzEquip;
+        GI.Inst.ListenerManager.isSkillReady -= IsSkillReady;
+        GI.Inst.ListenerManager.isSkillReady += IsSkillReady;
+        GI.Inst.ListenerManager.getCurrentActiveSkills -= GetCurrentActiveSkills;
+        GI.Inst.ListenerManager.getCurrentActiveSkills += GetCurrentActiveSkills;
+        GI.Inst.ListenerManager.getAllPassiveSkills -= GetAllPassiveSkills;
+        GI.Inst.ListenerManager.getAllPassiveSkills += GetAllPassiveSkills;
+        GI.Inst.ListenerManager.requestActiveSkillLevelUp -= RequestActiveSkillLevelUp;
+        GI.Inst.ListenerManager.requestActiveSkillLevelUp += RequestActiveSkillLevelUp;
+        GI.Inst.ListenerManager.requestPassiveSkillLevelUp -= RequestPassiveSkillLevelUp;
+        GI.Inst.ListenerManager.requestPassiveSkillLevelUp += RequestPassiveSkillLevelUp;
+        GI.Inst.ListenerManager.getActiveSkillLevel -= GetActiveSkillLevel;
+        GI.Inst.ListenerManager.getActiveSkillLevel += GetActiveSkillLevel;
+        GI.Inst.ListenerManager.equipPassiveSkill -= EquipPassiveSkill;
+        GI.Inst.ListenerManager.equipPassiveSkill += EquipPassiveSkill;
+        GI.Inst.ListenerManager.unequipPassiveSkill -= UnequipPassiveSkill;
+        GI.Inst.ListenerManager.unequipPassiveSkill += UnequipPassiveSkill;
+        GI.Inst.ListenerManager.execTakeDamageEffect -= ExecTakeDamageEffect;
+        GI.Inst.ListenerManager.execTakeDamageEffect += ExecTakeDamageEffect;
+        GI.Inst.ListenerManager.getUltSkillChargeAmount -= GetUltSkillChargeAmount;
+        GI.Inst.ListenerManager.getUltSkillChargeAmount += GetUltSkillChargeAmount;
     }
     
-
-    //무기를 변경했을 때 스킬 바꾸기.
     public void InitSkills()
     {
-        //todo 인벤토리 추가되면 해야할 것
-        //todo 무기에 저장되어있는 스킬 id 가져와서 
-        //todo resource manager에서 스킬 id로 skills에서 skill SO 가져와야함 이때 복사본으로 해야한다.
-
-        #region Dagger skill test
-        // SkillIdentify identify = new SkillIdentify();
-        // identify.keyCode = KeyCode.Q;
-        // identify.skillId = Define.SkillId.ThrowDagger;
-        // ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.ThrowDagger) as ActiveSkill;
-        // temp.Init(1);
-        // AvailableSkills.Add(identify, temp);
-        //
-        // SkillIdentify identify2 = new SkillIdentify();
-        // identify2.keyCode = KeyCode.W;
-        // identify2.skillId = Define.SkillId.PlayerClone;
-        // ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.PlayerClone) as ActiveSkill;
-        // temp2.Init(1);
-        // AvailableSkills.Add(identify2, temp2);
-        //
-        // SkillIdentify identify3 = new SkillIdentify();
-        // identify3.keyCode = KeyCode.R;
-        // identify3.skillId = Define.SkillId.DaggerUlt;
-        // ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerUlt) as ActiveSkill;
-        // temp3.Init(1);
-        // AvailableSkills.Add(identify3, temp3);
-        //
-        // SkillIdentify identify4 = new SkillIdentify();
-        // identify4.keyCode = KeyCode.E;
-        // identify4.skillId = Define.SkillId.DaggerBall;
-        // ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.DaggerBall) as ActiveSkill;
-        // temp4.Init(1);
-        // AvailableSkills.Add(identify4, temp4);
-        #endregion
-
-        #region Axe skill test
-        // SkillIdentify identify = new SkillIdentify();
-        // identify.keyCode = KeyCode.Q;
-        // identify.skillId = Define.SkillId.FireStrike;
-        // ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.FireStrike) as ActiveSkill;
-        // temp.Init(1);
-        // AvailableSkills.Add(identify, temp);
-        //
-        // SkillIdentify identify2 = new SkillIdentify();
-        // identify2.keyCode = KeyCode.W;
-        // identify2.skillId = Define.SkillId.Earthquake;
-        // ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.Earthquake) as ActiveSkill;
-        // temp2.Init(1);
-        // AvailableSkills.Add(identify2, temp2);
-        //
-        // SkillIdentify identify3 = new SkillIdentify();
-        // identify3.keyCode = KeyCode.E;
-        // identify3.skillId = Define.SkillId.ThrowAxe;
-        // ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.ThrowAxe) as ActiveSkill;
-        // temp3.Init(1);
-        // AvailableSkills.Add(identify3, temp3);
-        //
-        // SkillIdentify identify4 = new SkillIdentify();
-        // identify4.keyCode = KeyCode.R;
-        // identify4.skillId = Define.SkillId.AxeUlt;
-        // ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.SkillId.AxeUlt) as ActiveSkill;
-        // temp4.Init(1);
-        // AvailableSkills.Add(identify4, temp4);
-        #endregion
-       
-        #region Bow skill test
-        SkillIdentify identify = new SkillIdentify();
-        identify.keyCode = KeyCode.Q;
-        identify.skillId = Define.ESkillId.ArrowRain;
-        ActiveSkill temp = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.ArrowRain) as ActiveSkill;
-        temp.Init(1);
-        AvailableSkills.Add(identify, temp);
-        
-        SkillIdentify identify2 = new SkillIdentify();
-        identify2.keyCode = KeyCode.W;
-        identify2.skillId = Define.ESkillId.PiercingArrow;
-        ActiveSkill temp2 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.PiercingArrow) as ActiveSkill;
-        temp2.Init(1);
-        AvailableSkills.Add(identify2, temp2);
-        
-        SkillIdentify identify3 = new SkillIdentify();
-        identify3.keyCode = KeyCode.E;
-        identify3.skillId = Define.ESkillId.ArrowBuff;
-        ActiveSkill temp3 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.ArrowBuff) as ActiveSkill;
-        temp3.Init(1);
-        AvailableSkills.Add(identify3, temp3);
-        
-        SkillIdentify identify4 = new SkillIdentify();
-        identify4.keyCode = KeyCode.R;
-        identify4.skillId = Define.ESkillId.DistortionArrow;
-        ActiveSkill temp4 = GI.Inst.ResourceManager.GetSkillDataCopy(Define.ESkillId.DistortionArrow) as ActiveSkill;
-        temp4.Init(1);
-        AvailableSkills.Add(identify4, temp4);
-
-        #endregion
+        //패시브
+        List<SO_PassiveSkill> passiveSkills = new List<SO_PassiveSkill>();
+        for (int i = (int)Define.ESkillId.HealthSteal; i < (int)Define.ESkillId.Max; i++)
+        {
+            SO_PassiveSkill skill = GI.Inst.ResourceManager.GetPassiveSkillData((Define.ESkillId)i);
+            skill.skillLevel = 1;
+            skill.Init();
+            PassiveSkills.Add((Define.ESkillId)i, skill);
+            passiveSkills.Add(skill);
+        }
+        GI.Inst.UIManager.RefreshPassiveSkillUI(passiveSkills);
     }
 
-    void ExecuteSkill(int instanceId, Define.ESkillId skillId)
+    void ExecuteActiveSkill(int instanceId, Define.ESkillId skillId)
     {
         if (Player.InstId != instanceId) return;
       
-        foreach (var pair in AvailableSkills)
+        foreach (var pair in ActiveSkills)
         {
             if (pair.Key.skillId == skillId)
             {
-                pair.Value.ExecuteSkill(Player.StatManager, Player.PlayerController);
+                ActiveSkillSetCooltime(pair.Key.skillOrder, pair.Value.skillCooltime);
+                pair.Value.ExecSkill(Player.StatManager, Player.PlayerController);
+                break;
             }
         }
     }
 
-    public ActiveSkill GetSkill(KeyCode keyCode)
+    void ActiveSkillSetCooltime(EActiveSkillOrder skillOrder, float cooltime)
     {
-        foreach (var pair in AvailableSkills)
+        float skillCooltimeDecRate = Player.StatManager.stats.skillCooltimeDecRate.Value;
+        cooltime -= cooltime * skillCooltimeDecRate * 0.01f;
+        switch (skillOrder)
         {
-            if (pair.Key.keyCode == keyCode)
-                return pair.Value;
+            case EActiveSkillOrder.First:
+                GI.Inst.CooltimeManager.FirstSkillTimer = Time.time + cooltime;
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.First, cooltime);
+                break;
+            case EActiveSkillOrder.Second:
+                GI.Inst.CooltimeManager.SecondSkillTimer = Time.time + cooltime;
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Second, cooltime);
+                break;
+            case EActiveSkillOrder.Third:
+                GI.Inst.CooltimeManager.ThirdSkillTimer = Time.time + cooltime;
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Third, cooltime);
+                break;
+            case EActiveSkillOrder.Fourth:
+                UltSkillChargeAmount = 0f;
+                break;
+            case EActiveSkillOrder.Fifth:
+                GI.Inst.CooltimeManager.FifthSkillTimer = Time.time + cooltime;
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Fifth, GI.Inst.CooltimeManager.FifthSkillTimer);
+                break;
         }
-        return null;
     }
 
+    public void SetActiveSkillCuzEquip(Item.EWeaponType type)
+    {
+        Define.ESkillId[] skillIds = GetActiveSkillType(type);
+        
+        SetActiveSkill(skillIds);
+    }
+
+    private void SetActiveSkill(Define.ESkillId[] skillIds)
+    {
+        ActiveSkills.Clear();
+        List<SO_ActiveSkill> skills = new List<SO_ActiveSkill>();
+        List<Sprite> skillIcons = new List<Sprite>();
+        for (int i = 0; i < skillIds.Length; i++)
+        {
+            ActiveSkillIdentify identify = new ActiveSkillIdentify();
+            identify.skillOrder = (EActiveSkillOrder)i;
+            identify.skillId = skillIds[i];
+            SO_ActiveSkill skill = GI.Inst.ResourceManager.GetActiveSkillData(skillIds[i]);
+            skill.EquipInit(ActiveSkillLevels[i], GI.Inst.Player.StatManager);
+            skills.Add(skill);
+            skillIcons.Add(skill.icon);
+            ActiveSkills.Add(identify, skill);
+            ;
+        }
+        GI.Inst.ListenerManager.CheckSkillMatCanLevelUpSkills(skills);
+        GI.Inst.UIManager.RefreshSkillHotkeyUI(skillIcons);
+    }
+    
+
+    private void EquipPassiveSkill(Define.ESkillId skillId)
+    {
+        if (EquippedPassiveSkills.ContainsKey(skillId))
+        {
+            Debug.Log("이미 장착됨");
+        }
+        else
+        {
+            EquippedPassiveSkills.Add(skillId, PassiveSkills[skillId]);
+            PassiveSkills[skillId].ExecSkill(Player.StatManager, Player.PlayerController);
+        }
+        
+    }
+    
+    private void UnequipPassiveSkill(Define.ESkillId skillId)
+    {
+        if (EquippedPassiveSkills.ContainsKey(skillId))
+        {
+            EquippedPassiveSkills.Remove(skillId);
+        }
+        else
+        {
+            Debug.Log("장착되어있지 않음");
+        }
+    }
+
+    public void ChargeFourthSkill(Define.EDamageType causeDamageType)
+    {
+        float randValue = 0f;
+        if (causeDamageType == Define.EDamageType.Normal)
+        {
+            randValue = Random.Range(1f, 3f);
+        }
+        else if (causeDamageType == Define.EDamageType.Skill)
+        {
+            randValue = Random.Range(0.1f, 0.3f);
+        }
+        
+        UltSkillChargeAmount = Mathf.Clamp(UltSkillChargeAmount + randValue, 0f, 100f);
+        
+        GI.Inst.UIManager.UpdateFillAmount(UltSkillChargeAmount);
+        
+        if (UltSkillChargeAmount >= 100f)
+        {
+            //충전완료
+            //완료된 애니메이션? 알림?
+        }
+    }
+
+    public bool IsSkillReady(EActiveSkillOrder skillOrder)
+    {
+        switch (skillOrder)
+        {
+            case EActiveSkillOrder.First:
+                if (GI.Inst.CooltimeManager.FirstSkillTimer <= Time.time)
+                    return true;
+                break;
+            case EActiveSkillOrder.Second:
+                if (GI.Inst.CooltimeManager.SecondSkillTimer <= Time.time)
+                    return true;
+                break;
+            case EActiveSkillOrder.Third:
+                if (GI.Inst.CooltimeManager.ThirdSkillTimer <= Time.time)
+                    return true;
+                break;
+            case EActiveSkillOrder.Fourth:
+                if (UltSkillChargeAmount >= 100f)
+                    return true;
+                break;
+            case EActiveSkillOrder.Fifth:
+                if (GI.Inst.CooltimeManager.FifthSkillTimer <= Time.time)
+                    return true;
+                break;
+        }
+        return false;
+    }
+
+    public void UpdateActiveSkill()
+    {
+        int i = 0;
+        foreach (KeyValuePair<ActiveSkillIdentify,SO_ActiveSkill> pair in ActiveSkills)
+        { 
+            pair.Value.EquipInit(ActiveSkillLevels[i++], GI.Inst.Player.StatManager);
+        }
+    }
+    
+    public void RequestActiveSkillLevelUp(ActiveSkill_ShortVer skill, int index)
+    {
+        if (skill.activeSkillOrder != EActiveSkillOrder.Max) 
+        {
+            ActiveSkillIdentify skillIdentify = new ActiveSkillIdentify();
+            skillIdentify.skillId = skill.skillId;
+            skillIdentify.skillOrder = skill.activeSkillOrder;
+            if (ActiveSkills.ContainsKey(skillIdentify))
+            {
+                GI.Inst.ListenerManager.UseActiveSkillMat(skill.itemIdForLevelUp, skill.activeSkillOrder);
+                ActiveSkillLevels[index]++;
+                UpdateActiveSkill();
+                GI.Inst.UIManager.RefreshActiveSkillUI(GetCurrentActiveSkills());
+            }
+        }
+    }
+    
+    public void RequestPassiveSkillLevelUp(PassiveSkill_ShortVer skill)
+    {
+        if (PassiveSkills.ContainsKey(skill.skillId))
+        {
+            GI.Inst.ListenerManager.UsePassiveSkillMat(ref skill);
+            PassiveSkills[skill.skillId].skillLevel++;
+
+            ReEquipPassive(skill.skillId);
+            PassiveSkills[skill.skillId].Init();
+            GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
+        }
+    }
+    
+    //장착되었으면 을 확인 하고 되어있으면 해제 후 다시 착용
+    public void ReEquipPassive(Define.ESkillId skillId)
+    {
+        if (EquippedPassiveSkills.ContainsKey(skillId))
+        {
+            UnequipPassiveSkill(skillId);
+            EquipPassiveSkill(skillId);
+        }
+    }
+
+    public void CauseDamageSuccessfully(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult,
+        StatManager victimStatManager)
+    {
+        ExecCauseDamageEffect(causeDamageType, takeDamageResult, victimStatManager);
+        ChargeFourthSkill(causeDamageType);
+    }
+    
+    //플레이어만 염두에 두고 구현하면 됨. 몬스터는 SkillManager가 없음.
+    public void ExecCauseDamageEffect(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult, StatManager victimStatManager)
+    {
+        foreach (var pair in EquippedPassiveSkills)
+        {
+            if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+            {
+                Effect effect = pair.Value.effect;
+                effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, 
+                     victimStatManager, Player.StatManager, pair.Value.icon);
+            }
+        }
+    }
+
+    public void ExecTakeDamageEffect(Define.EDamageType causeDamageType, StatManager instigatorStatManager)
+    {
+        foreach (var pair in EquippedPassiveSkills)
+        {
+            if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+            {
+                Effect effect = pair.Value.effect;
+                effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.TakeDamage, 
+                    instigatorStatManager, Player.StatManager, pair.Value.icon);
+            }
+        }
+    }
+    
     #region Clone
     public void ExecPlayerClone(int instanceId, StatManager castStatManager, DamageInfo damageInfo)
     {
@@ -192,10 +341,11 @@ public class SkillManager : MonoBehaviour
         {
             //todo 적 위치에 정확히 스폰하지말고 왼쪽 오른쪽 분산하여 스폰
             StatManager enemyStatManager = trans.GetComponent<StatManager>();
-            
-            GameObject daggerObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.PlayerClone, trans.position, quaternion.identity);
-            SkillAbility_PlayerClone playerClone = daggerObj.GetComponent<SkillAbility_PlayerClone>();
+
+            GameObject go = GI.Inst.ResourceManager.Instantiate("PlayerClone", trans.position, quaternion.identity);
+            SkillAbility_PlayerClone playerClone = go.GetComponent<SkillAbility_PlayerClone>();
             playerClone.Init(castStatManager, damageInfo, enemyStatManager);
+            
             yield return new WaitForSeconds(0.2f);
         }
     }
@@ -217,10 +367,12 @@ public class SkillManager : MonoBehaviour
         
         for (int i = 0; i < 3; i++)
         {
-           GameObject earthquakeObj = GI.Inst.ResourceManager.Instantiate(EPrefabId.Earthquake, spawnPos, quaternion.identity);
-           SkillAbility_Earthquake earthquake = earthquakeObj.GetComponent<SkillAbility_Earthquake>();
-           earthquake.Init(Player.PlayerController, damageInfo);
-           spawnPos.x = spawnPos.x + (earthquake.Sr.bounds.size.x * Player.PlayerController.CurrentDir.x);
+            GameObject go =
+                GI.Inst.ResourceManager.Instantiate("Earthquake", spawnPos, quaternion.identity);
+            SkillAbility_Earthquake earthquake = go.GetComponent<SkillAbility_Earthquake>();
+            earthquake.Init(castStatManager, damageInfo);
+            spawnPos.x = spawnPos.x + (earthquake.Sr.bounds.size.x * Player.PlayerController.CurrentDir.x);
+           
            yield return new WaitForSeconds(0.5f);
         }
     }
@@ -235,5 +387,70 @@ public class SkillManager : MonoBehaviour
         }
         return new Vector3(10000, 10000, 10000);
     }
+    #endregion
+    #region GetFunction
+    
+    public Define.ESkillId[] GetActiveSkillType(Item.EWeaponType type)
+    {
+        Define.ESkillId[] skillIds = new Define.ESkillId[5];
+        
+        switch (type)
+        {
+            case Item.EWeaponType.Dagger:
+                skillIds[0] = Define.ESkillId.ThrowDagger;
+                skillIds[1] = Define.ESkillId.PlayerClone;
+                skillIds[2] = Define.ESkillId.DaggerBall;
+                skillIds[3] = Define.ESkillId.DaggerUlt;
+                skillIds[4] = Define.ESkillId.Dash;
+                break;
+            case Item.EWeaponType.Bow:
+                skillIds[0] = Define.ESkillId.ArrowRain;
+                skillIds[1] = Define.ESkillId.PiercingArrow;
+                skillIds[2] = Define.ESkillId.ArrowBuff;
+                skillIds[3] = Define.ESkillId.DistortionArrow;
+                skillIds[4] = Define.ESkillId.Dash;
+                break;
+            case Item.EWeaponType.Axe:
+                skillIds[0] = Define.ESkillId.FireStrike;
+                skillIds[1] = Define.ESkillId.Earthquake;
+                skillIds[2] = Define.ESkillId.ThrowAxe;
+                skillIds[3] = Define.ESkillId.AxeUlt;
+                skillIds[4] = Define.ESkillId.Dash;
+                break;
+        }
+
+        return skillIds;
+    }
+    
+    public List<SO_ActiveSkill> GetCurrentActiveSkills()
+    {
+        return ActiveSkills.Values.ToList();
+    }
+
+    public List<SO_PassiveSkill> GetAllPassiveSkills()
+    {
+        return PassiveSkills.Values.ToList();
+    }
+    
+    public int GetActiveSkillLevel(EActiveSkillOrder skillOrder)
+    {
+        return ActiveSkillLevels[(int)skillOrder];
+    }
+    
+    public SO_Skill GetSkill(EActiveSkillOrder skillOrder)
+    {
+        foreach (var pair in ActiveSkills)
+        {
+            if (pair.Key.skillOrder == skillOrder)
+                return pair.Value;
+        }
+        return null;
+    }
+
+    public float GetUltSkillChargeAmount()
+    {
+        return UltSkillChargeAmount;
+    }
+    
     #endregion
 }

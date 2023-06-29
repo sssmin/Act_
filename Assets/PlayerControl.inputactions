@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "QSkill",
+                    "name": "FirstSkill",
                     "type": "Button",
                     "id": "d89e32f4-5346-4c59-b5a4-e495bfd906c9",
                     "expectedControlType": "Button",
@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "WSkill",
+                    "name": "SecondSkill",
                     "type": "Button",
                     "id": "c0521f02-22f0-469b-a51b-dcce169353bd",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ESkill",
+                    "name": "ThirdSkill",
                     "type": "Button",
                     "id": "3e8c7bbb-e171-4fac-8a71-b56d5619fae9",
                     "expectedControlType": "Button",
@@ -87,9 +87,81 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RSkill",
+                    "name": "FourthSkill",
                     "type": "Button",
                     "id": "715478da-c1f7-467f-b76a-522be15e5b01",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "InventoryWindow",
+                    "type": "Button",
+                    "id": "612055d4-06c4-4587-b75e-6f0326a3403e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SkillWindow",
+                    "type": "Button",
+                    "id": "cd256d57-8aa3-482d-91db-c07d4d099c86",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FirstItemHotkey",
+                    "type": "Button",
+                    "id": "8c6c5ff5-5e3f-4e68-92ad-3dd88c568786",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondItemHotkey",
+                    "type": "Button",
+                    "id": "6e97729b-1c08-4066-b1dc-f5dfcdb89a51",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ThirdItemHotkey",
+                    "type": "Button",
+                    "id": "c590f364-d62f-454f-be9b-f36575a16d72",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FourthItemHotkey",
+                    "type": "Button",
+                    "id": "85fc4e33-dce0-4711-939e-4d2a43340849",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FifthItemHotkey",
+                    "type": "Button",
+                    "id": "b6d4ce5b-2e8a-4b8a-bad0-833c1befc151",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Interaction",
+                    "type": "Button",
+                    "id": "f14378a7-b0a2-4501-8cae-e8e8a158817f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -357,7 +429,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "QSkill",
+                    "action": "FirstSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -368,7 +440,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "WSkill",
+                    "action": "SecondSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -379,7 +451,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "ESkill",
+                    "action": "ThirdSkill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -390,7 +462,95 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "RSkill",
+                    "action": "FourthSkill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1467a2b-badc-4984-bc5b-bcff28c10f91",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "InventoryWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0e0e00ec-604a-4f3c-9a02-48df9165b53c",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SkillWindow",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f652cb38-01be-4364-b735-821c8b3dd424",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "FirstItemHotkey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9d4aa4c-4394-496f-9407-3f27acccc815",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SecondItemHotkey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1624704-d6b2-43ff-b3f6-9e214df4c743",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "ThirdItemHotkey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7cac15eb-8e69-4552-a291-e5ad5504bf8f",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "FourthItemHotkey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "286962c2-368a-4372-8ed6-42a836a80fce",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "FifthItemHotkey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "13f60e68-81b9-43b4-ba80-dfc93c219702",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

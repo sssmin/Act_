@@ -32,8 +32,7 @@ public class PoolManager
         {
             if (poolable == null) return;
             
-            
-            poolable.transform.parent = Head;
+            poolable.transform.SetParent(Head);
             poolable.gameObject.SetActive(false);
             poolable.IsUsing = false;
             
@@ -51,16 +50,17 @@ public class PoolManager
 
             poolable.gameObject.SetActive(true);
 
-            poolable.transform.parent = parent;
+            poolable.transform.SetParent(parent);
             poolable.IsUsing = true;
 
             return poolable;
         }
     }
     
-    private Dictionary<EPrefabId, Pool> pools = new Dictionary<EPrefabId, Pool>();
+    private Dictionary<string, Pool> pools = new Dictionary<string, Pool>();
     private Transform root;
-
+    
+    
     public void Init()
     {
         if (root == null)
@@ -69,47 +69,55 @@ public class PoolManager
             root.name = "Pool_Root";
             Object.DontDestroyOnLoad(root);
         }
-        
-        CreatePoolAdvanced();
     }
 
-    public void CreatePool(GameObject origin, int count = 5)
+    public bool IsPoolable(string key)
+    {
+        if (pools.ContainsKey(key))
+            return true;
+        return false;
+    }
+
+    public void CreatePool(GameObject origin, string prefabId, int count = 5)
     {
         Pool pool = new Pool();
         pool.Init(origin, count);
         pool.Head.parent = root;
 
-        PrefabId prefabId = origin.GetComponent<PrefabId>();
-        pools.Add(prefabId.id, pool);
+        pools.Add(prefabId, pool);
     }
 
     public void Restore(Poolable poolable)
     {
-        PrefabId prefabId = poolable.GetComponent<PrefabId>();
-        if (pools.ContainsKey(prefabId.id) == false)
+        string prefabId = poolable.GetComponent<PrefabName>()?.Value; 
+        if (pools.ContainsKey(prefabId) == false)
         {
             GameObject.Destroy(poolable.gameObject);
             return;
         }
         
-        pools[prefabId.id].Push(poolable);
+        pools[prefabId].Push(poolable);
     }
 
-    public Poolable Pop(GameObject origin, Transform parent = null)
+    public Poolable Pop(GameObject origin, string prefabId , Transform parent = null)
     {
-        PrefabId prefabId = origin.GetComponent<PrefabId>();
-        if (pools.ContainsKey(prefabId.id) == false)
+        if (pools.ContainsKey(prefabId) == false)
         {
-            CreatePool(origin);
+            CreatePool(origin, prefabId);
         }
-        return pools[prefabId.id].Pop(parent);
+        return pools[prefabId].Pop(parent);
+    }
+    
+    public Poolable Pop(string prefabId, Transform parent = null)
+    {
+        return pools[prefabId].Pop(parent);
     }
 
-    public GameObject GetOriginal(EPrefabId id)
-    {
-        if (pools.ContainsKey(id) == false) return null;
-        return pools[id].Original;
-    }
+    // public GameObject GetOriginal(EPrefabId id)
+    // {
+    //     if (pools.ContainsKey(id) == false) return null;
+    //     return pools[id].Original;
+    // }
 
     public void Clear()
     {
@@ -119,27 +127,15 @@ public class PoolManager
         }
         pools.Clear();
     }
+    
 
-    public void CreatePoolAdvanced(EPrefabId name, int count)
+    public void CreatePoolAdvanced(Poolable poolable, string prefabId)
     {
-        if (pools.ContainsKey(name) == false)
+        if (poolable)
         {
-            GameObject origin = GI.Inst.ResourceManager.Load<GameObject>(name);
-            CreatePool(origin, count);
+            CreatePool(poolable.gameObject,  prefabId, poolable.poolingNum);
         }
-    }
-
-    public void CreatePoolAdvanced()
-    {
-        foreach (KeyValuePair<EPrefabId, Object> pair in GI.Inst.ResourceManager.Prefabs)
-        {
-            GameObject prefab = (GameObject)pair.Value;
-            Poolable poolable = prefab.GetComponent<Poolable>();
-            if (poolable)
-            {
-                CreatePool(prefab, poolable.poolingNum);
-            }
-        }
+        
     }
     
     

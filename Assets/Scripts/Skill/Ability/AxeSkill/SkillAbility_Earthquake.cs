@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SkillAbility_Earthquake : MonoBehaviour
 {
-    private BaseController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private DamageInfo DamageInfo { get; set; }
@@ -23,9 +23,9 @@ public class SkillAbility_Earthquake : MonoBehaviour
         Sr = GetComponent<SpriteRenderer>();
     }
 
-    public void Init(BaseController inOwner, DamageInfo damageInfo)
+    public void Init(StatManager inOwner, DamageInfo damageInfo)
     {
-        OwnerController = inOwner;
+        OwnerStatManager = inOwner;
         DamageInfo = damageInfo;
         Animator.SetBool(AnimHash.activeEarthquake, true);
         BoxCollider.enabled = false;
@@ -39,7 +39,7 @@ public class SkillAbility_Earthquake : MonoBehaviour
         {
             StatManager enemyStat = other.GetComponent<StatManager>();
             enemyStats.Add(instId, enemyStat);
-            enemyStat.OnDamage(DamageInfo, OwnerController.gameObject);
+            enemyStat.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
         }
     }
     

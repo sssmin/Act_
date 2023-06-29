@@ -15,6 +15,7 @@ public class Player_DashState : PlayerState
         Animator.SetBool(AnimHash.isDash, true);
         DashDir = PlayerController.CurrentDir.x;
         dashTimer = 0.3f;
+        GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.Dash);
     }
     
     public override void Update()

@@ -20,11 +20,13 @@ public class AIController : BaseController
             base.CurrentDir = value;
             if (CurrentDir.x < 0f)
             {
-                Flip(true);
+                Flip(EDir.Left);
+                ((MonsterStatManager)ControlledMonster.StatManager).FlipMonsterInfoUI(EDir.Left);
             }
             else if (CurrentDir.x > 0f)
             {
-                Flip(false);
+                Flip(EDir.Right);
+                ((MonsterStatManager)ControlledMonster.StatManager).FlipMonsterInfoUI(EDir.Right);
             }
         }
     }
@@ -33,7 +35,7 @@ public class AIController : BaseController
     {
         base.Awake();
         ControlledMonster = GetComponent<Monster>();
-        CurrentDir = new Vector2(1f, 0f);
+        //CurrentDir = new Vector2(1f, 0f);
     }
 
     void Start()

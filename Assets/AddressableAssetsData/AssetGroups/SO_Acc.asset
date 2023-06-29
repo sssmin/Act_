@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_Acc
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_Acc
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9f8613dbde51ccd45a4387e8eedf8898
+  m_SerializeEntries:
+  - m_GUID: d470aec837d7ed844921d6ae1a63d3ab
+    m_Address: BountyNecklace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 8b6716a90cde5b7468b589f8344ce462
+    m_Address: BountyRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 55e254f806f67d540886708c82971b1d
+    m_Address: IronNecklace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: c438eb9f8c4f317469bac1d3c39832da
+    m_Address: IronRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: c2ff09ffc0c51d04c882a9dccc9b0633
+    m_Address: ShadowNecklace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: ac550c4f40059104bbaf2d9b546cbba7
+    m_Address: ShadowRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: b2f5e7a568ac1474ba95ea4e31be59bf
+    m_Address: SupremeNecklace
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  - m_GUID: 74b3ccf60d0dc3b4c9cbe361b7698654
+    m_Address: SupremeRing
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Item
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: d00e8fef68687b644bc6652f25324a6b, type: 2}
+    - {fileID: 11400000, guid: e7726ff9214abc34db60bc55fbc7c870, type: 2}

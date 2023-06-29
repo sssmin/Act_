@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3652121a761aa68489adced719434378, type: 3}
+  m_Name: ItemCraft
+  m_EditorClassIdentifier: 
+  weaponProbabilityInfos:
+  - itemId: InfinityAxe
+    probability: 1.67
+  - itemId: InfinityBow
+    probability: 1.67
+  - itemId: InfinityDagger
+    probability: 1.67
+  - itemId: GuardiansAxe
+    probability: 3.33
+  - itemId: GuardiansBow
+    probability: 3.33
+  - itemId: GuardiansDagger
+    probability: 3.33
+  - itemId: HerosAxe
+    probability: 6.67
+  - itemId: HerosBow
+    probability: 6.67
+  - itemId: HerosDagger
+    probability: 6.67
+  - itemId: SteelAxe
+    probability: 8.33
+  - itemId: SteelBow
+    probability: 8.33
+  - itemId: SteelDagger
+    probability: 8.33
+  - itemId: WoodAxe
+    probability: 13.3
+  - itemId: WoodBow
+    probability: 13.3
+  - itemId: WoodDagger
+    probability: 13.3
+  armorProbabilityInfos:
+  - itemId: SupremeHelmet
+    probability: 1.25
+  - itemId: SupremeArmor
+    probability: 1.25
+  - itemId: SupremeGauntlet
+    probability: 1.25
+  - itemId: SupremeBoots
+    probability: 1.25
+  - itemId: ShadowHelmet
+    probability: 2.5
+  - itemId: ShadowArmor
+    probability: 2.5
+  - itemId: ShadowGauntlet
+    probability: 2.5
+  - itemId: ShadowBoots
+    probability: 2.5
+  - itemId: IronHelmet
+    probability: 5
+  - itemId: IronArmor
+    probability: 5
+  - itemId: IronGauntlet
+    probability: 5
+  - itemId: IronBoots
+    probability: 5
+  - itemId: AvengerHelmet
+    probability: 6.25
+  - itemId: AvengerArmor
+    probability: 6.25
+  - itemId: AvengerGauntlet
+    probability: 6.25
+  - itemId: AvengerBoots
+    probability: 6.25
+  - itemId: LeatherHelmet
+    probability: 10
+  - itemId: LeatherArmor
+    probability: 10
+  - itemId: LeatherGauntlet
+    probability: 10
+  - itemId: LeatherBoots
+    probability: 10
+  accProbabilityInfos:
+  - itemId: SupremeNecklace
+    probability: 5
+  - itemId: SupremeRing
+    probability: 5
+  - itemId: ShadowNecklace
+    probability: 10
+  - itemId: ShadowRing
+    probability: 10
+  - itemId: IronNecklace
+    probability: 15
+  - itemId: IronRing
+    probability: 15
+  - itemId: BountyNecklace
+    probability: 20
+  - itemId: BountyRing
+    probability: 20
+  weaponMatIcon: {fileID: -1421258896, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  armorMatIcon: {fileID: -1661812014, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  accMatIcon: {fileID: -152988664, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  requireMatAmounts:
+  - itemCategory: 0
+    requireEquipmentMatAmount: 1
+    requireSharedMatAmount: 1
+  - itemCategory: 1
+    requireEquipmentMatAmount: 1
+    requireSharedMatAmount: 1
+  - itemCategory: 2
+    requireEquipmentMatAmount: 1
+    requireSharedMatAmount: 2

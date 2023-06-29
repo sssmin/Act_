@@ -22,7 +22,7 @@ public class DaggerBallSkillState : PlayerState
         if (bIsAnimTrigger)
         {
             bIsAnimTrigger = false;
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.DaggerBall);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.DaggerBall);
         }
        
     }

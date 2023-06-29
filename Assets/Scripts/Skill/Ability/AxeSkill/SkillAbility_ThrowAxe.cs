@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkillAbility_ThrowAxe : MonoBehaviour
 {
     private PlayerController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }    
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private DamageInfo DamageInfo { get; set; }
@@ -30,9 +31,10 @@ public class SkillAbility_ThrowAxe : MonoBehaviour
         transform.eulerAngles -= new Vector3(0f, 0f, rotationAmount);
     }
 
-    public void Init(Vector2 dir, PlayerController inOwner, DamageInfo damageInfo)
+    public void Init(Vector2 dir, PlayerController inOwner, StatManager statManager, DamageInfo damageInfo)
     {
         OwnerController = inOwner;
+        OwnerStatManager = statManager;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo = damageInfo;
         bIsReturn = false;
@@ -72,7 +74,7 @@ public class SkillAbility_ThrowAxe : MonoBehaviour
     {
         if (other.CompareTag("Monster"))
         {
-            other.GetComponent<StatManager>()?.OnDamage(DamageInfo, OwnerController.gameObject);
+            other.GetComponent<StatManager>()?.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
         }
     }
 
@@ -85,7 +87,7 @@ public class SkillAbility_ThrowAxe : MonoBehaviour
             {
                 DamageInfo damageInfo = DamageInfo;
                 damageInfo.damage = Mathf.RoundToInt(damageInfo.damage * 0.2f);
-                other.GetComponent<StatManager>()?.OnDamage(damageInfo, OwnerController.gameObject);
+                other.GetComponent<StatManager>()?.TakeDamage(damageInfo, OwnerStatManager, Define.EDamageType.Skill);
                 damageTimer = 0.3f;
             }
         }

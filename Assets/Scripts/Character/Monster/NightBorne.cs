@@ -10,7 +10,6 @@ public class NightBorne : Monster
     {
         base.Awake();
 
-        MoveSpeed = 3f;
     }
 
     protected override void Start()

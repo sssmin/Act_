@@ -2,11 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DropTable))]
 public class Monster : BaseCharacter
 {
     public Dictionary<Define.EMonsterState, State> States = new Dictionary<Define.EMonsterState, State>();
     //todo 몬스터도 State를 가질건데 Player랑은 기능 자체는 다를듯
-
+    private string monsterPrefabId;
+    public string MonsterPrefabId
+    {
+        get => monsterPrefabId;
+        set => monsterPrefabId = value;
+    }
+    private DropTable dropTable;
+    public DropTable DropTable
+    {
+        get => dropTable;
+        set => dropTable = value;
+    }
     protected AIController AIController { get; set; }
 
     protected override void Awake()
@@ -14,6 +26,7 @@ public class Monster : BaseCharacter
         base.Awake();
 
         AIController = GetComponent<AIController>();
+        StatManager.InstId = InstId;
     }
 
     protected override void Start()
@@ -30,9 +43,10 @@ public class Monster : BaseCharacter
         States.Add(Define.EMonsterState.Chase, new Monster_ChaseState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Freeze, new Monster_FreezeState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Suppression, new Monster_SuppressionState(Animator, Rb, this, AIController));
+        States.Add(Define.EMonsterState.Dead, new Monster_DeadState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.CrowdControl, new Monster_IdleState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.NormalAttack, new Monster_IdleState(Animator, Rb, this, AIController));
-        // States.Add(Define.EMonsterState.Dead, new Monster_IdleState(Animator, Rb, this, AIController));
+        
         
         foreach (var pair in States)
         {
@@ -47,5 +61,13 @@ public class Monster : BaseCharacter
             StateMachine.TransitionState(States[monsterState]);
         }
     }
-    
+
+    public void DestroyMySelf()
+    {
+        if (hitEffectCoroutine != null)
+        {
+            StopCoroutine(hitEffectCoroutine);
+        }
+        GI.Inst.ResourceManager.Destroy(gameObject);
+    }
 }

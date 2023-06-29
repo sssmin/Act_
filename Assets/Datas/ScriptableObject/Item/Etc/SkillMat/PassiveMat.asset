@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 903f623cfab660549b7ead624ab42fb7, type: 3}
+  m_Name: PassiveMat
+  m_EditorClassIdentifier: 
+  itemId: PassiveMat
+  ItemCategory: 4
+  itemName: "\uD328\uC2DC\uBE0C \uAC15\uD654 \uC7AC\uB8CC"
+  itemDesc: "\uD328\uC2DC\uBE0C \uC2A4\uD0AC\uC744 \uAC15\uD654\uD560 \uC218 \uC788\uC5B4\uC694."
+  itemIcon: {fileID: 250026749, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  bIsCanStack: 0
+  amount: 1
+  maxStackSize: 50
+  playerSellPrice: 0
+  etcCategory: 1
+  skillMatId: 2

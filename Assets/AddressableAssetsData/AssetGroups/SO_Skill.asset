@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_Skill
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_Skill
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 15ca448c668a0ab4085721cea5d88b8d
+  m_SerializeEntries:
+  - m_GUID: c1cfa18156701264682f4b749fa61a8b
+    m_Address: PlayerClone
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: c21ce0531aaa50043920530fcaecb6c7
+    m_Address: DaggerUlt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 6f116bda26ceb8c429887f013a9c34f9
+    m_Address: DaggerBall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: eaa73e92f5610584f850f5dc690ff417
+    m_Address: FireStrike
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: cddf0e54e3012d24a9ac9dc914d24525
+    m_Address: Earthquake
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: a1173e1570f36f94da4a6afdc9c894dd
+    m_Address: ThrowAxe
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 2d4444c0b4f18e547accb23d78273d2b
+    m_Address: AxeUlt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 2e8f13a278506424abec8d4c9edfa87e
+    m_Address: ArrowRain
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 061a87793054d9e40a020c213d33946a
+    m_Address: ArrowBuff
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: d717a18d496af2745a6fb934dd911d91
+    m_Address: DistortionArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 4b042ddf2825cbe40965680df593c1da
+    m_Address: PiercingArrow
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 24d07abab1fdb2d449b227fa6068bfdf
+    m_Address: Dash
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 3746d601b9208b3499af5a99bee3490d
+    m_Address: DeadlyImpact
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: a73304b4f4582824680d81d0e1760bf3
+    m_Address: HealthSteal
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 3dd0678a137d9b541984456745f83a6b
+    m_Address: LastStand
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: df0b3112aec035343ae1cb8fac27dadd
+    m_Address: NimbleReflexes
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: ad12503c4c90d99439fc2dcb4f0611a0
+    m_Address: TemporalDistortion
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  - m_GUID: 6390b285b31de8848bb95712f1f38173
+    m_Address: ThrowDagger
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Skill
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: acdfdcdb8c21c704085bff94aec3697f, type: 2}
+    - {fileID: 11400000, guid: 14707eefaf4985f40a359bcdfd1941a5, type: 2}

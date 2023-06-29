@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6418b6aeecc254987bd057f99a7992, type: 3}
+  m_Name: AtkBoostPotion
+  m_EditorClassIdentifier: 
+  itemId: AtkBoostPotion
+  ItemCategory: 3
+  itemName: "\uACF5\uACA9\uB825 \uBD80\uC2A4\uD2B8 \uD3EC\uC158"
+  itemDesc: "\uACF5\uACA9\uB825\uC744 \uC77C\uC815 \uC2DC\uAC04\uB3D9\uC548 \uC62C\uB824\uC90D\uB2C8\uB2E4."
+  itemIcon: {fileID: -719704695, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  bIsCanStack: 1
+  amount: 1
+  maxStackSize: 50
+  playerSellPrice: 75
+  consumableType: 1
+  itemCooltime: 5
+  dropChance: 0
+  minDropAmount: 0
+  maxDropAmount: 0
+  storeSellPrice: 150
+  effect:
+    activationCondition: 0
+    activateChancePer: 0
+    damageType: 0
+    effectInfo:
+      effectType: 0
+      effectDetail: 4
+    duration: 60
+    durationEffectId: 0
+    endTime: 0
+    bIsResetDuration: 0

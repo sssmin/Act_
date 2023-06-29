@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public class Player : BaseCharacter
@@ -10,7 +7,7 @@ public class Player : BaseCharacter
     public Dictionary<Define.EPlayerState, State> States = new Dictionary<Define.EPlayerState, State>();
     public PlayerController PlayerController { get; set; }
     public CombatManager CombatManager { get; private set; }
-    public StatManager StatManager { get; private set; }
+   
     public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
     
@@ -24,22 +21,29 @@ public class Player : BaseCharacter
         
         PlayerController = GetComponent<PlayerController>();
         CombatManager = GetComponent<CombatManager>();
-        StatManager = GetComponent<StatManager>();
         CapsuleCollider = GetComponent<CapsuleCollider2D>();
 
-        MoveSpeed = 5f;
         JumpForce = 5f;
         DashSpeed = 13f;
         GroundSlideSpeed = 13f;
+        StatManager.InstId = InstId;
+        
+        GI.Inst.ListenerManager.getPlayerInstId -= GetPlayerInstId;
+        GI.Inst.ListenerManager.getPlayerInstId += GetPlayerInstId;
     }
 
     protected override void Start()
     {
         base.Start();
         StateMachine.Init(States[Define.EPlayerState.Idle]);
-        //GI.Inst.ListenerManager.onTransitionStateReq += TransitionStateNotify;
+        
     }
 
+    public void SetBaseStat()
+    {
+        PlayerBaseStats playerBaseStats =  GI.Inst.ResourceManager.GetPlayerBaseStats();
+        StatManager.InitStat(playerBaseStats.stats);
+    }
     
     
     protected override void InitState()
@@ -51,6 +55,7 @@ public class Player : BaseCharacter
         States.Add(Define.EPlayerState.JumpEnd, new Player_JumpEndState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.GroundSliding, new Player_GroundSlideState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.Dash, new Player_DashState(Animator, Rb, this, PlayerController));
+        States.Add(Define.EPlayerState.Dead, new Player_DeadState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.WallSliding, new Player_WallSlideState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.WallJump, new Player_WallJumpState(Animator, Rb, this, PlayerController));
         States.Add(Define.EPlayerState.DaggerNormalAttack, new DaggerNormalAttackState(Animator, Rb, this, PlayerController));
@@ -110,7 +115,6 @@ public class Player : BaseCharacter
                 StateMachine.CurrentState != States[Define.EPlayerState.JumpEnd] && 
                 StateMachine.CurrentState != States[Define.EPlayerState.Falling] && 
                StateMachine.CurrentState != States[Define.EPlayerState.Move];
-
     }
 
     public void AnimPauseNotify()
@@ -118,7 +122,10 @@ public class Player : BaseCharacter
         StateMachine.CurrentState.AnimPauseNotify();
     }
 
-   
+    public int GetPlayerInstId()
+    {
+        return InstId;
+    }
     
 
     

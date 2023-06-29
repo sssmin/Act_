@@ -1,139 +1,92 @@
-﻿
+﻿using System;
 
-using System;
-using UnityEngine;
 
 public static class Define
 {
     public const int MAX_NORMAL_ATTACK_COMBO_NUM = 3;
+    public const int LEFT_PIVOT = 0;
+    public const int RIGHT_PIVOT = 1;
+
+    public enum EDamageTextType
+    {
+        PlayerDamaged,
+        MonsterDamaged,
+        PlayerDamagedCritical,
+        MonsterDamagedCritical,
+        Evasion
+    }
 
     public enum EActivationCondition //발동 조건
     {
-        ApplyImmediately,
+        None,
         CauseDamage,
         TakeDamage
     }
-
-    public enum EEffectType
-    {
-        Buff,
-        Debuff,
-        Attr
-    }
+    
 
     public enum EDamageType
     {
         None,
         Normal,
-        Skill
-    }
-
-    public enum EEffectDetail
-    {
-        None,
-        GetValue,
-        ReturnIncDecValue,
-        SpawnInstance,
-        BuffMySelf,
-        DebuffToEnemy
-    }
-    
-    public enum EScriptableObjectType
-    {
         Skill,
-        Stat
+        Both
     }
-
-    public enum EBaseStatOwnerId
-    {
-        Player,
-        NightBorne
-    }
-
-    // public enum EBuffType
-    // {
-    //     PassiveBuff, //지속 버프
-    //     ActiveBuff   //단발성 버프
-    // }
     
     
-    //쭉 지속되는 버프인지
-    //Endtime이 있는 버프인지
-
-    public enum EBuffType
+    public enum ELabel
     {
-        StatBuff, //스탯 버프
-        EnhancementBuff //강화 버프
-    }
-
-    public enum EBuffId
-    {
-        ArrowBuff,
-    }
-
-    public enum EDebuffId
-    {
-        
-    }
-
-    public enum EAttrId
-    {
-        
-    }
-
-    public enum EItemId
-    {
-        
+        Prefab,
+        Skill,
+        Item,
+        MonsterInfo,
+        PlayerBaseStat,
+        ItemCraft
     }
 
     public enum ESkillId
     {
-        ThrowDagger,
-        PlayerClone,
-        DaggerBall,
-        DaggerUlt,
-        FireStrike,
-        Earthquake,
-        ThrowAxe,
-        AxeUlt,
-        ArrowRain,
-        PiercingArrow,
-        ArrowBuff,
-        DistortionArrow,
+        ThrowDagger, PlayerClone, DaggerBall, DaggerUlt,
+        FireStrike, Earthquake, ThrowAxe, AxeUlt,
+        ArrowRain, PiercingArrow, ArrowBuff, DistortionArrow,
+        Dash,
+        HealthSteal, LastStand, TemporalDistortion, DeadlyImpact, NimbleReflexes,
+        Max
+    }
+    
+
+    public enum EStatType
+    {
+        None,
+        Attack,
+        Defence,
+        ElemAttack,
+        MaxHp,
+        CriticalChancePer,
+        CriticalResistPer,
+        CriticalDamageIncPer,
+        NormalAttackDamageIncPer,
+        SkillAttackDamageIncPer,
+        EvasionChancePer,
+        SkillCooltimeDecRate,
+        MoveSpeed,
+        
+        Max
     }
     
     public enum EPlayerState
     {
-        Idle,
-        Move,
-        InAir,
-        Falling,
-        JumpEnd,
-        GroundSliding,
-        WallSliding,
-        WallJump,
-        Dash,
-        DaggerNormalAttack,
-        AxeNormalAttack,
-        BowNormalAttack,
-        ThrowDaggerSkill,
-        PlayerCloneSkill,
-        DaggerUlt,
-        DaggerBall,
-        FireStrike,
-        Earthquake,
-        ThrowAxe,
-        AxeUlt,
-        ArrowRain,
-        PiercingArrow,
-        ArrowBuff,
-        DistortionArrow,
+        Idle, Move, InAir, Falling, JumpEnd,
+        GroundSliding, WallSliding, WallJump, Dash, 
+        DaggerNormalAttack, AxeNormalAttack, BowNormalAttack,
+        ThrowDaggerSkill, PlayerCloneSkill, DaggerUlt, DaggerBall,
+        FireStrike, Earthquake, ThrowAxe, AxeUlt,
+        ArrowRain, PiercingArrow, ArrowBuff, DistortionArrow,
         
         Dead,
         
         Max
     }
-
+    
     [Serializable]
     public enum EMonsterState
     {
@@ -152,14 +105,17 @@ public static class Define
 
     public enum EStatusEffect
     {
-        None,
-        Burn,
-        Poison,
-        Freeze,
-        Bleed,
-        Fear,
+        None, Burn, Poison, Freeze, Bleed, Fear,
         
         Max
+    }
+    
+    public enum EMainMenuType
+    {
+        None,
+        Inventory,
+        Skill,
+        Option
     }
     
     public enum Scene
@@ -176,11 +132,6 @@ public static class Define
         Effect,
         MaxCount,
     }
-
-    public enum UIEvent
-    {
-        Click,
-        Drag,
-    }
+    
     
 }

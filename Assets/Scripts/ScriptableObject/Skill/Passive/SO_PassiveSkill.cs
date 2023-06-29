@@ -1,0 +1,20 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Serialization;
+
+
+
+public class SO_PassiveSkill : SO_Skill
+{
+    [HideInInspector] public Effect effect;
+
+    public virtual void Init()
+    {
+        
+    }
+    
+    public override void ExecSkill(StatManager castStatManager, PlayerController playerController)
+    {
+        
+    }
+}

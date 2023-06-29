@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(StateMachine))]
@@ -14,11 +12,14 @@ public class BaseCharacter : MonoBehaviour
         private set => instId = value;
     }
     protected Rigidbody2D Rb { get; set; }
-    protected SpriteRenderer Sr { get; set; }
+    public SpriteRenderer Sr { get; set; }
     public Animator Animator { get; set; }
     public StateMachine StateMachine { get; set; }
+    public StatManager StatManager { get; private set; }
+    protected Coroutine hitEffectCoroutine;
+
+    public float MoveSpeed => StatManager.stats.moveSpeed.Value;
     
-    public float MoveSpeed { get; protected set; }
 
     protected virtual void Awake()
     {
@@ -27,11 +28,13 @@ public class BaseCharacter : MonoBehaviour
         Animator = GetComponentInChildren<Animator>();
         StateMachine = GetComponent<StateMachine>();
         InstId = GetInstanceID();
+        StatManager = GetComponent<StatManager>();
     }
 
     protected virtual void Start()
     {
         InitState();
+        StatManager.Character = this;
     }
 
     protected virtual void Update()
@@ -61,6 +64,28 @@ public class BaseCharacter : MonoBehaviour
     public virtual bool DoNotFlipState()
     {
         return false;
+    }
+
+    public void HitEffect()
+    {
+        if (hitEffectCoroutine != null)
+        {
+            StopCoroutine(hitEffectCoroutine);
+            Sr.color = Color.white;
+        }
+        hitEffectCoroutine = StartCoroutine(CoActivateHitEffect());
+    }
+    
+    public IEnumerator CoActivateHitEffect()
+    {
+        Sr.color = Color.red;
+        while (true)
+        {
+            yield return null;
+            Sr.color = Color.Lerp(Sr.color, Color.white, Time.deltaTime);
+            if (Sr.color == Color.white)
+                yield break;
+        }
     }
     
     

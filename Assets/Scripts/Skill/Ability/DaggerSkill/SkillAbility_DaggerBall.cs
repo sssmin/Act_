@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SkillAbility_DaggerBall : MonoBehaviour
 {
-    private BaseController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private RuntimeAnimatorController AnimatorController { get; set; }
@@ -20,9 +20,9 @@ public class SkillAbility_DaggerBall : MonoBehaviour
         AnimatorController = Animator.runtimeAnimatorController;
     }
 
-    public void Init(Vector2 dir, BaseController inOwner, DamageInfo damageInfo)
+    public void Init(Vector2 dir, StatManager inOwner, DamageInfo damageInfo)
     {
-        OwnerController = inOwner;
+        OwnerStatManager = inOwner;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo = damageInfo;
         CoDestroy = StartCoroutine(CoDestroyMyself());
@@ -40,7 +40,7 @@ public class SkillAbility_DaggerBall : MonoBehaviour
         {
             if (col == null) break;
             StatManager monsterStat = col.GetComponent<StatManager>();
-            monsterStat.OnDamage(DamageInfo, OwnerController.gameObject);
+            monsterStat.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
         }
 
         StartCoroutine(CoRestore());

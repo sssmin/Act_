@@ -24,7 +24,7 @@ public class DaggerUltState : PlayerState
         {
             bIsAnimTrigger = false;
             Animator.SetFloat(AnimHash.daggerUltNum, 1);//casting
-            GI.Inst.ListenerManager.OnExecuteSkill(Player.InstId, Define.ESkillId.DaggerUlt);
+            GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.DaggerUlt);
         }
        
     }

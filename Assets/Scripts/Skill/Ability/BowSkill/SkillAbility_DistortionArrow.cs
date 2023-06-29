@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SkillAbility_DistortionArrow : MonoBehaviour
 {
-    private PlayerController OwnerController { get; set; }
+    private StatManager OwnerStatManager { get; set; }
     private Rigidbody2D Rb { get; set; }
     private Animator Animator { get; set; }
     private DamageInfo DamageInfo { get; set; }
@@ -32,9 +32,9 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
     }
     
 
-    public void Init(Vector2 dir, PlayerController inOwner, DamageInfo damageInfo)
+    public void Init(Vector2 dir, StatManager inOwner, DamageInfo damageInfo)
     {
-        OwnerController = inOwner;
+        OwnerStatManager = inOwner;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo newDamageInfo = new DamageInfo();
         newDamageInfo.damage = Mathf.RoundToInt(damageInfo.damage / 5f);
@@ -99,7 +99,7 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
                 {
                     damageTimer = 0f;
                     StatManager enemyStatManager = col.GetComponent<StatManager>();
-                    enemyStatManager.OnDamage(DamageInfo, OwnerController.gameObject);
+                    enemyStatManager.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);
                 }
             }
         }

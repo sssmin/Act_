@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4054bd24ff94fb145801d4c1c6d99f25, type: 3}
+  m_Name: HpPotion
+  m_EditorClassIdentifier: 
+  itemId: HpPotion
+  ItemCategory: 3
+  itemName: "\uCCB4\uB825 \uD3EC\uC158"
+  itemDesc: "\uCCB4\uB825\uC744 \uD68C\uBCF5\uC2DC\uCF1C\uC90D\uB2C8\uB2E4."
+  itemIcon: {fileID: -1009451675, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
+  bIsCanStack: 1
+  amount: 1
+  maxStackSize: 50
+  playerSellPrice: 15
+  consumableType: 0
+  itemCooltime: 5
+  dropChance: 0
+  minDropAmount: 0
+  maxDropAmount: 0
+  storeSellPrice: 50
+  effect:
+    activationCondition: 0
+    activateChancePer: 0
+    damageType: 0
+    effectInfo:
+      effectType: 0
+      effectDetail: 4
