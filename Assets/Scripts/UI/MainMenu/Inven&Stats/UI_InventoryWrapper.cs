@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_InventoryWrapper : MonoBehaviour
@@ -9,10 +7,15 @@ public class UI_InventoryWrapper : MonoBehaviour
     
     public void InitOnce()
     {
-        GI.Inst.UIManager.refreshGoldInvenCapacityUI += RefreshGoldInvenCapacityUI;
+        GI.Inst.UIManager.refreshGoldInvenCapacityUI -= RefreshGoldInvenCapacityUI;
         GI.Inst.UIManager.refreshGoldInvenCapacityUI += RefreshGoldInvenCapacityUI;
         
         invenCategoryHolder.InitOnce();
+    }
+
+    private void OnDestroy()
+    {
+        Debug.Log("파개");
     }
 
     public void RefreshInventoryUI()

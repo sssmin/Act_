@@ -17,9 +17,7 @@ MonoBehaviour:
   itemName: "\uAD81\uADF9\uAE30 \uAC15\uD654 \uC7AC\uB8CC"
   itemDesc: "\uAD81\uADF9\uAE30 \uC2A4\uD0AC\uC744 \uAC15\uD654\uD560 \uC218 \uC788\uC5B4\uC694."
   itemIcon: {fileID: 1917982286, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
-  bIsCanStack: 0
   amount: 1
   maxStackSize: 50
-  playerSellPrice: 0
   etcCategory: 1
   skillMatId: 1

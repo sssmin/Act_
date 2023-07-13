@@ -18,5 +18,6 @@ public class UI_TB_ConfirmButton : MonoBehaviour
     {
         GI.Inst.UIManager.ClosePopup();
         callback?.Invoke(item);
+        GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
 }

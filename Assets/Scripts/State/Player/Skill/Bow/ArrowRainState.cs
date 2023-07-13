@@ -10,16 +10,16 @@ public class ArrowRainState : PlayerState
     {
         Animator.SetBool(AnimHash.isArrowRain, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
     
     public override void Update()
     {
         base.Update();
 
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.ArrowRain);
         }
     }
@@ -27,6 +27,6 @@ public class ArrowRainState : PlayerState
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isArrowRain, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

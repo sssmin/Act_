@@ -22,6 +22,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - MonsterInfo
+  - m_GUID: ab23312a807dd23498acb9fbbe625c69
+    m_Address: WandererMagician
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterInfo
+  - m_GUID: 88b30c1037a7ca94cb0cc11cdd41acea
+    m_Address: SkeletonWarrior
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterInfo
+  - m_GUID: df63b32f54bf497469207564b799fb4a
+    m_Address: Necromancer
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterInfo
+  - m_GUID: 7f101e9be47b70e4883d88cf839ea398
+    m_Address: WindHashashin
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - MonsterInfo
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

@@ -33,7 +33,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -42,12 +42,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -70,7 +70,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -127,7 +127,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Magic_arrow_0
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 0
+        width: 39
+        height: 63
+      alignment: 9
+      pivot: {x: 0.117518984, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 640428beefa485a48835ab3622dcb5e1
+      internalID: 277050362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magic_arrow_1
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 0
+        width: 47
+        height: 63
+      alignment: 9
+      pivot: {x: 0.14017016, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fc466420cfb76b4884c4a1263e5f1d9
+      internalID: 1640879139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magic_arrow_2
+      rect:
+        serializedVersion: 2
+        x: 293
+        y: 0
+        width: 54
+        height: 65
+      alignment: 9
+      pivot: {x: 0.08124684, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fa088ca2179be674194094eb18337ff0
+      internalID: -300202946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magic_arrow_3
+      rect:
+        serializedVersion: 2
+        x: 421
+        y: 0
+        width: 54
+        height: 65
+      alignment: 9
+      pivot: {x: 0.08124627, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14cc0ea392f29224493dce35ac3bf432
+      internalID: 2035144906
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magic_arrow_4
+      rect:
+        serializedVersion: 2
+        x: 549
+        y: 0
+        width: 54
+        height: 65
+      alignment: 9
+      pivot: {x: 0.081245705, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 152cf9fb36fedd54a8d064f4ae2b7980
+      internalID: 228331926
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Magic_arrow_5
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 0
+        width: 54
+        height: 65
+      alignment: 9
+      pivot: {x: 0.08124684, y: 0.008355219}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 76656f092b30877439f6b44d76e0ebb0
+      internalID: -114850743
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -138,7 +264,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Magic_arrow_5: -114850743
+      Magic_arrow_0: 277050362
+      Magic_arrow_3: 2035144906
+      Magic_arrow_1: 1640879139
+      Magic_arrow_2: -300202946
+      Magic_arrow_4: 228331926
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

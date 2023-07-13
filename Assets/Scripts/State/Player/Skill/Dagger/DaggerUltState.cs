@@ -13,16 +13,16 @@ public class DaggerUltState : PlayerState
         Animator.SetBool(AnimHash.isDaggerUltBegin, true);
         Animator.SetFloat(AnimHash.daggerUltNum, 0);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 
     public override void Update()
     {
         base.Update();
         
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             Animator.SetFloat(AnimHash.daggerUltNum, 1);//casting
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.DaggerUlt);
         }
@@ -33,6 +33,6 @@ public class DaggerUltState : PlayerState
     {
         base.EndState();
         Animator.SetBool(AnimHash.isDaggerUltBegin, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +7,7 @@ public enum EMerchantType
     Craft
 }
 
-public class UI_Merchant_Menu : MonoBehaviour
+public class UI_Merchant_Menu : UI_Popup
 {
     [SerializeField] private Button closeButton; 
     [SerializeField] private Button buyButton; 
@@ -26,10 +24,10 @@ public class UI_Merchant_Menu : MonoBehaviour
     private ItemCraft TempItemCraft { get; set; }
     public void InitOnce()
     {
-        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_ItemLineParent");
+        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_ItemLineParent", transform);
         itemLineParentUI = go.GetComponent<UI_Merchant_ItemLineParent>();
         
-        go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLineParent");
+        go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLineParent", transform);
         craftLineParent = go.GetComponent<UI_Merchant_CraftLineParent>();
         craftLineParent.InitOnce();
     }

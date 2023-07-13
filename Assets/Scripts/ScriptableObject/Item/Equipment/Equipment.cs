@@ -13,7 +13,7 @@ public class Equipment : Item
     public List<string> effectDescs { get; set; } = new List<string>();
     
     
-    public override void DataCopy(Item item)
+    protected override void DataCopy(Item item)
     {
         base.DataCopy(item);
         

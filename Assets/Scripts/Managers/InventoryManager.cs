@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GoldInvenCapacty
+[Serializable]
+public class GoldInvenCapacity
 {
-   public int maxInvenNum;
-   public int currentInvenNum;
-   public int gold;
+   [SerializeField] public int maxInvenNum;
+   [SerializeField] public int currentInvenNum;
+   [SerializeField] public int gold;
 }
 
+[Serializable]
 public class StackableItem
 {
-   public Item item;
-   public List<int> amounts = new List<int>();
+   [SerializeField] public Item item;
+   [SerializeField] public List<int> amounts = new List<int>();
    
    public void AddAmount(int inAmount)
    {
@@ -61,28 +63,177 @@ public class StackableItem
    }
 }
 
+[Serializable]
+public class ConsumableDictionary : SerializableDictionary<Item.EConsumableType, StackableItemSaveInfo>
+{
+}
+
+[Serializable]
+public class EtcDictionary : SerializableDictionary<string, StackableItemSaveInfo>
+{
+}
+
+[Serializable]
+public class RegisteredHotkeyItemDictionary : SerializableDictionary<Item.EItemHotkeyOrder, ItemSaveInfo>
+{
+}
+
+[Serializable]
+public class ItemSaveInfo
+{
+   [SerializeField] public string itemId;
+   [SerializeField] public int amount;
+
+   public void SetInfo(Item item)
+   {
+      itemId = item.itemId;
+      amount = item.amount;
+   }
+}
+
+[Serializable]
+public class StackableItemSaveInfo
+{
+   [SerializeField] public string itemId;
+   [SerializeField] public List<int> amounts;
+
+   public void SetInfo(StackableItem item)
+   {
+      itemId = item.item.itemId;
+      amounts = item.amounts;
+   }
+}
+
+[Serializable]
+public class InventoryInfo
+{
+   public InventoryInfo(List<Item> inWeaponInventory, List<Item> inArmorInventory, List<Item> inAccInventory, List<Item> inEquippedItems,
+      Dictionary<Item.EConsumableType, StackableItem> inConsumableDictionary, 
+      Dictionary<string, StackableItem> inEtcDictionary,
+      Dictionary<Item.EItemHotkeyOrder, Consumable> inRegisteredHotkeyItemDictionary, 
+      GoldInvenCapacity inGoldInvenCapacity)
+   {
+      Convert(inWeaponInventory, inArmorInventory, inAccInventory,
+         inEquippedItems, inConsumableDictionary, inEtcDictionary, inRegisteredHotkeyItemDictionary,
+         inGoldInvenCapacity);
+   }
+   
+   [SerializeField] public ItemSaveInfo[] weaponInventory;
+   [SerializeField] public ItemSaveInfo[] armorInventory;
+   [SerializeField] public ItemSaveInfo[] accInventory;
+   [SerializeField] public ItemSaveInfo[] equippedItems;
+   [SerializeField] public ConsumableDictionary consumableInventory;
+   [SerializeField] public EtcDictionary etcInventory;
+   [SerializeField] public RegisteredHotkeyItemDictionary registeredHotkeyItems;
+   [SerializeField] public GoldInvenCapacity goldInvenCapacity;
+
+   private InventoryInfo Convert(List<Item> inWeaponInventory, List<Item> inArmorInventory, List<Item> inAccInventory, List<Item> inEquippedItems,
+      Dictionary<Item.EConsumableType, StackableItem> inConsumableDictionary, 
+      Dictionary<string, StackableItem> inEtcDictionary,
+      Dictionary<Item.EItemHotkeyOrder, Consumable> inRegisteredHotkeyItemDictionary, GoldInvenCapacity inGoldInvenCapacity)
+   {
+      weaponInventory = new ItemSaveInfo[inWeaponInventory.Count];
+      for (int i = 0; i < inWeaponInventory.Count; i++)
+      {
+         weaponInventory[i] = new ItemSaveInfo();
+         weaponInventory[i].SetInfo(inWeaponInventory[i]);
+      }
+      
+      armorInventory = new ItemSaveInfo[inArmorInventory.Count];
+      for (int i = 0; i < inArmorInventory.Count; i++)
+      {
+         armorInventory[i] = new ItemSaveInfo();
+         armorInventory[i].SetInfo(inArmorInventory[i]);
+      }
+      
+      accInventory = new ItemSaveInfo[inAccInventory.Count];
+      for (int i = 0; i < inAccInventory.Count; i++)
+      {
+         accInventory[i] = new ItemSaveInfo();
+         accInventory[i].SetInfo(inAccInventory[i]);
+      }
+      
+      equippedItems = new ItemSaveInfo[inEquippedItems.Count];
+      for (int i = 0; i < inEquippedItems.Count; i++)
+      {
+         equippedItems[i] = new ItemSaveInfo();
+         equippedItems[i].SetInfo(inEquippedItems[i]);
+      }
+
+      consumableInventory = new ConsumableDictionary();
+      foreach (KeyValuePair<Item.EConsumableType, StackableItem> pair in inConsumableDictionary)
+      {
+         StackableItemSaveInfo itemSaveInfo = new StackableItemSaveInfo()
+         {
+            itemId = pair.Value.item.itemId, amounts = pair.Value.amounts
+         };
+         consumableInventory.Add(pair.Key, itemSaveInfo);
+      }
+      consumableInventory.Serialize();
+      
+      etcInventory = new EtcDictionary();
+      foreach (KeyValuePair<string, StackableItem> pair in inEtcDictionary)
+      {
+         StackableItemSaveInfo itemSaveInfo = new StackableItemSaveInfo()
+         {
+            itemId = pair.Value.item.itemId, amounts = pair.Value.amounts
+         };
+         etcInventory.Add(pair.Key, itemSaveInfo);
+      }
+      etcInventory.Serialize();
+      
+      registeredHotkeyItems = new RegisteredHotkeyItemDictionary();
+      foreach (KeyValuePair<Item.EItemHotkeyOrder, Consumable> pair in inRegisteredHotkeyItemDictionary)
+      {
+         ItemSaveInfo itemSaveInfo = new ItemSaveInfo()
+         {
+            itemId = pair.Value.itemId, amount = pair.Value.amount
+         };
+         registeredHotkeyItems.Add(pair.Key, itemSaveInfo);
+      }
+      registeredHotkeyItems.Serialize();
+
+
+      goldInvenCapacity = inGoldInvenCapacity;
+      return this;
+   }
+
+   public void Deserialize()
+   {
+      consumableInventory.Deserialize();
+      etcInventory.Deserialize();
+      registeredHotkeyItems.Deserialize();
+   }
+}
+
 public class InventoryManager : MonoBehaviour //todo ScriptableObject
 {
    private int playerInstId;
    
-   public List<Item> WeaponInventory { get; set; } = new List<Item>();
+   private List<Item> WeaponInventory { get; set; } = new List<Item>();
    private List<Item> ArmorInventory { get; set; } = new List<Item>();
-   public List<Item> AccInventory { get; set; } = new List<Item>();
-
+   private List<Item> AccInventory { get; set; } = new List<Item>();
+   
    private Dictionary<Item.EConsumableType, StackableItem> ConsumableInventory { get; set; } = new Dictionary<Item.EConsumableType, StackableItem>();
+   //private ConsumableDictionary ConsumableInventory { get; set; }= new ConsumableDictionary();
    private Dictionary<string, StackableItem> EtcInventory { get; set; } = new Dictionary<string, StackableItem>(); //key : itemId
+   //private EtcDictionary EtcInventory { get; set; } = new EtcDictionary(); //key : itemId
 
-   public List<Item> EquippedItems { get; set; } = new List<Item>();
+   
+   private List<Item> EquippedItems { get; set; } = new List<Item>();
 
    public Dictionary<Item.EItemHotkeyOrder, Consumable> RegisteredHotkeyItems { get; set; } = new Dictionary<Item.EItemHotkeyOrder, Consumable>();
-   private GoldInvenCapacty GoldInvenCapacty { get; set; }
+   //private RegisteredHotkeyItemDictionary RegisteredHotkeyItems { get; set; } = new RegisteredHotkeyItemDictionary();
+   private GoldInvenCapacity GoldInvenCapacity { get; set; }
 
    private void Awake()
    {
-      GoldInvenCapacty = new GoldInvenCapacty()
+      GoldInvenCapacity = new GoldInvenCapacity()
       {
          maxInvenNum = 100, currentInvenNum = 0, gold = 0
       };
+      
+      playerInstId = GI.Inst.ListenerManager.GetPlayerInstId();
    }
 
    public void BindAction()
@@ -91,7 +242,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       GI.Inst.ListenerManager.giveItemsToPlayer += GiveItemsToPlayer;
       GI.Inst.ListenerManager.getItems -= GetItems;
       GI.Inst.ListenerManager.getItems += GetItems;
-      GI.Inst.ListenerManager.getStackableItems += GetStackableItems;
+      GI.Inst.ListenerManager.getStackableItems -= GetStackableItems;
       GI.Inst.ListenerManager.getStackableItems += GetStackableItems;
       GI.Inst.ListenerManager.useItem -= UseItem;
       GI.Inst.ListenerManager.useItem += UseItem;
@@ -125,16 +276,44 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       GI.Inst.ListenerManager.increaseCurrentInventoryNum += IncreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.decreaseCurrentInventoryNum -= DecreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.decreaseCurrentInventoryNum += DecreaseCurrentInventoryNum;
+      GI.Inst.ListenerManager.isEquippedWeapon -= IsEquippedWeapon;
+      GI.Inst.ListenerManager.isEquippedWeapon += IsEquippedWeapon;
       
    }
+
+   private void OnDestroy()
+   {
+      GI.Inst.ListenerManager.giveItemsToPlayer -= GiveItemsToPlayer;
+      GI.Inst.ListenerManager.getItems -= GetItems;
+      GI.Inst.ListenerManager.getStackableItems -= GetStackableItems;
+      GI.Inst.ListenerManager.useItem -= UseItem;
+      GI.Inst.ListenerManager.getEquippedItems -= GetEquippedItems;
+      GI.Inst.ListenerManager.getEquippedWeaponType -= GetEquippedWeaponType;
+      GI.Inst.ListenerManager.unequip -= Unequip;
+      GI.Inst.ListenerManager.subItem -= SubItem;
+      GI.Inst.ListenerManager.getGoldInvenCapacity -= GetGoldInvenCapacity;
+      GI.Inst.ListenerManager.registerItemHotkey -= RegisterItemHotkey;
+      GI.Inst.ListenerManager.onPressedItemHotkey -= PressedItemHotkey;
+      GI.Inst.ListenerManager.useActiveSkillMat -= UseActiveSkillMat;
+      GI.Inst.ListenerManager.usePassiveSkillMat -= UsePassiveSkillMat;
+      GI.Inst.ListenerManager.checkSkillMatCanLevelUpSkills -= CheckMatCanLevelUpActiveSkills;
+      GI.Inst.ListenerManager.buyItem -= BuyItem;
+      GI.Inst.ListenerManager.addItem -= AddItem;
+      GI.Inst.ListenerManager.hasEnoughEtcItems -= HasEnoughEtcItems;
+      GI.Inst.ListenerManager.increaseCurrentInventoryNum -= IncreaseCurrentInventoryNum;
+      GI.Inst.ListenerManager.decreaseCurrentInventoryNum -= DecreaseCurrentInventoryNum;
+      GI.Inst.ListenerManager.isEquippedWeapon -= IsEquippedWeapon;
+   }
+
    public void Init()
    {
       
    }
+   
 
    private void Start()
    {
-      playerInstId = GI.Inst.ListenerManager.GetPlayerInstId();
+      
    }
 
    //test
@@ -144,12 +323,14 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       { 
          Item item = GI.Inst.ResourceManager.GetItemData("InfinityBow");
          AddItemTest(item);
-         // item = GI.Inst.ResourceManager.GetItemData("WeaponMat");
-         // AddItemTest(item);
-         // item = GI.Inst.ResourceManager.GetItemData("SharedMat");
-         // AddItemTest(item);
-         // item = GI.Inst.ResourceManager.GetItemData("ArmorMat");
-         // AddItemTest(item);
+         item = GI.Inst.ResourceManager.GetItemData("WeaponMat");
+         AddItemTest(item);
+         item = GI.Inst.ResourceManager.GetItemData("SharedMat");
+         AddItemTest(item);
+         item = GI.Inst.ResourceManager.GetItemData("HpPotion");
+         AddItemTest(item);
+         item = GI.Inst.ResourceManager.GetItemData("ActiveNormalMat");
+         AddItemTest(item);
          item = GI.Inst.ResourceManager.GetItemData("PassiveMat");
          AddItemTest(item);
          AddGold(10000);
@@ -164,13 +345,13 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
    public void IncreaseCurrentInventoryNum()
    {
-      GoldInvenCapacty.currentInvenNum++;
+      GoldInvenCapacity.currentInvenNum++;
       GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
    }
 
    public void DecreaseCurrentInventoryNum()
    {
-      GoldInvenCapacty.currentInvenNum--;
+      GoldInvenCapacity.currentInvenNum--;
       GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
    }
 
@@ -181,7 +362,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
    public bool AddItem(Item item, bool shouldRefreshUI, int amount)
    {
-      if (GoldInvenCapacty.currentInvenNum >= GoldInvenCapacty.maxInvenNum) return false;
+      if (GoldInvenCapacity.currentInvenNum >= GoldInvenCapacity.maxInvenNum) return false;
       
       switch (item.ItemCategory)
       {
@@ -247,7 +428,8 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
             }
             break;
       }
-      RefreshInventoryUI();
+      if (shouldRefreshUI)
+         RefreshInventoryUI();
       return true;
    }
 
@@ -570,7 +752,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
    public void AddGold(int value)
    {
-      GoldInvenCapacty.gold = Mathf.Clamp(GoldInvenCapacty.gold + value, 0, Int32.MaxValue);
+      GoldInvenCapacity.gold = Mathf.Clamp(GoldInvenCapacity.gold + value, 0, Int32.MaxValue);
       GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
    }
    
@@ -613,6 +795,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
    private void UseItem(Item item)
    {
+      Debug.Log(GetInstanceID());
       switch (item.ItemCategory)
       {
          case Item.EItemCategory.Weapon:
@@ -676,7 +859,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return false;
    }
 
-   public void Equip(Item item)
+   public void Equip(Item item, bool shouldRefreshUI = true)
    {
       Equipment equipment = (Equipment)item;
       equipment.bIsEquipped = true;
@@ -691,8 +874,8 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       
       if (equipment.ItemCategory == Item.EItemCategory.Weapon)
          GI.Inst.ListenerManager.SetActiveSkillCuzEquip(((BaseWeapon)equipment).weaponType);
-      
-      RefreshInventoryUI();
+      if (shouldRefreshUI)
+         RefreshInventoryUI();
    }
 
    public void EquipExchange(Item equippedItem, Item newItem)
@@ -802,14 +985,112 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return Item.EWeaponType.None;
    }
 
-   public GoldInvenCapacty GetGoldInvenCapacity()
+   public GoldInvenCapacity GetGoldInvenCapacity()
    {
-      return GoldInvenCapacty;
+      return GoldInvenCapacity;
    }
 
    void RefreshInventoryUI()
    {
       GI.Inst.UIManager.RefreshInventoryUI();
+   }
+
+   void RefreshGoldInvenCapacityUI()
+   {
+      GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
+   }
+
+   bool IsEquippedWeapon()
+   {
+      foreach (Item item in EquippedItems)
+      {
+         if (item.ItemCategory == Item.EItemCategory.Weapon)
+            return true;
+      }
+
+      return false;
+   }
+
+   //for save
+   public InventoryInfo GetSerializeInventoryInfo()
+   {
+      InventoryInfo inventoryInfo = new InventoryInfo(WeaponInventory, ArmorInventory, AccInventory, EquippedItems, ConsumableInventory, EtcInventory, RegisteredHotkeyItems, GoldInvenCapacity);
+      return inventoryInfo;
+   }
+
+   //load
+   public void SetDeserializeInventoryInfo(InventoryInfo inventoryInfo)
+   {
+      inventoryInfo.Deserialize();
+      
+      ItemSaveInfo[] infos = inventoryInfo.weaponInventory;
+      foreach (ItemSaveInfo info in infos)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         WeaponInventory.Add(item);
+      }
+
+      infos = inventoryInfo.armorInventory;
+      foreach (ItemSaveInfo info in infos)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         ArmorInventory.Add(item);
+      }
+      
+      infos = inventoryInfo.accInventory;
+      foreach (ItemSaveInfo info in infos)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         AccInventory.Add(item);
+      }
+      
+      infos = inventoryInfo.equippedItems;
+      foreach (ItemSaveInfo info in infos)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         Equip(item, false);
+      }
+
+      ConsumableDictionary consumableInventory = inventoryInfo.consumableInventory;
+      foreach (var pair in consumableInventory)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(pair.Value.itemId);
+         StackableItem stackableItem = new StackableItem()
+         {
+            item = item,
+            amounts = pair.Value.amounts
+         };
+         ConsumableInventory.Add(pair.Key, stackableItem);
+         Debug.Log(pair.Key);
+      }
+      
+      EtcDictionary etcInventory = inventoryInfo.etcInventory;
+      foreach (var pair in etcInventory)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(pair.Value.itemId);
+         StackableItem stackableItem = new StackableItem()
+         {
+            item = item,
+            amounts = pair.Value.amounts
+         };
+         
+         EtcInventory.Add(pair.Key, stackableItem);
+      }
+      
+      RegisteredHotkeyItemDictionary registeredHotkeyItemDictionary = inventoryInfo.registeredHotkeyItems;
+      foreach (var pair in registeredHotkeyItemDictionary)
+      {
+         Item item = GI.Inst.ResourceManager.GetItemData(pair.Value.itemId);
+         item.amount = pair.Value.amount;
+         RegisteredHotkeyItems.Add(pair.Key, (Consumable)item);
+         GI.Inst.UIManager.RefreshItemHotkeyUI(pair.Key, item);
+      }
+
+      GoldInvenCapacity = inventoryInfo.goldInvenCapacity;
+      
+      GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
+      RefreshInventoryUI();
+      
    }
    
    #endregion

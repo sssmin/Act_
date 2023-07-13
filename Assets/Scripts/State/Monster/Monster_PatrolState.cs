@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster_PatrolState : MonsterState
@@ -10,12 +8,11 @@ public class Monster_PatrolState : MonsterState
     {
     }
 
-    private float ThinkTimer;
+    protected float ThinkTimer;
 
     public override void BeginState()
     {
         Animator.SetBool(AnimHash.isMove, true);
-        Animator.SetFloat(AnimHash.xVelocity, AIController.CurrentDir.x);
         ThinkTimer = Random.Range(1f, 2f);
     }
 
@@ -25,7 +22,12 @@ public class Monster_PatrolState : MonsterState
         
         ThinkTimer -= Time.deltaTime;
         
-        //todo 내 앞 뒤에 적이 있는지
+        if (AIController.Target != null)
+        {
+            TransitionState(Define.EMonsterState.Chase);
+            return;
+        }
+        
         Monster.SetVelocity(Monster.MoveSpeed * AIController.CurrentDir.x);
         //Idle로 전환, 뒤돌기
         if (AIController.IsFrontWall || !AIController.IsFrontGround)

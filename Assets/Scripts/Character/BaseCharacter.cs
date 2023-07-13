@@ -12,11 +12,11 @@ public class BaseCharacter : MonoBehaviour
         private set => instId = value;
     }
     protected Rigidbody2D Rb { get; set; }
-    public SpriteRenderer Sr { get; set; }
+    private SpriteRenderer Sr { get; set; }
     public Animator Animator { get; set; }
     public StateMachine StateMachine { get; set; }
     public StatManager StatManager { get; private set; }
-    protected Coroutine hitEffectCoroutine;
+    protected Coroutine HitEffectCoroutine { get; set; }
 
     public float MoveSpeed => StatManager.stats.moveSpeed.Value;
     
@@ -68,12 +68,12 @@ public class BaseCharacter : MonoBehaviour
 
     public void HitEffect()
     {
-        if (hitEffectCoroutine != null)
+        if (HitEffectCoroutine != null)
         {
-            StopCoroutine(hitEffectCoroutine);
+            StopCoroutine(HitEffectCoroutine);
             Sr.color = Color.white;
         }
-        hitEffectCoroutine = StartCoroutine(CoActivateHitEffect());
+        HitEffectCoroutine = StartCoroutine(CoActivateHitEffect());
     }
     
     public IEnumerator CoActivateHitEffect()

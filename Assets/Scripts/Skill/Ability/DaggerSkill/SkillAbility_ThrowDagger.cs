@@ -32,6 +32,7 @@ public class SkillAbility_ThrowDagger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //여길 안들어옴
         if (other.CompareTag("Monster"))
         {
             other.GetComponent<StatManager>()?.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);

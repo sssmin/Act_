@@ -44,10 +44,16 @@ public class AnimTrigger : MonoBehaviour
     //나중에 이 클래스 베이스로 하고 플레이어, 몬스터 나누기.
     public virtual void SweepOverlapCircle()
     {
-        CombatManager.ExecuteNormalAttack("Monster");
     }
 
-    
+    public virtual void ExecNormalAttackNotify()
+    {
+    }
+
+    public virtual void NormalAttackCompleted()
+    {
+        
+    }
     
     
 }

@@ -6,12 +6,15 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    #region delegate
     public Action<EActiveSkillOrder, float> setSkillCooltimeUI;
     public Action<EActiveSkillOrder> resetCooltimeUI;
     public Action refreshInventoryUI;
     public Func<UI_InventoryWrapper> getInventoryWrapper;
     public Action refreshGoldInvenCapacityUI;
-    public Action<List<Sprite>> refreshSkillHotkeyUI;
+    public Action refreshHotKeyMainUI;
+    public Action refreshBindKeyUI;
+    public Action<List<Sprite>> refreshSkillHotkeyMainUI;
     public Action<Item.EItemHotkeyOrder, Item> refreshItemHotkeyUI;
     public Action<Item.EItemHotkeyOrder> clearItemHotkeyUI;
     public Action<Item.EItemCategory> onClickCategoryButton;
@@ -21,16 +24,21 @@ public class UIManager : MonoBehaviour
     public Action clearActiveSkillHotkeySlots;
     public Action<PassiveSkill_ShortVer> checkEquippedPassive;
     public Action<bool> blinkEquipPassiveSkillSlot;
+    public Action<SO_PassiveSkill> setEquipPassive;
     public Action<float> updateFillAmount;
     public Action refreshCraftLines;
     public Action<string> setCraftResult;
     public Action clearCraftResult;
-
-    public UI_MainMenu MainMenuUI { get; private set; }
+    #endregion
+    
     private UI_Main MainUI { get; set; }
+    
+    public UI_MainMenu MainMenuUI { get; private set; }
     private UI_ItemTooltip ItemTooltipUI { get; set; }
     private UI_SkillTooltip SkillTooltipUI { get; set; }
     private UI_Merchant_Menu MerchantMenuUI { get; set; }
+    private UI_Option OptionUI { get; set; }
+    private UI_Esc EscUI { get; set; }
 
     private Stack<UI_Popup> Popups { get; set; } = new Stack<UI_Popup>();
 
@@ -61,36 +69,111 @@ public class UIManager : MonoBehaviour
         MerchantMenuUI.InitOnce();
         go.SetActive(false);
         
+        go = GI.Inst.ResourceManager.Instantiate("UI_Option", transform);
+        OptionUI = go.GetComponent<UI_Option>();
+        OptionUI.InitOnce();
+        go.SetActive(false);
+
+        go = GI.Inst.ResourceManager.Instantiate("UI_Esc", transform);
+        EscUI = go.GetComponent<UI_Esc>();
+        go.SetActive(false);
+
+    }
+
+    public void VisibleMainMenuSetting(Define.EMainMenuType menuType)
+    {
+        CurrentActiveMainMenu = menuType;
+        GI.Inst.CinemachineTarget.DeactivateCamera();
+        if (!MainMenuUI.gameObject.activeSelf)
+            Popups.Push(MainMenuUI); 
+        MainMenuUI.gameObject.SetActive(true);
+        MainMenuUI.OnVisible(menuType);
+        
+        GI.Inst.ListenerManager.SwitchActionMap(true);
+    }
+    
+    public void VisibleOptionSetting(Define.EOptionType optionType)
+    {
+        if (GI.Inst.CinemachineTarget)
+            GI.Inst.CinemachineTarget.DeactivateCamera();
+        Popups.Push(OptionUI); 
+        OptionUI.gameObject.SetActive(true);
+        OptionUI.OnVisible(optionType);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
+    }
+    
+    public void VisibleEsc()
+    {
+        GI.Inst.CinemachineTarget.DeactivateCamera();
+        Popups.Push(EscUI); 
+        EscUI.gameObject.SetActive(true);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
+    }
+
+    public void InvisibleEsc(bool isInGame)
+    {
+        GI.Inst.CinemachineTarget.ActivateCamera();
+        Popups.Pop(); 
+        EscUI.gameObject.SetActive(false);
+        GI.Inst.ListenerManager.SwitchActionMap(!isInGame);
     }
 
     public void ToggleMainMenu(Define.EMainMenuType menuType)
     {
         if (CurrentActiveMainMenu == menuType)
         {
-            CurrentActiveMainMenu = Define.EMainMenuType.None;
-            GI.Inst.cinemachineTarget.ActivateCamera();
             MainMenuUI.gameObject.SetActive(false);
+            
+            Popups.Pop();
+            if (Popups.Count <= 0)
+            {
+                CurrentActiveMainMenu = Define.EMainMenuType.None;
+                GI.Inst.CinemachineTarget.ActivateCamera();
+                GI.Inst.ListenerManager.SwitchActionMap(false);
+            }
         }
         else
         {
-            VisibleMenuSetting(menuType);
+            VisibleMainMenuSetting(menuType);
         }
         InvisibleItemTooltip();
     }
-
-    public void VisibleMenuSetting(Define.EMainMenuType menuType)
+    
+    public void ToggleEsc()
     {
-        CurrentActiveMainMenu = menuType;
-        GI.Inst.cinemachineTarget.DeactivateCamera();
-        MainMenuUI.gameObject.SetActive(true);
-        MainMenuUI.OnVisible(menuType);
+        if (EscUI.gameObject.activeSelf)
+        {
+            EscUI.gameObject.SetActive(false);
+            
+            Popups.Pop();
+            if (Popups.Count <= 0)
+            {
+                GI.Inst.CinemachineTarget.ActivateCamera();
+                GI.Inst.ListenerManager.SwitchActionMap(false);
+            }
+        }
+        else
+        {
+            VisibleEsc();
+        }
     }
 
-    public void CloseMainMenu()
+    public void PressedCloseButtonMainMenu()
     {
-        CurrentActiveMainMenu = Define.EMainMenuType.None;
-        GI.Inst.cinemachineTarget.ActivateCamera();
-        MainMenuUI.gameObject.SetActive(false);
+        ToggleMainMenu(CurrentActiveMainMenu);
+    }
+
+    public void PressedCloseButtonOption()
+    {
+        OptionUI.gameObject.SetActive(false);
+        Popups.Pop();
+        if (Popups.Count <= 0)
+        {
+            CurrentActiveMainMenu = Define.EMainMenuType.None;
+            if (GI.Inst.CinemachineTarget)
+                GI.Inst.CinemachineTarget.ActivateCamera();
+            GI.Inst.ListenerManager.SwitchActionMap(false);
+        }
     }
 
     public void SetHpBar(float ratio)
@@ -138,7 +221,6 @@ public class UIManager : MonoBehaviour
             SkillTooltipUI.gameObject.SetActive(false);
     }
     
-
     //장착, 장착해제, 버리기 등
     public void VisibleInventoryPopup(EInventoryPopupType type, Item item, Vector3 pos)
     {
@@ -146,6 +228,7 @@ public class UIManager : MonoBehaviour
         UI_Inven_Popup invenPopupUI = go.GetComponent<UI_Inven_Popup>();
         invenPopupUI.Init(type, item, pos);
         Popups.Push(invenPopupUI);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
     public void VisibleTBPopup(EThrowawayBuyPopupType type, Item item)
@@ -154,26 +237,61 @@ public class UIManager : MonoBehaviour
         UI_ThrowawayBuyPopup throwawayBuyPopupUI = go.GetComponent<UI_ThrowawayBuyPopup>();
         throwawayBuyPopupUI.Init(type, item);
         Popups.Push(throwawayBuyPopupUI);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
-    public void ClosePopup()
+    public void ClosePopup(bool isDestroy = true)
     {
-        GI.Inst.ResourceManager.Destroy(Popups.Pop().gameObject);
+        if (isDestroy)
+            GI.Inst.ResourceManager.Destroy(Popups.Pop().gameObject);
+        else
+            Popups.Pop().gameObject.SetActive(false);
+
+        if (Popups.Count <= 0)
+        {
+            CurrentActiveMainMenu = Define.EMainMenuType.None;
+            if (GI.Inst.CinemachineTarget)
+                GI.Inst.CinemachineTarget.ActivateCamera();
+            GI.Inst.ListenerManager.SwitchActionMap(false);
+        }
     }
 
     public void VisibleMerchantUI(EMerchantType type, Merchant merchant)
     {
+        GI.Inst.CinemachineTarget.DeactivateCamera();
+        Popups.Push(MerchantMenuUI);
         MerchantMenuUI.gameObject.SetActive(true); 
-        GI.Inst.cinemachineTarget.DeactivateCamera();
         MerchantMenuUI.Open(type, merchant);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
     public void InvisibleMerchantUI()
     {
         MerchantMenuUI.gameObject.SetActive(false);
-        GI.Inst.cinemachineTarget.ActivateCamera();
+        Popups.Pop();
+        if (Popups.Count <= 0)
+        {
+            CurrentActiveMainMenu = Define.EMainMenuType.None;
+            GI.Inst.CinemachineTarget.ActivateCamera();
+            GI.Inst.ListenerManager.SwitchActionMap(false);
+        }
     }
 
+    public void VisibleOption(Define.EOptionType type)
+    {
+        if (GI.Inst.CinemachineTarget)
+            GI.Inst.CinemachineTarget.DeactivateCamera();
+        Popups.Push(OptionUI);
+        OptionUI.gameObject.SetActive(true);
+        OptionUI.OnVisible(type);
+        GI.Inst.ListenerManager.SwitchActionMap(true);
+    }
+
+    public void SetVisibleBindKeyPopup(bool isVisible)
+    {
+        OptionUI.SetVisibleBindKeyPopup(isVisible);
+    }
+    
     public ColorBlock GetPressedButtonPreset(float normalColor)
     {
         return new ColorBlock
@@ -197,6 +315,7 @@ public class UIManager : MonoBehaviour
     {
         return MainUI.rectTransform;
     }
+    
 
     #region Callback
 
@@ -225,6 +344,16 @@ public class UIManager : MonoBehaviour
         refreshGoldInvenCapacityUI?.Invoke();
     }
 
+    public void RefreshHotKeyMainUI()
+    {
+        refreshHotKeyMainUI?.Invoke();
+    }
+
+    public void RefreshBindKeyUI()
+    {
+        refreshBindKeyUI?.Invoke();
+    }
+
     public void RefreshActiveSkillUI(List<SO_ActiveSkill> skills)
     {
         refreshActiveSkillSlots?.Invoke(skills);
@@ -250,9 +379,9 @@ public class UIManager : MonoBehaviour
         MainMenuUI.RefreshPassiveSkillUI(skills);
     }
 
-    public void RefreshSkillHotkeyUI(List<Sprite> icons)
+    public void RefreshSkillHotkeyMainUI(List<Sprite> icons)
     {
-        refreshSkillHotkeyUI?.Invoke(icons);
+        refreshSkillHotkeyMainUI?.Invoke(icons);
     }
     
     public void RefreshItemHotkeyUI(Item.EItemHotkeyOrder order, Item item)
@@ -284,6 +413,11 @@ public class UIManager : MonoBehaviour
     public void BlinkEquipPassiveSkillSlot(bool cond)
     {
         blinkEquipPassiveSkillSlot?.Invoke(cond);
+    }
+
+    public void SetEquipPassive(SO_PassiveSkill passiveSkill)
+    {
+        setEquipPassive?.Invoke(passiveSkill);
     }
 
     public void UpdateFillAmount(float amount)

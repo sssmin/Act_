@@ -61,6 +61,7 @@ public class UI_Skill_PassiveSkillSlot : UI_Skill_BaseSkillSlot, IDragHandler, I
     public override void OnClickLevelUpButton()
     {
         GI.Inst.ListenerManager.RequestPassiveSkillLevelUp(ref PassiveSkill);
+        GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
 
     public void OnBeginDrag(PointerEventData eventData)

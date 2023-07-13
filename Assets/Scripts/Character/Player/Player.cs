@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ public class Player : BaseCharacter
     public Dictionary<Define.EPlayerState, State> States = new Dictionary<Define.EPlayerState, State>();
     public PlayerController PlayerController { get; set; }
     public CombatManager CombatManager { get; private set; }
+    public InventoryManager InventoryManager { get; private set; }
    
     public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
@@ -22,26 +24,33 @@ public class Player : BaseCharacter
         PlayerController = GetComponent<PlayerController>();
         CombatManager = GetComponent<CombatManager>();
         CapsuleCollider = GetComponent<CapsuleCollider2D>();
+        InventoryManager = GetComponent<InventoryManager>();
 
         JumpForce = 5f;
-        DashSpeed = 13f;
         GroundSlideSpeed = 13f;
+        DashSpeed = 13f;
         StatManager.InstId = InstId;
         
         GI.Inst.ListenerManager.getPlayerInstId -= GetPlayerInstId;
         GI.Inst.ListenerManager.getPlayerInstId += GetPlayerInstId;
     }
 
+    private void OnDestroy()
+    {
+        GI.Inst.ListenerManager.getPlayerInstId -= GetPlayerInstId;
+    }
+
+
     protected override void Start()
     {
         base.Start();
-        StateMachine.Init(States[Define.EPlayerState.Idle]);
         
+        StateMachine.Init(States[Define.EPlayerState.Idle]);
     }
 
     public void SetBaseStat()
     {
-        PlayerBaseStats playerBaseStats =  GI.Inst.ResourceManager.GetPlayerBaseStats();
+        PlayerBaseStats playerBaseStats =  GI.Inst.ResourceManager.PlayerBaseStats;
         StatManager.InitStat(playerBaseStats.stats);
     }
     

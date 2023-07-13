@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerClickHandler
 {
+    public int index;
     [SerializeField] private Image skillIconImage;
     [SerializeField] private Sprite defaultSlotIcon;
     [SerializeField] private Animator animator;
@@ -51,7 +52,7 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
             PassiveSkill_ShortVer passiveSkill = passiveSkillSlot.PassiveSkill;
             GI.Inst.UIManager.CheckEquippedPassive(passiveSkill); //다른 칸 확인 후 같은 건 제거
             Init(passiveSkill);
-            GI.Inst.ListenerManager.EquipPassiveSkill(passiveSkill.skillId);
+            GI.Inst.ListenerManager.EquipPassiveSkill(passiveSkill.skillId, index);
         }
     }
 

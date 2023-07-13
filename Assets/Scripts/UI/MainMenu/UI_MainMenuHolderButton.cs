@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_MainMenuHolderButton : MonoBehaviour
@@ -9,6 +7,7 @@ public class UI_MainMenuHolderButton : MonoBehaviour
 
     public void OnClickButton()
     {
-        GI.Inst.UIManager.VisibleMenuSetting(type);
+        GI.Inst.UIManager.VisibleMainMenuSetting(type);
+        GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
 }

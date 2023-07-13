@@ -44,6 +44,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8deee179bcc35454ea367737a223b394, type: 2}
   - {fileID: 11400000, guid: f6b76c0a018737d48bdc198a5e04dae8, type: 2}
   - {fileID: 11400000, guid: e37727d0b965fef49995edfef7c79e64, type: 2}
+  - {fileID: 11400000, guid: 8a3be41ee1730f546995ddbea549237d, type: 2}
   - {fileID: 11400000, guid: dc6885eb55577cf45afb006b609b0905, type: 2}
   - {fileID: 11400000, guid: b1afa1835655b76429ed85b104649518, type: 2}
   - {fileID: 11400000, guid: f02a6a13ea74f2a47a9a8bb9d9b920b1, type: 2}
@@ -54,6 +55,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 585db6c3ffd65864db4741bfcffedfd6, type: 2}
   - {fileID: 11400000, guid: 01676ab71b0fbd34783f2ea7a23fb2d4, type: 2}
   - {fileID: 11400000, guid: cdd0af184ab296b49a0215e542c733fc, type: 2}
+  - {fileID: 11400000, guid: 154daf6d63f125c4084fbe5b40f13011, type: 2}
+  - {fileID: 11400000, guid: abff287aa89d63342808fa4dee379590, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -101,6 +104,9 @@ MonoBehaviour:
     - PlayerBaseStat
     - Item
     - ItemCraft
+    - PlayerControl
+    - AudioClip
+    - AudioMixer
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: f0c1f86168d1d594ba8f691bd78812b2, type: 2}

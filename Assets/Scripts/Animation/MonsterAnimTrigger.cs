@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonsterAnimTrigger : AnimTrigger
 {
-    private Monster Monster { get; set; }
+    protected Monster Monster { get; set; }
 
     public override void Awake()
     {
@@ -12,7 +12,6 @@ public class MonsterAnimTrigger : AnimTrigger
         
         Monster = GetComponentInParent<Monster>();
     }
-
 
     public override void GoToIdleState()
     {
@@ -32,10 +31,34 @@ public class MonsterAnimTrigger : AnimTrigger
         //Monster.AnimPauseNotify();//State에 Trigger
     }
 
-    public override void SweepOverlapCircle()
+    public override void ExecNormalAttackNotify()
     {
-        CombatManager.ExecuteNormalAttack("Player");
+        Monster.AIController.ExecNormalAttack();
     }
+    
+    public void ExecSpecialAttackNotify()
+    {
+        ((AIController_Boss)Monster.AIController).ExecSpecialAttack();
+    }
+
+    public void ExecSpawningNormalAttack()
+    {
+        if (Monster)
+            GI.Inst.ListenerManager.OnTriggerAnim(Monster.InstId);
+    }
+    
+    public override void NormalAttackCompleted()
+    {
+        Monster.AIController.NormalAttackCompleted();
+        GoToIdleState();
+    }
+    
+    public void SpecialAttackCompleted()
+    {
+        ((AIController_Boss)Monster.AIController).SpecialAttackCompleted();
+        GoToIdleState();
+    }
+    
 
     public void DestroyMySelf()
     {

@@ -12,17 +12,17 @@ public class AxeUltState : PlayerState
     {
         Animator.SetBool(AnimHash.isAxeUlt, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 
     public override void Update()
     {
         base.Update();
         
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
             Animator.SetBool(AnimHash.isAxeUltCasting, true);
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.AxeUlt);
         }
        
@@ -33,6 +33,6 @@ public class AxeUltState : PlayerState
         base.EndState();
         Animator.SetBool(AnimHash.isAxeUlt, false);
         Animator.SetBool(AnimHash.isAxeUltCasting, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

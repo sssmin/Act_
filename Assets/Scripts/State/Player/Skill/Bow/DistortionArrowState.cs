@@ -10,16 +10,16 @@ public class DistortionArrowState : PlayerState
     {
         Animator.SetBool(AnimHash.isDistortionArrow, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
     
     public override void Update()
     {
         base.Update();
 
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.DistortionArrow);
         }
     }
@@ -27,6 +27,6 @@ public class DistortionArrowState : PlayerState
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isDistortionArrow, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

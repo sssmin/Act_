@@ -21,6 +21,7 @@ public class CooltimeManager : MonoBehaviour
     private Dictionary<string, float> ItemCooltimeDict { get; set; } = new Dictionary<string, float>();
     private Dictionary<string, float> ItemIconFillAmount { get; set; } = new Dictionary<string, float>();
 
+    private Coroutine ItemCoroutine { get; set; }
     #endregion
 
     #region Passive
@@ -28,6 +29,7 @@ public class CooltimeManager : MonoBehaviour
     private Dictionary<Define.ESkillId, float> PassiveCooltimeDict { get; set; } = new Dictionary<Define.ESkillId, float>();
     private Dictionary<Define.ESkillId, float> PassiveIconFillAmount { get; set; } = new Dictionary<Define.ESkillId, float>();
 
+    private Coroutine PassiveCoroutine { get; set; }
     #endregion
    
     
@@ -60,7 +62,7 @@ public class CooltimeManager : MonoBehaviour
     
     public void SetItemCooltime(string itemId, float cooltime)
     {
-        StartCoroutine(CoSetItemCooltime(itemId, cooltime));
+        ItemCoroutine = StartCoroutine(CoSetItemCooltime(itemId, cooltime));
     }
     
     public bool IsReadyItem(string itemId)
@@ -109,7 +111,7 @@ public class CooltimeManager : MonoBehaviour
     
     public void SetPassiveCooltime(Define.ESkillId passiveId, float cooltime)
     {
-        StartCoroutine(CoSetPassiveCooltime(passiveId, cooltime));
+        PassiveCoroutine = StartCoroutine(CoSetPassiveCooltime(passiveId, cooltime));
     }
 
     public bool IsReadyPassive(Define.ESkillId passiveId)
@@ -168,8 +170,24 @@ public class CooltimeManager : MonoBehaviour
                 GI.Inst.UIManager.ResetCooltimeUI(EActiveSkillOrder.Third);
             }
         }
+    }
+    
+    public void InitCooltime()
+    {
+        FirstSkillTimer = 0f;
+        SecondSkillTimer = 0f;
+        ThirdSkillTimer = 0f;
+        FifthSkillTimer = 0f;
         
+        ItemCooltimeDict.Clear();
+        ItemIconFillAmount.Clear();
+        PassiveCooltimeDict.Clear();
+        PassiveIconFillAmount.Clear();
         
+        if (ItemCoroutine != null)
+            StopCoroutine(ItemCoroutine);
+        if (PassiveCoroutine != null)
+            StopCoroutine(PassiveCoroutine);
     }
     
 }

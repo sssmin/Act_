@@ -1,12 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-[RequireComponent(typeof(DropTable))]
+
 public class Monster : BaseCharacter
 {
     public Dictionary<Define.EMonsterState, State> States = new Dictionary<Define.EMonsterState, State>();
-    //todo 몬스터도 State를 가질건데 Player랑은 기능 자체는 다를듯
+   
     private string monsterPrefabId;
     public string MonsterPrefabId
     {
@@ -19,7 +17,7 @@ public class Monster : BaseCharacter
         get => dropTable;
         set => dropTable = value;
     }
-    protected AIController AIController { get; set; }
+    public AIController AIController { get; protected set; }
 
     protected override void Awake()
     {
@@ -33,7 +31,6 @@ public class Monster : BaseCharacter
     {
         base.Start();
         StateMachine.Init(States[Define.EMonsterState.Idle]);
-        //GI.Inst.ListenerManager.onTransitionStateReq += TransitionState;
     }
 
     protected override void InitState()
@@ -44,10 +41,10 @@ public class Monster : BaseCharacter
         States.Add(Define.EMonsterState.Freeze, new Monster_FreezeState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Suppression, new Monster_SuppressionState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Dead, new Monster_DeadState(Animator, Rb, this, AIController));
+        States.Add(Define.EMonsterState.NormalAttack1, new Monster_NormalAttackState(Animator, Rb, this, AIController));
         // States.Add(Define.EMonsterState.CrowdControl, new Monster_IdleState(Animator, Rb, this, AIController));
-        // States.Add(Define.EMonsterState.NormalAttack, new Monster_IdleState(Animator, Rb, this, AIController));
-        
-        
+
+
         foreach (var pair in States)
         {
             ((MonsterState)pair.Value).monsterStateType = pair.Key;
@@ -64,10 +61,19 @@ public class Monster : BaseCharacter
 
     public void DestroyMySelf()
     {
-        if (hitEffectCoroutine != null)
+        if (HitEffectCoroutine != null)
         {
-            StopCoroutine(hitEffectCoroutine);
+            StopCoroutine(HitEffectCoroutine);
         }
         GI.Inst.ResourceManager.Destroy(gameObject);
+    }
+    
+    public State GetState(Define.EMonsterState monsterState)
+    {
+        if (States.ContainsKey(monsterState))
+        {
+            return States[monsterState];
+        }
+        return null;
     }
 }

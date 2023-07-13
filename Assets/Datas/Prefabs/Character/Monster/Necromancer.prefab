@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6279021972637070356
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1074635728509167955, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2086821017156536932, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Layer
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 4778583163786601571, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Size.x
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4778583163786601571, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064389, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Name
+      value: Necromancer
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064391, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064397, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Size.x
+      value: 1.0046449
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064397, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Size.y
+      value: 2.6403885
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064397, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.4157648
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857097064397, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Offset.y
+      value: 1.2449081
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857615188570, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 1668839295, guid: 91690901696f6b146b33118d1a92c09c, type: 3}
+    - target: {fileID: 4812227857615188570, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812227857615188571, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4fedc6beffa2dbf4ca4eb4784b4a8fd9, type: 2}
+    - target: {fileID: 8532087784116579538, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+      propertyPath: value
+      value: Necromancer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+--- !u!1 &1579609574827477969 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4812227857097064389, guid: d27e88914597c4c4d9066fff0efaae63, type: 3}
+  m_PrefabInstance: {fileID: 6279021972637070356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4693804645701551689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579609574827477969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71492d883402c8340a381a5ad5f67606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -26,7 +26,7 @@ public class ListenerManager
     public Action initCombo;
     public Action<Item> unequip;
     public Action<Item, bool, int> subItem;
-    public Func<GoldInvenCapacty> getGoldInvenCapacity;
+    public Func<GoldInvenCapacity> getGoldInvenCapacity;
     public Action<Item.EItemHotkeyOrder> onPressedItemHotkey;
     public Action<Item.EItemHotkeyOrder, Item> registerItemHotkey;
     public Action<ActiveSkill_ShortVer, int> requestActiveSkillLevelUp;
@@ -35,7 +35,7 @@ public class ListenerManager
     public Action<PassiveSkill_ShortVer> usePassiveSkillMat;
     public Action<List<SO_ActiveSkill>> checkSkillMatCanLevelUpSkills;
     public Func<EActiveSkillOrder, int> getActiveSkillLevel;
-    public Action<Define.ESkillId> equipPassiveSkill;
+    public Action<Define.ESkillId, int> equipPassiveSkill;
     public Action<Define.ESkillId> unequipPassiveSkill;
     public Action<Define.EDamageType, StatManager> execTakeDamageEffect;
     public Func<float> getUltSkillChargeAmount;
@@ -44,7 +44,10 @@ public class ListenerManager
     public Func<string, int, bool> hasEnoughEtcItems;
     public Action increaseCurrentInventoryNum;
     public Action decreaseCurrentInventoryNum;
-    
+    public Func<bool> isEquippedWeapon;
+    public Action playersNormalAttack;
+    public Func<bool> playersAttack;
+    public Action<bool> switchActionMap;
 
     public void OnExecuteActiveSkill(int instanceId, Define.ESkillId skillId)
     {
@@ -152,7 +155,7 @@ public class ListenerManager
         subItem?.Invoke(item, shouldRefreshUI, amount);
     }
 
-    public GoldInvenCapacty GetGoldInvenCapacity()
+    public GoldInvenCapacity GetGoldInvenCapacity()
     {
         return getGoldInvenCapacity?.Invoke();
     }
@@ -197,9 +200,9 @@ public class ListenerManager
         return getActiveSkillLevel.Invoke(order);
     }
 
-    public void EquipPassiveSkill(Define.ESkillId skillId)
+    public void EquipPassiveSkill(Define.ESkillId skillId, int uiIndex)
     {
-        equipPassiveSkill?.Invoke(skillId);
+        equipPassiveSkill?.Invoke(skillId, uiIndex);
     }
 
     public void UnequipPassiveSkill(Define.ESkillId skillId)
@@ -240,5 +243,25 @@ public class ListenerManager
     public void DecreaseCurrentInventoryNum()
     {
         decreaseCurrentInventoryNum?.Invoke();
+    }
+
+    public bool IsEquippedWeapon()
+    {
+        return isEquippedWeapon.Invoke();
+    }
+
+    public void PlayersNormalAttack()
+    {
+        playersNormalAttack?.Invoke();
+    }
+
+    public bool PlayersAttack()
+    {
+        return playersAttack.Invoke();
+    }
+
+    public void SwitchActionMap(bool isUI)
+    {
+        switchActionMap?.Invoke(isUI);
     }
 }

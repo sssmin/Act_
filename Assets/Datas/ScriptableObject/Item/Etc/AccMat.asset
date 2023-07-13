@@ -18,7 +18,6 @@ MonoBehaviour:
   itemDesc: "\uC7A5\uC2E0\uAD6C\uB97C \uC81C\uC791\uD558\uB294 \uB370 \uD544\uC694\uD55C
     \uC7AC\uB8CC"
   itemIcon: {fileID: -152988664, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
-  bIsCanStack: 0
   amount: 1
   maxStackSize: 50
   etcCategory: 2

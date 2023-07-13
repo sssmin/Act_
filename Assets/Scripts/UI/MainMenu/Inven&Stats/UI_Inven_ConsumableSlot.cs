@@ -22,7 +22,8 @@ public class UI_Inven_ConsumableSlot : UI_Inven_ItemSlot
         itemIconImage.color = Color.white;
         borderImage.color = Color.white;
         
-        itemAmount.text = amount.ToString("#,0");
+        itemAmount.text =  $"x{amount:#,0}";
+       
     }
     
     

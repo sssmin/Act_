@@ -15,30 +15,36 @@ public class Monster_IdleState : MonsterState
     {
         Monster.SetZeroVelocity();
         
+        Animator.SetBool(AnimHash.isIdle, true);
         if (AIController.Target != null)
         {
             Monster.TransitionState(Define.EMonsterState.Chase);
         }
         else
         {
-            Animator.SetBool(AnimHash.isIdle, true);
-            //todo 몇초 후에 Patol로 변환 
             idleTimer = Random.Range(2f, 3.5f);
         }
-        // Animator.SetFloat(Define.xVelocity, PlayerController.MoveDir.x);
-        // 
     }
 
     public override void Update()
     {
         idleTimer -= Time.deltaTime;
 
+        if (AIController.Target != null)
+        {
+            if (idleTimer < 1f)
+            {
+                TransitionState(Define.EMonsterState.Chase);
+                return;    
+            }
+        }
+        
         if (idleTimer < 0f)
         {
             Monster.TransitionState(Define.EMonsterState.Patrol);
         }
         
-        //todo idle일때도 내 앞 뒤에 적이 있는지 
+        
     }
 
     public override void EndState()

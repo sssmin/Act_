@@ -1,5 +1,12 @@
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum EWeaponElement
+{
+    None,
+    Fire,
+    Water,
+    Leaf,
+}
 
 [CreateAssetMenu(fileName = "Weapon_", menuName ="Data/Item/Weapon")]
 public class BaseWeapon : Equipment
@@ -11,7 +18,9 @@ public class BaseWeapon : Equipment
     [Header("Equipment")]
     public EWeaponType weaponType;
 
-    public override void DataCopy(Item item)
+    private EWeaponElement Element { get; set; }
+
+    protected override void DataCopy(Item item)
     {
         base.DataCopy(item);
         

@@ -13,13 +13,16 @@ public class State
     {
         Animator = animator;
         Rb = rigidbody2D;
+        GI.Inst.ListenerManager.onTriggerAnim -= OnTriggerAnim;
+        GI.Inst.ListenerManager.onTriggerAnim += OnTriggerAnim;
     }
     
     public Animator Animator { get; set; }
     public Rigidbody2D Rb { get; set; }
     public bool IsAttacking { get; set; }
     public bool IsPauseAnim { get; protected set; } //애님 pause 완료하면 AnimTrigger에서 현재 상태에 알리기 위한 변수
-
+    protected bool IsAnimTrigger { get; set; }
+    
     public virtual void Update()
     {
         
@@ -40,7 +43,10 @@ public class State
         IsPauseAnim = true;
     }
     
-    
+    public virtual void OnTriggerAnim(int instanceId)
+    {
+        
+    }
     
 }
 

@@ -1172,7 +1172,6 @@ GameObject:
   - component: {fileID: 8552595978226415267}
   - component: {fileID: 8552595978226415266}
   - component: {fileID: 7001491049006820335}
-  - component: {fileID: 6895812283515633773}
   m_Layer: 5
   m_Name: UI_Merchant_Buy_Inven_Content
   m_TagString: Untagged
@@ -1252,18 +1251,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: UI_Merchant_BuyCraftInven_Content
---- !u!114 &6895812283515633773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8552595978226415264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae7fd2b07e36fb45a88790c9dd6c2a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8552595978522265544
 GameObject:
   m_ObjectHideFlags: 0

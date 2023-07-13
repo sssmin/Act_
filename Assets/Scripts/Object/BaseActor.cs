@@ -15,13 +15,5 @@ public class BaseActor : MonoBehaviour
         Rb = GetComponent<Rigidbody2D>();
     }
 
-    void Start()
-    {
-        ;
-    }
-
-    void Update()
-    {
-        
-    }
+    
 }

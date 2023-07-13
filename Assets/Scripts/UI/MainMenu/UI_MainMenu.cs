@@ -1,68 +1,68 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class UI_MainMenu : MonoBehaviour
+public class UI_MainMenu : UI_Popup
 {
-    //Inventory/StatsContent_UI
-    //SkillContent_UI
-    //OptionContent_UI 3개 생성 후 초기화만 진행
     [SerializeField] private Transform contentUIParent; 
     [SerializeField] private Button closeButton; 
-    [SerializeField] private Button InventoryButton; 
-    [SerializeField] private Button SkillButton; 
-    [SerializeField] private Button OptionButton; 
-    private UI_Inven_StatsContent InvenStatsContent { get; set; }
-    private UI_SkillContent SkillContent { get; set; }
+    [SerializeField] private Button inventoryButton; 
+    [SerializeField] private Button skillButton; 
+    private UI_Inven_StatsContent InvenStatsContentUI { get; set; }
+    private UI_SkillContent SkillContentUI { get; set; }
     
-    
+
     public void InitOnce()
     {
         closeButton.onClick.AddListener(CloseMainMenu);
         
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_StatsContent", contentUIParent);
-        InvenStatsContent = go.GetComponent<UI_Inven_StatsContent>();
-        InvenStatsContent.InitOnce();
+        InvenStatsContentUI = go.GetComponent<UI_Inven_StatsContent>();
+        InvenStatsContentUI.InitOnce();
        
-        go = GI.Inst.ResourceManager.Instantiate("UI_Skill_SkillContent");
-        SkillContent = go.GetComponent<UI_SkillContent>();
-        SkillContent.InitOnce();
+        go = GI.Inst.ResourceManager.Instantiate("UI_Skill_SkillContent", contentUIParent);
+        SkillContentUI = go.GetComponent<UI_SkillContent>();
+        SkillContentUI.InitOnce();
     }
 
     public void OnVisible(Define.EMainMenuType type)
     {
-        InvenStatsContent.transform.SetParent(null);
-        SkillContent.transform.SetParent(null);
+        InvenStatsContentUI.transform.SetParent(null);
+        SkillContentUI.transform.SetParent(null);
         
-        InventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-        SkillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+        inventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+        skillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
 
         switch (type)
         {
             case Define.EMainMenuType.Inventory:
-                InvenStatsContent.transform.SetParent(contentUIParent);
-                InvenStatsContent.AttachToInventory();
-                InventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                InvenStatsContentUI.transform.SetParent(contentUIParent);
+                InvenStatsContentUI.AttachToInventory();
+                inventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
                 break;
             case Define.EMainMenuType.Skill:
-                SkillContent.transform.SetParent(contentUIParent);
-                SkillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                Debug.Log("스킬창3");
+                SkillContentUI.transform.SetParent(contentUIParent);
+                skillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
                 break;
         }
     }
 
-    public void CloseMainMenu()
+    private void CloseMainMenu()
     {
-        GI.Inst.UIManager.CloseMainMenu();
+        GI.Inst.UIManager.PressedCloseButtonMainMenu();
+        GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
     
     public void RefreshEquipPassiveSkillUI(List<SO_Skill> skills)
     {
-        SkillContent.RefreshEquipPassiveSkillUI(skills);
+        SkillContentUI.RefreshEquipPassiveSkillUI(skills);
     }
     
     public void RefreshPassiveSkillUI(List<SO_PassiveSkill> skills)
     {
-        SkillContent.RefreshPassiveSkillUI(skills);
+        SkillContentUI.RefreshPassiveSkillUI(skills);
     }
 }

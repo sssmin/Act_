@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System;
 using System.Collections;
+using System.Linq;
+using UnityEngine.Audio;
+using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
@@ -10,20 +13,57 @@ public class ResourceManager : MonoBehaviour
 {
     public enum SaveType
     {
-        ScriptableObject,
+        Skills,
         Items,
         Prefab,
-        PlayerBaseStat
+        PlayerBaseStat,
+        AudioClip,
+        AudioMixer
     }
    
     private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
     private Dictionary<string, Item> ItemData { get; } = new Dictionary<string, Item>();
     private Dictionary<string, GameObject> Prefabs { get; } = new Dictionary<string, GameObject>();
-    private PlayerBaseStats PlayerBaseStats { get; set; }
-   
+    private Dictionary<string, AudioClip> AudioClips { get; } = new Dictionary<string, AudioClip>();
+    public AudioMixer AudioMixer { get; set; }
+    public PlayerBaseStats PlayerBaseStats { get; private set; }
+
+    public void InitData(List<Define.ELabel> labels)
+    {
+        SkillData.Clear();
+        ItemData.Clear();
+        
+        int completedCount = 0;
+        int totalCount = labels.Count;
+        
+        string label;
+        
+        for (int i = 0; i < totalCount; i++)
+        {
+            label = Enum.GetName(typeof(Define.ELabel), labels[i]);
+            Addressables.DownloadDependenciesAsync(label).Completed += (handle) =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    //Debug.Log("download completed");
+                    completedCount++;
+                }
+                else
+                {
+                    Debug.Log("download failed.");
+                }
+
+                if (completedCount == totalCount)
+                {
+                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.Skills);
+                    SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
+                }
+                //Addressables.Release(handle);
+            };
+        }
+    }
     
-    
-    public void DownloadAdvance(List<Define.ELabel> labels, Action callback)
+    public void DownloadAdvance(List<Define.ELabel> labels, Action callback = null)
     {
         int completedCount = 0;
         int totalCount = labels.Count;
@@ -47,15 +87,23 @@ public class ResourceManager : MonoBehaviour
 
                 if (completedCount == totalCount)
                 {
-                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.ScriptableObject);
+                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.Skills);
                     SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat, SaveType.PlayerBaseStat);
                     SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
-                    
+                    SaveData<AudioClip>(Define.ELabel.AudioClip, SaveType.AudioClip);
+                    SaveData<AudioMixer>(Define.ELabel.AudioMixer, SaveType.AudioMixer);
                     SaveData<GameObject>(Define.ELabel.Prefab, SaveType.Prefab, callback);
                 }
-                Addressables.Release(handle);
+                //Addressables.Release(handle);
             };
         }
+    }
+
+    public void ClearDatas()
+    {
+        SkillData.Clear();
+        ItemData.Clear();
+        Prefabs.Clear();
     }
 
     public void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
@@ -65,21 +113,22 @@ public class ResourceManager : MonoBehaviour
         opHandle.Completed += (op) =>
         {
             int maxNum = op.Result.Count;
-            int currentNum = 0;
+            prefabLoadNum = 0;
             foreach (var result in op.Result)
             {
-                currentNum++;
-                LoadAsync<T>(result.PrimaryKey, saveType, maxNum, currentNum, callback);
+                LoadAsync<T>(result.PrimaryKey, saveType, maxNum, callback);
             }
-            Addressables.Release(op);
+            //Addressables.Release(op);
         };
     }
 
-    private void LoadAsync<T>(string key, SaveType saveType, int maxNum, int currentNum, Action callback = null) where T : Object
+    private int prefabLoadNum = 0;
+    
+    private void LoadAsync<T>(string key, SaveType saveType, int maxNum, Action callback = null) where T : Object
     {
         switch (saveType)
         {
-            case SaveType.ScriptableObject:
+            case SaveType.Skills:
                 {
                     if (SkillData.ContainsKey(key))
                     {
@@ -92,8 +141,7 @@ public class ResourceManager : MonoBehaviour
                         SO_Skill original = op.Result as SO_Skill;
                         SO_Skill skillCopy = ScriptableObject.Instantiate(original);
                         SkillData.Add(key, skillCopy);
-                        
-                        Addressables.Release(op);
+                        //Addressables.Release(op);
                     };
                 }
                 break;
@@ -110,15 +158,15 @@ public class ResourceManager : MonoBehaviour
                         Item original = op.Result as Item;
                         Item itemCopy = ScriptableObject.Instantiate(original);
                         ItemData.Add(key, itemCopy);
-                        
-                        Addressables.Release(op);
+                        //Addressables.Release(op);
                     };
                 }
                 break;
             case SaveType.Prefab:
                 {
                     if (Prefabs.ContainsKey(key))
-                    {Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                    {
+                        Debug.Log($"Failed to load. Has same key already. key : {key} ");
                         return;
                     }
                     var asyncOperation = Addressables.LoadAssetAsync<T>(key);
@@ -126,18 +174,42 @@ public class ResourceManager : MonoBehaviour
                     {
                         Poolable poolable = (op.Result as GameObject).GetComponent<Poolable>();
                         if (poolable)
+                        {
                             GI.Inst.PoolManager.CreatePoolAdvanced(poolable ,key);
+                            prefabLoadNum++;
+                            if (prefabLoadNum == maxNum)
+                            {
+                                callback?.Invoke();
+                            }
+                        }
                         else
+                        {
                             Prefabs.Add(key, op.Result as GameObject);
-                        Addressables.Release(op);
-                        if (maxNum == currentNum)
-                            callback?.Invoke();
+                            prefabLoadNum++;
+                            if (prefabLoadNum == maxNum)
+                            {
+                                callback?.Invoke();
+                            }
+                        }
+                        //Addressables.Release(op);
                     };
                 }
                 break;
             case SaveType.PlayerBaseStat:
             {
-                if (ItemData.ContainsKey(key))
+                var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                asyncOperation.Completed += (op) =>
+                {
+                    PlayerBaseStats original = op.Result as PlayerBaseStats;
+                    PlayerBaseStats baseStatsCopy = ScriptableObject.Instantiate(original);
+                    PlayerBaseStats = baseStatsCopy;
+                    //Addressables.Release(op);
+                };
+            }
+                break;
+            case SaveType.AudioClip:
+            {
+                if (AudioClips.ContainsKey(key))
                 {
                     Debug.Log($"Failed to load. Has same key already. key : {key} ");
                     return;
@@ -145,11 +217,16 @@ public class ResourceManager : MonoBehaviour
                 var asyncOperation = Addressables.LoadAssetAsync<T>(key);
                 asyncOperation.Completed += (op) =>
                 {
-                    PlayerBaseStats original = op.Result as PlayerBaseStats;
-                    PlayerBaseStats baseStatsCopy = ScriptableObject.Instantiate(original);
-                    PlayerBaseStats = baseStatsCopy;
-                        
-                    Addressables.Release(op);
+                    AudioClips.Add(key, op.Result as AudioClip);
+                };
+            }
+                break;
+            case SaveType.AudioMixer:
+            {
+                var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                asyncOperation.Completed += (op) =>
+                {
+                    AudioMixer = op.Result as AudioMixer;
                 };
             }
                 break;
@@ -159,7 +236,6 @@ public class ResourceManager : MonoBehaviour
     public GameObject Instantiate(string prefabName, Transform parent = null)
     {
         GameObject go = null;
-        
         if (GI.Inst.PoolManager.IsPoolable(prefabName))
         {
             go = GI.Inst.PoolManager.Pop(prefabName, parent).gameObject;
@@ -169,7 +245,7 @@ public class ResourceManager : MonoBehaviour
         {
             if (Prefabs.ContainsKey(prefabName))
             {
-                go = Object.Instantiate(Prefabs[prefabName], parent);
+                go = Instantiate(Prefabs[prefabName], parent);
                 go.name = prefabName;
             }
             else
@@ -180,10 +256,10 @@ public class ResourceManager : MonoBehaviour
         return go;
     }
     
+    
     public GameObject Instantiate(string prefabName, Vector3 parentPos, Quaternion parentRotation ,Transform parent = null)
     {
         GameObject go = null;
-        
         if (GI.Inst.PoolManager.IsPoolable(prefabName))
         {
             go = GI.Inst.PoolManager.Pop(prefabName, parent).gameObject;
@@ -247,11 +323,6 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
     
-    public PlayerBaseStats GetPlayerBaseStats()
-    {
-        return PlayerBaseStats;
-    }
-    
     public Item GetItemData(string itemId)
     {
         if (ItemData.ContainsKey(itemId))
@@ -280,14 +351,22 @@ public class ResourceManager : MonoBehaviour
                         if (monsterInfoCopy.monsterPrefabName == monsterPrefabName)
                         {
                             callback?.Invoke(monsterInfoCopy);
-                            Addressables.Release(operationHandle);
+                            //Addressables.Release(operationHandle);
                         }
                     };
                 }
             }
-            Addressables.Release(op);
+            //Addressables.Release(op);
         };
     }
+
+    public AudioClip GetAudioClip(string name)
+    {
+        if (AudioClips.ContainsKey(name))
+            return AudioClips[name];
+        return null;
+    }
+    
     
     //콜백에 상점 여는거. 열 때 ItemCraft 넘겨주기.
     public void CreateItemCraft(Define.ELabel label ,Action<ItemCraft> callback)
@@ -307,11 +386,11 @@ public class ResourceManager : MonoBehaviour
                         ItemCraft itemCraft = ScriptableObject.Instantiate(operationHandle.Result as ItemCraft);
 
                         callback?.Invoke(itemCraft);
-                        Addressables.Release(operationHandle);
+                        //Addressables.Release(operationHandle);
                     };
                 }
             }
-            Addressables.Release(op);
+            //Addressables.Release(op);
         };
     }
     

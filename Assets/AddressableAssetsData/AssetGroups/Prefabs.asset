@@ -87,8 +87,43 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
-  - m_GUID: 05754c09614a5c1438bb895c147eca6f
-    m_Address: NightBorne
+  - m_GUID: 5ba5daa6b8700764eb9a01f48a443c51
+    m_Address: WandererMagicianProjectile
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 9b885ab499e6c1d42b268261a72c1f42
+    m_Address: NecromancerLightning
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 142bcb34416b38b488c5332f2c868ca9
+    m_Address: Tornado
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 4c1a19f201078c64398b152012e0c6e6
+    m_Address: CinemachineTargetGroup
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: e2c58ce5e2d220549817402d85a7a192
+    m_Address: MainCamera
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 0a2b5a7430ec068409821f9ec1327ccc
+    m_Address: MainUICamera
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 2b387f70e8c507d4a9261de9f951f35b
+    m_Address: AudioSourceObject
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 71f73e8cc69946d44844625b7abe5efe
+    m_Address: AudioSource_Background
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab

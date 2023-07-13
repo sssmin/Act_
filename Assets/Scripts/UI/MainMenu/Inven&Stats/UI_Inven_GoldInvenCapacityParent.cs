@@ -11,9 +11,9 @@ public class UI_Inven_GoldInvenCapacityParent : MonoBehaviour
 
     public void RefreshGoldInvenCapacityUI()
     {
-        GoldInvenCapacty goldInvenCapacty = GI.Inst.ListenerManager.GetGoldInvenCapacity();
-        goldAmountText.text = goldInvenCapacty.gold.ToString("#,0");
-        currentCapacityText.text = goldInvenCapacty.currentInvenNum.ToString("#,0");
-        maxCapacityText.text = goldInvenCapacty.maxInvenNum.ToString("#,0");
+        GoldInvenCapacity goldInvenCapacity = GI.Inst.ListenerManager.GetGoldInvenCapacity();
+        goldAmountText.text = goldInvenCapacity.gold.ToString("#,0");
+        currentCapacityText.text = goldInvenCapacity.currentInvenNum.ToString("#,0");
+        maxCapacityText.text = goldInvenCapacity.maxInvenNum.ToString("#,0");
     }
 }

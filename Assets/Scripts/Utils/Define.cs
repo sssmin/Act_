@@ -7,13 +7,27 @@ public static class Define
     public const int LEFT_PIVOT = 0;
     public const int RIGHT_PIVOT = 1;
 
+    public enum EBossAttackType
+    {
+        NormalAttack1,
+        NormalAttack2,
+        NormalAttack3,
+        SpecialAttack1,
+        SpecialAttack2,
+        SpecialAttack3,
+        
+    }
+
     public enum EDamageTextType
     {
         PlayerDamaged,
         MonsterDamaged,
+        MonsterDefendDamaged,
         PlayerDamagedCritical,
         MonsterDamagedCritical,
-        Evasion
+        MonsterDefendDamagedCritical,
+        Evasion,
+        Dodge
     }
 
     public enum EActivationCondition //발동 조건
@@ -40,7 +54,10 @@ public static class Define
         Item,
         MonsterInfo,
         PlayerBaseStat,
-        ItemCraft
+        ItemCraft,
+        PlayerControl,
+        AudioClip,
+        AudioMixer
     }
 
     public enum ESkillId
@@ -95,10 +112,15 @@ public static class Define
         Patrol,
         Chase,
         Suppression,
-        NormalAttack,
+        NormalAttack1,
+        NormalAttack2,
+        NormalAttack3,
+        SpecialAttack1,
+        SpecialAttack2,
         Freeze,
-        //todo 공격종류 별로?
         Dead,
+        Dodge,
+        Defend,
 
         Max
     }
@@ -114,8 +136,14 @@ public static class Define
     {
         None,
         Inventory,
-        Skill,
-        Option
+        Skill
+    }
+
+    public enum EOptionType
+    {
+        Sound,
+        Display,
+        BindKey
     }
     
     public enum Scene

@@ -7,16 +7,7 @@ public class BaseProjectile : BaseActor
     
     public float AttackCoefficient { get; set; }
     
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    
     
     public virtual void Init(Vector2 dir, BaseController inOwner, float inAttackCoefficient)
     {

@@ -53,7 +53,7 @@ public class ItemCraft : ScriptableObject
     {
         for (int i = 0; i < probabilityInfos.Count + 1; ++i)
         {
-            float randValue = Random.Range(1f, 100f);
+            float randValue = Random.Range(0f, 100f);
             float addValue = 0f;
             for (int j = 0; j < probabilityInfos.Count; ++j)
             {

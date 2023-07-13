@@ -42,4 +42,5 @@ public class PlayerAnimTrigger : AnimTrigger
     {
         CombatManager.ExecuteNormalAttack("Monster");
     }
+    
 }

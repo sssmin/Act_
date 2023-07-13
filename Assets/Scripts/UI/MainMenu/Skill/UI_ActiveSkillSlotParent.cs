@@ -12,7 +12,6 @@ public class UI_ActiveSkillSlotParent : MonoBehaviour
         GI.Inst.UIManager.clearActiveSkillSlots -= Clear;
         GI.Inst.UIManager.clearActiveSkillSlots += Clear;
         
-        int index = 0;
         for (int i = 0; i < (int)EActiveSkillOrder.Max; i++)
         {
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Skill_ActiveSkillSlot", transform);

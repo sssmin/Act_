@@ -12,7 +12,7 @@ public class SkillMat : Etc
         itemName = item.itemName;
         itemDesc = item.itemDesc;
         itemIcon = item.itemIcon;
-        bIsCanStack = item.bIsCanStack;
+        //bIsCanStack = item.bIsCanStack;
         maxStackSize = item.maxStackSize;
         name = item.name;
         etcCategory = item.etcCategory;

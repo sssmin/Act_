@@ -1,12 +1,37 @@
+using System;
+using System.Collections;
+using System.Text;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.SceneManagement;
 
+public enum EBindKeyType
+{
+    None,
+    Jump,
+    Dash,
+    NormalAttack,
+    FirstSkill,
+    SecondSkill,
+    ThirdSkill,
+    FourthSkill,
+    InventoryWindow,
+    SkillWindow,
+    FirstItemHotkey,
+    SecondItemHotkey,
+    ThirdItemHotkey,
+    FourthItemHotkey,
+    FifthItemHotkey,
+    Interaction
+}
 
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : BaseController
 {
-    private PlayerControl PlayerControl { get; set; }
+    public PlayerControl PlayerControl { get; set; }
     private InputAction MoveInputValue { get; set; }
+    //private PlayerInput PlayerInput { get; set; }
     private bool bNormalAttackReserve;
     public bool IsReserveNormalAttack
     {
@@ -15,6 +40,7 @@ public class PlayerController : BaseController
     }
     private float normalAttackReserveDuration;
     private float normalAttackReserveTimer;
+    
     public Player ControlledPlayer { get; private set; }
     private bool bIsCharging;
     public bool IsCharging
@@ -91,7 +117,24 @@ public class PlayerController : BaseController
             }
         }
     }
+    
 
+    private void SwitchActionMap(bool isUI)
+    {
+        if (isUI)
+        {
+            PlayerControl.Player.Esc.Disable();
+            
+            PlayerControl.UI.Cancel.Enable();
+        }
+        else
+        {
+            PlayerControl.Player.Esc.Enable();
+            
+            PlayerControl.UI.Cancel.Disable();
+        }
+    }
+    
     protected override void Awake()
     {
         base.Awake();
@@ -99,6 +142,114 @@ public class PlayerController : BaseController
         PlayerControl = new PlayerControl();
         normalAttackReserveDuration = 0.3f;
         WallDetectDist = 0.3f;
+        //PlayerInput = GetComponent<PlayerInput>();
+        //PlayerInput.actions = PlayerControl.asset;
+        //PlayerInput.defaultActionMap = "Player";
+    }
+
+    private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
+
+    public string ConvertInputKey(string path)
+    {
+        string extractedKey = "";
+        string[] pathParts = path.Split('/');
+        if (pathParts.Length > 1)
+        {
+            extractedKey = pathParts[pathParts.Length - 1];
+        }
+
+        return extractedKey;
+    }
+
+    public string ConvertPlayerControlKey(string path)
+    {
+        string extractedKey = "";
+
+        string[] pathParts = path.Split('/');
+        if (pathParts.Length > 1)
+        {
+            extractedKey = pathParts[pathParts.Length - 1];
+        }
+
+        int lastSlashIndex = path.LastIndexOf('/');
+        if (lastSlashIndex >= 0 && lastSlashIndex < path.Length - 1)
+        {
+            extractedKey = path.Substring(lastSlashIndex + 1);
+        }
+
+        return extractedKey;
+    }
+
+    public void StartInteractiveRebind(InputAction actionToRebind)
+    {
+        actionToRebind.Disable();
+        Debug.Log("1");
+        rebindingOperation = actionToRebind.PerformInteractiveRebinding()
+            .WithControlsExcluding("<Mouse>/position")
+            .WithControlsExcluding("<Mouse>/delta")
+            .WithControlsExcluding("<Keyboard>/p")
+            .WithControlsExcluding("<Keyboard>/escape")
+            .OnMatchWaitForAnother(0.1f) //0.1초 기다림
+            .OnPotentialMatch(operation =>
+            {
+                string inputKey = ConvertInputKey(operation.selectedControl.path); 
+                string playerControlKey; 
+        
+                foreach (InputAction inputAction in PlayerControl)
+                {
+                    foreach (InputBinding binding in inputAction.bindings) 
+                    {
+                        playerControlKey = ConvertPlayerControlKey(binding.effectivePath);
+        
+                        if (inputKey == playerControlKey)
+                        {
+                            foreach (InputBinding inputBinding in actionToRebind.bindings) 
+                            {
+                                InputBinding newBinding = new InputBinding(inputBinding.path, binding.action,
+                                    binding.groups, binding.processors, binding.interactions, binding.name);
+                                
+                                inputAction.ChangeBinding(binding).Erase();
+                                inputAction.AddBinding(newBinding);
+                            }
+                            break;
+                        }
+                    }
+                }
+            })
+            .OnComplete(operation =>
+            {
+                RebindCompleted();
+                actionToRebind.Enable();
+            });
+        
+        rebindingOperation.Start();
+    }
+
+    void RebindCompleted()
+    {
+        rebindingOperation.Dispose();
+        
+        GI.Inst.SaveBindKeyData();
+        GI.Inst.LoadBindKeyData();
+        GI.Inst.UIManager.RefreshBindKeyUI();
+        GI.Inst.UIManager.RefreshHotKeyMainUI(); //HotkeyBar Refresh
+    }
+
+    public bool IsBindAlready(string keyPath)
+    {
+        var actions = PlayerControl.asset.actionMaps;
+        foreach (InputActionMap inputActionMap in actions)
+        {
+            foreach (InputBinding inputBinding in inputActionMap.bindings)
+            {
+                if (inputBinding.path.Equals(keyPath))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     
@@ -106,49 +257,56 @@ public class PlayerController : BaseController
     {
         PlayerControl.Enable();
         MoveInputValue = PlayerControl.Player.Move;
-        PlayerControl.Player.Jump.performed += Jump;
-        PlayerControl.Player.Dash.performed += Dash;
-        PlayerControl.Player.NormalAttack.performed += NormalAttack;
-        PlayerControl.Player.FirstSkill.performed += FirstSkill;
-        PlayerControl.Player.SecondSkill.performed += SecondSkill;
-        PlayerControl.Player.ThirdSkill.performed += ThirdSkill;
-        PlayerControl.Player.FourthSkill.performed += FourthSkill;
-        PlayerControl.Player.InventoryWindow.performed += ToggleInventory;
-        PlayerControl.Player.SkillWindow.performed += ToggleSkill;
-        PlayerControl.Player.FirstItemHotkey.performed += FirstItemHotkey;
-        PlayerControl.Player.SecondItemHotkey.performed += SecondItemHotkey;
-        PlayerControl.Player.ThirdItemHotkey.performed += ThirdItemHotkey;
-        PlayerControl.Player.FourthItemHotkey.performed += FourthItemHotkey;
-        PlayerControl.Player.FifthItemHotkey.performed += FifthItemHotkey;
-        PlayerControl.Player.Interaction.performed += Interaction;
+        PlayerControl.Player.Jump.performed += JumpAction;
+        PlayerControl.Player.Dash.performed += DashAction;
+        PlayerControl.Player.NormalAttack.performed += NormalAttackAction;
+        PlayerControl.Player.FirstSkill.performed += FirstSkillAction;
+        PlayerControl.Player.SecondSkill.performed += SecondSkillAction;
+        PlayerControl.Player.ThirdSkill.performed += ThirdSkillAction;
+        PlayerControl.Player.FourthSkill.performed += FourthSkillAction;
+        PlayerControl.Player.InventoryWindow.performed += ToggleInventoryWindowAction;
+        PlayerControl.Player.SkillWindow.performed += ToggleSkillWindowAction;
+        PlayerControl.Player.FirstItemHotkey.performed += FirstItemHotkeyAction;
+        PlayerControl.Player.SecondItemHotkey.performed += SecondItemHotkeyAction;
+        PlayerControl.Player.ThirdItemHotkey.performed += ThirdItemHotkeyAction;
+        PlayerControl.Player.FourthItemHotkey.performed += FourthItemHotkeyAction;
+        PlayerControl.Player.FifthItemHotkey.performed += FifthItemHotkeyAction;
+        PlayerControl.Player.Interaction.performed += InteractionAction;
+        PlayerControl.Player.Esc.performed += EscAction;
+        PlayerControl.UI.Cancel.performed += CloseToUIAction;
+        
+        GI.Inst.ListenerManager.switchActionMap += SwitchActionMap;
     }
 
+    public void InitAction()
+    {
+        
+    }
+    
+    
     private void OnDisable()
     {
         MoveInputValue.Disable();
-        PlayerControl.Player.Jump.performed -= Jump;
-        PlayerControl.Player.Dash.performed -= Dash;
-        PlayerControl.Player.NormalAttack.performed -= NormalAttack;
-        PlayerControl.Player.FirstSkill.performed -= FirstSkill;
-        PlayerControl.Player.SecondSkill.performed -= SecondSkill;
-        PlayerControl.Player.ThirdSkill.performed -= ThirdSkill;
-        PlayerControl.Player.FourthSkill.performed -= FourthSkill;
-        PlayerControl.Player.InventoryWindow.performed -= ToggleInventory;
-        PlayerControl.Player.SkillWindow.performed -= ToggleSkill;
-        PlayerControl.Player.FirstItemHotkey.performed -= FirstItemHotkey;
-        PlayerControl.Player.SecondItemHotkey.performed -= SecondItemHotkey;
-        PlayerControl.Player.ThirdItemHotkey.performed -= ThirdItemHotkey;
-        PlayerControl.Player.FourthItemHotkey.performed -= FourthItemHotkey;
-        PlayerControl.Player.FifthItemHotkey.performed -= FifthItemHotkey;
-        PlayerControl.Player.Interaction.performed -= Interaction;
+        PlayerControl.Player.Jump.performed -= JumpAction;
+        PlayerControl.Player.Dash.performed -= DashAction;
+        PlayerControl.Player.NormalAttack.performed -= NormalAttackAction;
+        PlayerControl.Player.FirstSkill.performed -= FirstSkillAction;
+        PlayerControl.Player.SecondSkill.performed -= SecondSkillAction;
+        PlayerControl.Player.ThirdSkill.performed -= ThirdSkillAction;
+        PlayerControl.Player.FourthSkill.performed -= FourthSkillAction;
+        PlayerControl.Player.InventoryWindow.performed -= ToggleInventoryWindowAction;
+        PlayerControl.Player.SkillWindow.performed -= ToggleSkillWindowAction;
+        PlayerControl.Player.FirstItemHotkey.performed -= FirstItemHotkeyAction;
+        PlayerControl.Player.SecondItemHotkey.performed -= SecondItemHotkeyAction;
+        PlayerControl.Player.ThirdItemHotkey.performed -= ThirdItemHotkeyAction;
+        PlayerControl.Player.FourthItemHotkey.performed -= FourthItemHotkeyAction;
+        PlayerControl.Player.FifthItemHotkey.performed -= FifthItemHotkeyAction;
+        PlayerControl.Player.Interaction.performed -= InteractionAction;
+        PlayerControl.Player.Esc.performed -= EscAction;
+        PlayerControl.UI.Cancel.performed -= CloseToUIAction;
+        GI.Inst.ListenerManager.switchActionMap -= SwitchActionMap;
     }
 
-    void Start()
-    {
-        InitDelegate();
-    }
-
-    
     void Update()
     {
         MoveDir = MoveInputValue.ReadValue<Vector2>();
@@ -175,27 +333,43 @@ public class PlayerController : BaseController
                 bIsCharging = false;
             }
         }
+
+        //test
+        if (Input.GetKey(KeyCode.B))
+        {
+            StartCoroutine(LoadSceneAsync());
+        }
+        if (Input.GetKey(KeyCode.N))
+        {
+            GI.Inst.SaveGameData();
+        }
+        if (Input.GetKey(KeyCode.M))
+        {
+            GI.Inst.LoadInventoryData();
+        }
     }
 
-    void Jump(InputAction.CallbackContext context)
+    IEnumerator LoadSceneAsync()
+    {
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync("Town");
+        
+        while (!loadOperation.isDone)
+        {
+            yield return null;
+        }
+    }
+
+    #region Action
+
+    void JumpAction(InputAction.CallbackContext context)
     {
         if (CheckStateCanJump())
         {
             TransitionState(Define.EPlayerState.InAir);
         }
     }
-
     
-
-    bool IsJumpingState()
-    {
-        bool condition  = CheckCurrentState(Define.EPlayerState.InAir) ||
-                          CheckCurrentState(Define.EPlayerState.Falling) ||
-                          CheckCurrentState(Define.EPlayerState.JumpEnd);
-        return condition;
-    }
-    
-    void NormalAttack(InputAction.CallbackContext context)
+    void NormalAttackAction(InputAction.CallbackContext context)
     {
         if (CheckStateCanNormalAttack())
         {
@@ -214,12 +388,163 @@ public class PlayerController : BaseController
             normalAttackReserveTimer = normalAttackReserveDuration;
         }
     }
-
-    void InitDelegate()
+    
+    private void FirstSkillAction(InputAction.CallbackContext context)
     {
+        if (!CanUseSkill(EActiveSkillOrder.First)) return;
+        
+        AttackDir = CurrentDir;
+        
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.First);
+        
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+        
+        TransitionState(skill.skillState);
+    }
+    
+
+    private void SecondSkillAction(InputAction.CallbackContext context)
+    {
+        if (!CanUseSkill(EActiveSkillOrder.Second)) return;
+        
+        AttackDir = CurrentDir;
+        
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Second);
+
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+
+        TransitionState(skill.skillState);
+    }
+    
+    private void ThirdSkillAction(InputAction.CallbackContext context)
+    {
+        if (!CanUseSkill(EActiveSkillOrder.Third)) return;
+        
+        AttackDir = CurrentDir;
+      
+        
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Third);
+        
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+        
+        TransitionState(skill.skillState);
+    }
+    
+    private void FourthSkillAction(InputAction.CallbackContext context)
+    {
+        if (!CanUseSkill(EActiveSkillOrder.Fourth)) return;
+        
+        AttackDir = CurrentDir;
+        
+        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Fourth);
+
+        if (context.control is KeyControl keyControl)
+        {
+            string keyString = keyControl.displayName;
+            ChargeSkill(skill, keyString);
+        }
+        
+        TransitionState(skill.skillState);
+    }
+    
+    void DashAction(InputAction.CallbackContext context)
+    {
+        if (!CanDash(EActiveSkillOrder.Fifth)) return;
+
+        if (CheckStateCanGroundSlide())
+        {
+            TransitionState(Define.EPlayerState.GroundSliding);
+        }
+        else
+        {
+            TransitionState(Define.EPlayerState.Dash);
+        }
+    }
+
+    void FirstItemHotkeyAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.First);
+    }
+    
+    void SecondItemHotkeyAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Second);
+    }
+    
+    void ThirdItemHotkeyAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Third);
+    }
+    
+    void FourthItemHotkeyAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fourth);
+    }
+    
+    void FifthItemHotkeyAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fifth);
         
     }
     
+    void EscAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.UIManager.ToggleEsc();
+    }
+    
+    public void ToggleInventoryWindowAction(InputAction.CallbackContext context)
+    {
+           
+        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Inventory);
+    }
+    
+    public void ToggleSkillWindowAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Skill);
+    }
+    
+    public void InteractionAction(InputAction.CallbackContext context)
+    {
+        Collider2D col = Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Merchant"));
+        if (col)
+        {
+            Merchant merchant = col.GetComponent<Merchant>();
+            if (merchant)
+            {
+                GI.Inst.UIManager.VisibleMerchantUI(EMerchantType.Buy, merchant);
+            }
+        }
+    }
+    
+    private void CloseToUIAction(InputAction.CallbackContext context)
+    {
+        GI.Inst.UIManager.ClosePopup(false);
+    }
+
+    #endregion //Action
+
+    #region CheckState
+
+    bool IsJumpingState()
+    {
+        bool condition  = CheckCurrentState(Define.EPlayerState.InAir) ||
+                          CheckCurrentState(Define.EPlayerState.Falling) ||
+                          CheckCurrentState(Define.EPlayerState.JumpEnd);
+        return condition;
+    }
+
     bool CheckStateCanJump()
     {
         if (IsDead()) return false;
@@ -263,11 +588,6 @@ public class PlayerController : BaseController
         bool condition = CheckCurrentState(Define.EPlayerState.Idle);
         return condition;
     }
-
-    protected override void TransitionMoveState()
-    {
-        TransitionState(Define.EPlayerState.Move);
-    }
     
     public override bool IsWallDetect()
     {
@@ -281,9 +601,9 @@ public class PlayerController : BaseController
     bool CanDash(EActiveSkillOrder skillOrder)
     {
         if (IsDead()) return false;
-        bool condition = (CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move) || IsJumpingState()) 
-                         
-                         && GI.Inst.ListenerManager.IsSkillReady(skillOrder);
+        bool condition = (CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move) || IsJumpingState())
+                         && GI.Inst.ListenerManager.IsSkillReady(skillOrder) && GI.Inst.ListenerManager.IsEquippedWeapon();
+        
         return condition;
     }
     
@@ -305,115 +625,14 @@ public class PlayerController : BaseController
         return CheckCurrentState(Define.EPlayerState.Dead);
     }
 
-    private void FirstSkill(InputAction.CallbackContext context)
+    #endregion //CheckState
+    
+    
+    protected override void TransitionMoveState()
     {
-        if (!CanUseSkill(EActiveSkillOrder.First)) return;
-        
-        AttackDir = CurrentDir;
-        
-        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.First);
-        
-        if (context.control is KeyControl keyControl)
-        {
-            string keyString = keyControl.displayName;
-            ChargeSkill(skill, keyString);
-        }
-        
-        TransitionState(skill.skillState);
+        TransitionState(Define.EPlayerState.Move);
     }
     
-
-    private void SecondSkill(InputAction.CallbackContext context)
-    {
-        if (!CanUseSkill(EActiveSkillOrder.Second)) return;
-        
-        AttackDir = CurrentDir;
-        
-        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Second);
-
-        if (context.control is KeyControl keyControl)
-        {
-            string keyString = keyControl.displayName;
-            ChargeSkill(skill, keyString);
-        }
-
-        TransitionState(skill.skillState);
-    }
-    
-    private void ThirdSkill(InputAction.CallbackContext context)
-    {
-        if (!CanUseSkill(EActiveSkillOrder.Third)) return;
-        
-        AttackDir = CurrentDir;
-      
-        
-        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Third);
-        
-        if (context.control is KeyControl keyControl)
-        {
-            string keyString = keyControl.displayName;
-            ChargeSkill(skill, keyString);
-        }
-        
-        TransitionState(skill.skillState);
-    }
-    
-    private void FourthSkill(InputAction.CallbackContext context)
-    {
-        if (!CanUseSkill(EActiveSkillOrder.Fourth)) return;
-        
-        AttackDir = CurrentDir;
-        
-        SO_ActiveSkill skill = (SO_ActiveSkill)GI.Inst.ListenerManager.GetSkill(EActiveSkillOrder.Fourth);
-
-        if (context.control is KeyControl keyControl)
-        {
-            string keyString = keyControl.displayName;
-            ChargeSkill(skill, keyString);
-        }
-        
-        TransitionState(skill.skillState);
-    }
-    
-    void Dash(InputAction.CallbackContext context)
-    {
-        if (!CanDash(EActiveSkillOrder.Fifth)) return;
-
-        if (CheckStateCanGroundSlide())
-        {
-            TransitionState(Define.EPlayerState.GroundSliding);
-        }
-        else
-        {
-            TransitionState(Define.EPlayerState.Dash);
-        }
-    }
-
-    void FirstItemHotkey(InputAction.CallbackContext context)
-    {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.First);
-    }
-    
-    void SecondItemHotkey(InputAction.CallbackContext context)
-    {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Second);
-    }
-    
-    void ThirdItemHotkey(InputAction.CallbackContext context)
-    {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Third);
-    }
-    
-    void FourthItemHotkey(InputAction.CallbackContext context)
-    {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fourth);
-    }
-    
-    void FifthItemHotkey(InputAction.CallbackContext context)
-    {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fifth);
-    }
-
     private void InitCharge(KeyCode keycode, float skillMaxChargeTime)
     {
         bIsCharging = true;
@@ -447,16 +666,6 @@ public class PlayerController : BaseController
     {
         IsCharging = false;
         ChargeCompleted = false;
-    }
-
-    public void ToggleInventory(InputAction.CallbackContext context)
-    {
-        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Inventory);
-    }
-    
-    public void ToggleSkill(InputAction.CallbackContext context)
-    {
-        GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Skill);
     }
     
     public static KeyCode KeyToKeyCode(string key, KeyCode unknownKey = KeyCode.None)
@@ -578,20 +787,98 @@ public class PlayerController : BaseController
             default:                    return unknownKey;
         }
     }
-
-    public void Interaction(InputAction.CallbackContext context)
+    
+    public string GetBindingKeyString(EBindKeyType bindKeyType)
     {
-        Collider2D col = Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Merchant"));
-        if (col)
+        switch (bindKeyType)
         {
-            Merchant merchant = col.GetComponent<Merchant>();
-            if (merchant)
-            {
-                GI.Inst.UIManager.VisibleMerchantUI(EMerchantType.Buy, merchant);
-            }
+            case EBindKeyType.Jump:
+                return PlayerControl.Player.Jump.GetBindingDisplayString();
+            case EBindKeyType.Dash:
+                return PlayerControl.Player.Dash.GetBindingDisplayString();
+            case EBindKeyType.NormalAttack:
+                return PlayerControl.Player.NormalAttack.GetBindingDisplayString();
+            case EBindKeyType.FirstSkill:
+                return PlayerControl.Player.FirstSkill.GetBindingDisplayString();
+            case EBindKeyType.SecondSkill:
+                return PlayerControl.Player.SecondSkill.GetBindingDisplayString();
+            case EBindKeyType.ThirdSkill:
+                return PlayerControl.Player.ThirdSkill.GetBindingDisplayString();
+            case EBindKeyType.FourthSkill:
+                return PlayerControl.Player.FourthSkill.GetBindingDisplayString();
+            case EBindKeyType.InventoryWindow:
+                return PlayerControl.Player.InventoryWindow.GetBindingDisplayString();
+            case EBindKeyType.SkillWindow:
+                return PlayerControl.Player.SkillWindow.GetBindingDisplayString();
+            case EBindKeyType.FirstItemHotkey:
+                return PlayerControl.Player.FirstItemHotkey.GetBindingDisplayString();
+            case EBindKeyType.SecondItemHotkey:
+                return PlayerControl.Player.SecondItemHotkey.GetBindingDisplayString();
+            case EBindKeyType.ThirdItemHotkey:
+                return PlayerControl.Player.ThirdItemHotkey.GetBindingDisplayString();
+            case EBindKeyType.FourthItemHotkey:
+                return PlayerControl.Player.FourthItemHotkey.GetBindingDisplayString();
+            case EBindKeyType.FifthItemHotkey:
+                return PlayerControl.Player.FifthItemHotkey.GetBindingDisplayString();
+            case EBindKeyType.Interaction:
+                return PlayerControl.Player.Interaction.GetBindingDisplayString();
         }
-
+        
+        return "";
     }
+    
+    public void RebindKey(EBindKeyType bindKeyType)
+    {
+        switch (bindKeyType)
+        {
+            case EBindKeyType.Jump:
+                StartInteractiveRebind(PlayerControl.Player.Jump);
+                break;
+            case EBindKeyType.Dash:
+                StartInteractiveRebind(PlayerControl.Player.Dash);
+                break;
+            case EBindKeyType.FirstSkill:
+                StartInteractiveRebind(PlayerControl.Player.FirstSkill);
+                break;
+            case EBindKeyType.SecondSkill:
+                StartInteractiveRebind(PlayerControl.Player.SecondSkill);
+                break;
+            case EBindKeyType.ThirdSkill:
+                StartInteractiveRebind(PlayerControl.Player.ThirdSkill);
+                break;
+            case EBindKeyType.FourthSkill:
+                StartInteractiveRebind(PlayerControl.Player.FourthSkill);
+                break;
+            case EBindKeyType.FirstItemHotkey:
+                StartInteractiveRebind(PlayerControl.Player.FirstItemHotkey);
+                break;
+            case EBindKeyType.SecondItemHotkey:
+                StartInteractiveRebind(PlayerControl.Player.SecondItemHotkey);
+                break;
+            case EBindKeyType.ThirdItemHotkey:
+                StartInteractiveRebind(PlayerControl.Player.ThirdItemHotkey);
+                break;
+            case EBindKeyType.FourthItemHotkey:
+                StartInteractiveRebind(PlayerControl.Player.FourthItemHotkey);
+                break;
+            case EBindKeyType.FifthItemHotkey:
+                StartInteractiveRebind(PlayerControl.Player.FifthItemHotkey);
+                break;
+            case EBindKeyType.InventoryWindow:
+                StartInteractiveRebind(PlayerControl.Player.InventoryWindow);
+                break;
+            case EBindKeyType.SkillWindow:
+                StartInteractiveRebind(PlayerControl.Player.SkillWindow);
+                break;
+            case EBindKeyType.Interaction:
+                StartInteractiveRebind(PlayerControl.Player.Interaction);
+                break;
+            case EBindKeyType.NormalAttack:
+                StartInteractiveRebind(PlayerControl.Player.NormalAttack);
+                break;
+        }
+    }
+    
     // private void OnDrawGizmos()
     // {
     //     Gizmos.color = Color.red;

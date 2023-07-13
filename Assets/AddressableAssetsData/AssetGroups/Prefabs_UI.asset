@@ -202,6 +202,56 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+  - m_GUID: 370358ac160c83b47be408da90fc516b
+    m_Address: UI_LoadingScreen
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: d71408419b4881045b9409a035d149b2
+    m_Address: UI_TitleMainMenu
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: f38812c3981730644b0457d68dd3904f
+    m_Address: UI_Option
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 8e50e144c13b7cd479752a229abeaf0f
+    m_Address: UI_Option_BindKeyContent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: fd9b078a51d201444a302e346baf6663
+    m_Address: UI_Option_DisplayContent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: ff67cb2c399d0114ca04562f0885dace
+    m_Address: UI_Option_SoundContent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 883a2ee4cdcb7fa4e8704803d93f30e6
+    m_Address: UI_Esc
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 987a68eb5892c604eb3c3d39590f99bb
+    m_Address: UI_Option_BindWrapper
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 537c3aa3dbe643f4c957948e046d1286
+    m_Address: UI_Option_BindKeySlotParent
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: b009d06efb452d74a853b88758d48d84
+    m_Address: UI_Option_BindKey
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

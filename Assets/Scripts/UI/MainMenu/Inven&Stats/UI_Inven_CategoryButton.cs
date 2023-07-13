@@ -49,6 +49,7 @@ public class UI_Inven_CategoryButton : MonoBehaviour
 
     public void OnClickCategoryButton()
     {
+        GI.Inst.SoundManager.SFXPlay("ButtonClick");
         GI.Inst.UIManager.OnClickCategoryButton(itemCategory);
         GI.Inst.UIManager.ActiveAllInvenCategoryBtn();
         DeactivateButton();

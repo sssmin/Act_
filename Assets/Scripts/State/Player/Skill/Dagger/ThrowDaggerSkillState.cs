@@ -10,16 +10,16 @@ public class ThrowDaggerSkillState : PlayerState
     {
         Animator.SetBool(AnimHash.isThrowDaggerSkill, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
     
     public override void Update()
     {
         base.Update();
 
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.ThrowDagger);
         }
         
@@ -28,6 +28,6 @@ public class ThrowDaggerSkillState : PlayerState
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isThrowDaggerSkill, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

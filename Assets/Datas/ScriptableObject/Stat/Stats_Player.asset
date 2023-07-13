@@ -25,7 +25,7 @@ MonoBehaviour:
       statValue: 0
     maxHp:
       statType: 4
-      statValue: 100
+      statValue: 200
     currentHp:
       statType: 0
       statValue: 0

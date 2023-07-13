@@ -26,4 +26,10 @@ public class MonsterState : State
     {
         Monster.TransitionState(monsterState);
     }
+    
+    public override void OnTriggerAnim(int instanceId)
+    {
+        if (Monster.InstId == instanceId)
+            IsAnimTrigger = true;
+    }
 }

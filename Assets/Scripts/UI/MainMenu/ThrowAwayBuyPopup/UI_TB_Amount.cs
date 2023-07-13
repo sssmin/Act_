@@ -15,7 +15,7 @@ public class UI_TB_Amount : MonoBehaviour
     [SerializeField] Button addButton;
     [SerializeField] TMP_InputField amountInputField;
     private Item tempItem;
-    private GoldInvenCapacty goldInvenCapacty;
+    private GoldInvenCapacity _goldInvenCapacity;
     public int Amount { get; private set; }
     private EThrowawayBuyPopupType popupType;
     private Action<string> buyCallback;
@@ -31,7 +31,7 @@ public class UI_TB_Amount : MonoBehaviour
         amountInputField.text = "0";
         amountInputField.onValueChanged.AddListener(OnValueChanged);
         amountInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
-        goldInvenCapacty = GI.Inst.ListenerManager.GetGoldInvenCapacity();
+        _goldInvenCapacity = GI.Inst.ListenerManager.GetGoldInvenCapacity();
     }
 
     public void BuyInit(Item item, EThrowawayBuyPopupType type, Action<string> callback)
@@ -55,7 +55,7 @@ public class UI_TB_Amount : MonoBehaviour
                 break;
             case EThrowawayBuyPopupType.Buy:
                 int price = ((Consumable)tempItem).storeSellPrice;
-                int canBuyAmount = goldInvenCapacty.gold / price;
+                int canBuyAmount = _goldInvenCapacity.gold / price;
                 amountInputField.text = canBuyAmount.ToString("#,0");
 
                 int maxPrice = canBuyAmount * price;
@@ -86,9 +86,9 @@ public class UI_TB_Amount : MonoBehaviour
                 int tempAmount = Amount + 1;
                 //todo 갯수마다 Price에 값 다른거 줘야하는데.
                 int price = ((Consumable)tempItem).storeSellPrice;
-                if ((price * tempAmount) > goldInvenCapacty.gold)
+                if ((price * tempAmount) > _goldInvenCapacity.gold)
                 {
-                    int canBuyAmount = goldInvenCapacty.gold / price;
+                    int canBuyAmount = _goldInvenCapacity.gold / price;
                     amountInputField.text = canBuyAmount.ToString("#,0");
                     Amount = canBuyAmount;
                 }
@@ -124,9 +124,9 @@ public class UI_TB_Amount : MonoBehaviour
                     //골드에 맞춰야함
                     //todo 갯수마다 Price에 값 다른거 줘야하는데.
                     int price = ((Consumable)tempItem).storeSellPrice;
-                    if ((price * tempItem.amount) > goldInvenCapacty.gold)
+                    if ((price * tempItem.amount) > _goldInvenCapacity.gold)
                     {
-                        int canBuyAmount = goldInvenCapacty.gold / price;
+                        int canBuyAmount = _goldInvenCapacity.gold / price;
                         amountInputField.text = canBuyAmount.ToString("#,0");
                         Amount = canBuyAmount;
                     }

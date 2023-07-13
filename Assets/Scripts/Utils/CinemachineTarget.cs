@@ -1,18 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
 public class CinemachineTarget : MonoBehaviour
 {
     private CinemachineTargetGroup CinemachineTargetGroup { get; set; }
-    [SerializeField] Transform cursorTransform;
+    private Transform cursorTransform;
     private Transform CameraFoucs { get; set; }
 
     private void Awake()
     {
         CinemachineTargetGroup = GetComponent<CinemachineTargetGroup>();
+        cursorTransform = GameObject.FindWithTag("Cursor").transform;
     }
 
     void Start()
@@ -22,7 +20,7 @@ public class CinemachineTarget : MonoBehaviour
     public void Init()
     {
         CameraFoucs = GI.Inst.Player.transform.Find("CameraFocus");
-        
+       
         ActivateCamera();
     }
 

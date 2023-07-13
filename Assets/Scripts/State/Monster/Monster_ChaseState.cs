@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster_ChaseState : MonsterState
@@ -10,25 +8,59 @@ public class Monster_ChaseState : MonsterState
     {
     }
 
+    protected float randDistModifier;
+    protected float idleTimer;
+
     
     public override void BeginState()
     {
-        // //공격 애니메이션이 끝나면 트리거로 Idle 상태가 되는데 공격버튼을 계속 연타하면 Idle로 들어오지 않음.
-        // if (PlayerController.bNormalAttackReserve)
-        // {
-        //     //todo 장착 무기가 Dagger인지 Axe인지에 따라
-        //     //TransitionState(Define.EState.DaggerNormalAttack);
-        //     //TransitionState(Define.EState.AxeNormalAttack);
-        //     TransitionState(Define.EPlayerState.BowNormalAttack);
-        // }
-        //
-        // Animator.SetBool(AnimHash.isIdle, true);
-        // Animator.SetFloat(AnimHash.xVelocity, PlayerController.MoveDir.x);
-        // Player.SetZeroVelocity();
+        randDistModifier = Random.Range(-0.5f, 0.5f);
+        Animator.SetBool(AnimHash.isMove, false);
+        Animator.SetBool(AnimHash.isIdle, false);
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        
+        idleTimer -= Time.deltaTime;
+       
+        if (AIController.Target.transform.position.x > Monster.transform.position.x) 
+        {
+            if (AIController.CurrentDir.x < 0) 
+                AIController.TurnDir();
+        }
+        else
+        {
+            if (AIController.CurrentDir.x > 0) 
+                AIController.TurnDir();
+        }
+
+        float dist = Vector3.Distance(AIController.Target.transform.position, Monster.transform.position);
+        if (dist <= AIController.NormalAttackRange + randDistModifier)
+        {
+            Monster.SetZeroVelocity();
+            Animator.SetBool(AnimHash.isMove, false);
+            Animator.SetBool(AnimHash.isIdle, true);
+            idleTimer = Random.Range(0.3f, 0.6f);
+            if (AIController.CanNormalAttack)
+                TransitionState(Define.EMonsterState.NormalAttack1);
+        }
+        else
+        {
+            Animator.SetBool(AnimHash.isIdle, true);
+            if (idleTimer < 0f)
+            {
+                Animator.SetBool(AnimHash.isIdle, false);
+                Animator.SetBool(AnimHash.isMove, true);
+                Monster.SetVelocity(Monster.MoveSpeed * AIController.CurrentDir.x);
+            }
+        }
     }
 
     public override void EndState()
     {
+        Animator.SetBool(AnimHash.isMove, false);
         Animator.SetBool(AnimHash.isIdle, false);
     }
 }

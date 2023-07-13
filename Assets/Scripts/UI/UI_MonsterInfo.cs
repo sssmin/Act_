@@ -16,9 +16,9 @@ public class UI_MonsterInfo : MonoBehaviour
     }
 
     
-    public void InitPos()
+    public void InitPos(float spawnXPos, float spawnYPos)
     {
-        gameObjectTransform.localPosition = new Vector3(0f, 2.5f, gameObjectTransform.localPosition.z);
+        gameObjectTransform.localPosition = new Vector3(spawnXPos, spawnYPos, gameObjectTransform.localPosition.z);
         gameObjectTransform.localScale = new Vector3(0.025f, 0.025f, gameObjectTransform.localScale.z);
     }
 

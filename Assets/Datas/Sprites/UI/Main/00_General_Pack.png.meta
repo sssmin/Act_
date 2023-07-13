@@ -221,7 +221,7 @@ TextureImporter:
         width: 36
         height: 7
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -242,7 +242,7 @@ TextureImporter:
         width: 34
         height: 3
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -250,6 +250,48 @@ TextureImporter:
       bones: []
       spriteID: 54a9f9b15e0f0284d8012fd400dbb95d
       internalID: -1904147003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dialog
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 25
+        width: 35
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 8, y: 2, z: 1, w: 2}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79d4bea2c54245f40bd1a8645c074c3d
+      internalID: 1616925114
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arrow
+      rect:
+        serializedVersion: 2
+        x: 114
+        y: 4
+        width: 9
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 028fd8d857272b34ca551d3728ada9b0
+      internalID: -1753665829
       vertices: []
       indices: 
       edges: []
@@ -266,6 +308,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       00_General_Pack_1: 1085774066
+      Arrow: -1753665829
+      Dialog: 1616925114
       00_General_Pack_2: 335964749
       00_General_Pack_3: -1725236108
       00_General_Pack_0: -71003411

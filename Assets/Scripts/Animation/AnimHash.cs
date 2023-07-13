@@ -41,6 +41,16 @@
         /*
          * monster
          */
+        public static readonly int isNormalAttack1 = Animator.StringToHash("isNormalAttack1");
+        public static readonly int isNormalAttack2 = Animator.StringToHash("isNormalAttack2");
+        public static readonly int isNormalAttack3 = Animator.StringToHash("isNormalAttack3");
+        public static readonly int isSpecialAttack1 = Animator.StringToHash("isSpecialAttack1");
+        public static readonly int isSpecialAttack2 = Animator.StringToHash("isSpecialAttack2");
+        public static readonly int isSpecialAttack3 = Animator.StringToHash("isSpecialAttack3");
+        public static readonly int isWalk = Animator.StringToHash("isWalk");
+        public static readonly int isRun = Animator.StringToHash("isRun");
+        public static readonly int isDodge = Animator.StringToHash("isDodge");
+        public static readonly int isDefend = Animator.StringToHash("isDefend");
         
         
         /*

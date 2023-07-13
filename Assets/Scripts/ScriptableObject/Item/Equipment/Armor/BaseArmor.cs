@@ -12,7 +12,7 @@ public class BaseArmor : Equipment
     public EArmorType armorType;
     
     
-    public override void DataCopy(Item item)
+    protected override void DataCopy(Item item)
     {
         base.DataCopy(item);
         

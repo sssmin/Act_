@@ -1,14 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BaseController : MonoBehaviour
 {
+    protected StatManager StatManager { get; set; }
     private SpriteRenderer Sr { get; set; }
     [SerializeField] protected GameObject groundDetectObject;
-    [SerializeField] protected GameObject wallDetectObject;
+    [SerializeField] public GameObject wallDetectObject;
     public float GroundDetectDist { get; private set; }
     protected float WallDetectDist { get; set; }
     private Vector2 currentDir = Vector2.right;
@@ -24,6 +21,7 @@ public class BaseController : MonoBehaviour
         Sr = GetComponentInChildren<SpriteRenderer>();
         GroundDetectDist = 0.3f;
         WallDetectDist = 0.3f;
+        StatManager = GetComponent<StatManager>();
     }
 
     public enum EDir

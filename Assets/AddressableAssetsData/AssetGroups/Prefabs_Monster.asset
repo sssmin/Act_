@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Prefabs_Monster
+  m_EditorClassIdentifier: 
+  m_GroupName: Prefabs_Monster
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 869448272b0cb9246ae678f1b62897cc
+  m_SerializeEntries:
+  - m_GUID: 2c053d264dbf29a4ca4146d1ab776ca5
+    m_Address: NightBorne
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: e8e194dfd34b80b4cb5c0e2a2fa52e2f
+    m_Address: WandererMagician
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 758b6d49130875f449765958901a267e
+    m_Address: SkeletonWarrior
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 191fba367cfaee94a981a38bde8194de
+    m_Address: Necromancer
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 1e73091bec254d246bf9c9e9af83a953
+    m_Address: WindHashashin
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 937da11374bd5e0448be3d4885726b33, type: 2}
+    - {fileID: 11400000, guid: de5ce6779b53175408764ab71928f809, type: 2}

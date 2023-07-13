@@ -10,16 +10,16 @@ public class FireStrikeState : PlayerState
     {
         Animator.SetBool(AnimHash.isFireStrike, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 
     public override void Update()
     {
         base.Update();
         
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.FireStrike);
         }
        
@@ -29,6 +29,6 @@ public class FireStrikeState : PlayerState
     {
         base.EndState();
         Animator.SetBool(AnimHash.isFireStrike, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

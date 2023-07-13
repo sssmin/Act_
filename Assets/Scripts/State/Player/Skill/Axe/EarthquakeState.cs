@@ -10,16 +10,16 @@ public class EarthquakeState : PlayerState
     {
         Animator.SetBool(AnimHash.isEarthquake, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 
     public override void Update()
     {
         base.Update();
         
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.Earthquake);
         }
        
@@ -29,6 +29,6 @@ public class EarthquakeState : PlayerState
     {
         base.EndState();
         Animator.SetBool(AnimHash.isEarthquake, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

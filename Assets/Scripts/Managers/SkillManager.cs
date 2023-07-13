@@ -7,6 +7,31 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
+
+[Serializable]
+public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, PassiveSaveInfo>
+{
+}
+
+
+[Serializable]
+public class PassiveSaveInfo //todo Effect도 다 resource에서 get 해야함.
+{
+    [SerializeField] public Define.ESkillId skillId;
+    [SerializeField] public int level;
+    [SerializeField] public bool bCanLevelUp;
+    [SerializeField] public int equipIndex;
+
+    public void SetInfo(SO_PassiveSkill passiveSkill)
+    {
+        skillId = passiveSkill.skillId;
+        level = passiveSkill.skillLevel;
+        bCanLevelUp = passiveSkill.bCanLevelUp;
+        equipIndex = passiveSkill.equipIndex;
+    }
+}
+
+
 public struct ActiveSkillIdentify : IEquatable<ActiveSkillIdentify>
 {
     public EActiveSkillOrder skillOrder;
@@ -28,16 +53,16 @@ public struct ActiveSkillIdentify : IEquatable<ActiveSkillIdentify>
 public class SkillManager : MonoBehaviour
 {
     private Dictionary<ActiveSkillIdentify, SO_ActiveSkill> ActiveSkills { get; set; } = new Dictionary<ActiveSkillIdentify, SO_ActiveSkill>();
-    private int[] ActiveSkillLevels { get; set; } = new int[5] { 1, 1, 1, 1, 1 };
+    public int[] ActiveSkillLevels { get; private set; } = new int[5] { 1, 1, 1, 1, 1 };
 
-    private Dictionary<Define.ESkillId, SO_PassiveSkill> PassiveSkills { get; set; } =
+    public Dictionary<Define.ESkillId, SO_PassiveSkill> PassiveSkills { get; private set; } =
         new Dictionary<Define.ESkillId, SO_PassiveSkill>();
 
-    private Dictionary<Define.ESkillId, SO_PassiveSkill> EquippedPassiveSkills { get; set; } =
-        new Dictionary<Define.ESkillId, SO_PassiveSkill>();
+    // public Dictionary<Define.ESkillId, SO_PassiveSkill> EquippedPassiveSkills { get; private set; } =
+    //     new Dictionary<Define.ESkillId, SO_PassiveSkill>();
 
     private Player Player { get; set; }
-    public float UltSkillChargeAmount { get; set; } //대미지 받는 쪽에서 
+    private float UltSkillChargeAmount { get; set; } //대미지 받는 쪽에서 
     
 
     private void Awake()
@@ -80,7 +105,7 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.getUltSkillChargeAmount += GetUltSkillChargeAmount;
     }
     
-    public void InitSkills()
+    public void SetStartPassiveSkills()
     {
         //패시브
         List<SO_PassiveSkill> passiveSkills = new List<SO_PassiveSkill>();
@@ -98,7 +123,7 @@ public class SkillManager : MonoBehaviour
     void ExecuteActiveSkill(int instanceId, Define.ESkillId skillId)
     {
         if (Player.InstId != instanceId) return;
-      
+        
         foreach (var pair in ActiveSkills)
         {
             if (pair.Key.skillId == skillId)
@@ -133,7 +158,7 @@ public class SkillManager : MonoBehaviour
                 break;
             case EActiveSkillOrder.Fifth:
                 GI.Inst.CooltimeManager.FifthSkillTimer = Time.time + cooltime;
-                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Fifth, GI.Inst.CooltimeManager.FifthSkillTimer);
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Fifth, cooltime);
                 break;
         }
     }
@@ -160,36 +185,40 @@ public class SkillManager : MonoBehaviour
             skills.Add(skill);
             skillIcons.Add(skill.icon);
             ActiveSkills.Add(identify, skill);
-            ;
         }
         GI.Inst.ListenerManager.CheckSkillMatCanLevelUpSkills(skills);
-        GI.Inst.UIManager.RefreshSkillHotkeyUI(skillIcons);
+        GI.Inst.UIManager.RefreshSkillHotkeyMainUI(skillIcons);
     }
     
 
-    private void EquipPassiveSkill(Define.ESkillId skillId)
+    private void EquipPassiveSkill(Define.ESkillId skillId, int equipIndex)
     {
-        if (EquippedPassiveSkills.ContainsKey(skillId))
+        if (PassiveSkills.ContainsKey(skillId))
         {
-            Debug.Log("이미 장착됨");
+            if (PassiveSkills[skillId].equipIndex != -1)
+            {
+                Debug.Log("이미 장착됨");
+            }
+            else
+            {
+                PassiveSkills[skillId].equipIndex = equipIndex;
+            }
         }
         else
         {
-            EquippedPassiveSkills.Add(skillId, PassiveSkills[skillId]);
-            PassiveSkills[skillId].ExecSkill(Player.StatManager, Player.PlayerController);
+            Debug.Log("존재하지 않는 패시브.");
         }
-        
     }
     
     private void UnequipPassiveSkill(Define.ESkillId skillId)
     {
-        if (EquippedPassiveSkills.ContainsKey(skillId))
+        if (PassiveSkills.ContainsKey(skillId))
         {
-            EquippedPassiveSkills.Remove(skillId);
+            PassiveSkills[skillId].equipIndex = -1;
         }
         else
         {
-            Debug.Log("장착되어있지 않음");
+            Debug.Log("존재하지 않는 패시브.");
         }
     }
 
@@ -221,25 +250,15 @@ public class SkillManager : MonoBehaviour
         switch (skillOrder)
         {
             case EActiveSkillOrder.First:
-                if (GI.Inst.CooltimeManager.FirstSkillTimer <= Time.time)
-                    return true;
-                break;
+                return (GI.Inst.CooltimeManager.FirstSkillTimer <= Time.time);
             case EActiveSkillOrder.Second:
-                if (GI.Inst.CooltimeManager.SecondSkillTimer <= Time.time)
-                    return true;
-                break;
+                return (GI.Inst.CooltimeManager.SecondSkillTimer <= Time.time);
             case EActiveSkillOrder.Third:
-                if (GI.Inst.CooltimeManager.ThirdSkillTimer <= Time.time)
-                    return true;
-                break;
+                return (GI.Inst.CooltimeManager.ThirdSkillTimer <= Time.time);
             case EActiveSkillOrder.Fourth:
-                if (UltSkillChargeAmount >= 100f)
-                    return true;
-                break;
+                return (UltSkillChargeAmount >= 100f);
             case EActiveSkillOrder.Fifth:
-                if (GI.Inst.CooltimeManager.FifthSkillTimer <= Time.time)
-                    return true;
-                break;
+                return (GI.Inst.CooltimeManager.FifthSkillTimer <= Time.time);
         }
         return false;
     }
@@ -286,10 +305,13 @@ public class SkillManager : MonoBehaviour
     //장착되었으면 을 확인 하고 되어있으면 해제 후 다시 착용
     public void ReEquipPassive(Define.ESkillId skillId)
     {
-        if (EquippedPassiveSkills.ContainsKey(skillId))
+        if (PassiveSkills.ContainsKey(skillId))
         {
-            UnequipPassiveSkill(skillId);
-            EquipPassiveSkill(skillId);
+            if (PassiveSkills[skillId].equipIndex != -1)
+            {
+                UnequipPassiveSkill(skillId);
+                EquipPassiveSkill(skillId, PassiveSkills[skillId].equipIndex);
+            }
         }
     }
 
@@ -303,28 +325,58 @@ public class SkillManager : MonoBehaviour
     //플레이어만 염두에 두고 구현하면 됨. 몬스터는 SkillManager가 없음.
     public void ExecCauseDamageEffect(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult, StatManager victimStatManager)
     {
-        foreach (var pair in EquippedPassiveSkills)
+        foreach (var pair in PassiveSkills)
         {
-            if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+            if (pair.Value.equipIndex != -1)
             {
-                Effect effect = pair.Value.effect;
-                effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, 
-                     victimStatManager, Player.StatManager, pair.Value.icon);
+                if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+                {
+                    Effect effect = pair.Value.effect;
+                    effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, 
+                        victimStatManager, Player.StatManager, pair.Value.icon);
+                }
             }
         }
     }
 
     public void ExecTakeDamageEffect(Define.EDamageType causeDamageType, StatManager instigatorStatManager)
     {
-        foreach (var pair in EquippedPassiveSkills)
+        foreach (var pair in PassiveSkills)
         {
-            if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+            if (pair.Value.equipIndex != -1)
             {
-                Effect effect = pair.Value.effect;
-                effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.TakeDamage, 
-                    instigatorStatManager, Player.StatManager, pair.Value.icon);
+                if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
+                {
+                    Effect effect = pair.Value.effect;
+                    effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.TakeDamage,
+                        instigatorStatManager, Player.StatManager, pair.Value.icon);
+                }
             }
         }
+    }
+
+    public void SetDeserializeSkillInfo(PlayerInfo playerInfo)
+    {
+        playerInfo.Deserialize();
+
+        PassiveSkillDictionary skillDictionary = playerInfo.passiveSkills;
+        foreach (KeyValuePair<Define.ESkillId, PassiveSaveInfo> pair in skillDictionary)
+        {
+            SO_PassiveSkill passiveSkill = GI.Inst.ResourceManager.GetPassiveSkillData(pair.Key);
+            passiveSkill.skillLevel = pair.Value.level;
+            passiveSkill.bCanLevelUp = pair.Value.bCanLevelUp;
+            passiveSkill.equipIndex = pair.Value.equipIndex;
+            passiveSkill.Init();
+            PassiveSkills.Add(pair.Key, passiveSkill);
+            if (passiveSkill.equipIndex != -1)
+            {
+                GI.Inst.UIManager.SetEquipPassive(passiveSkill);
+            }
+        }
+        
+        ActiveSkillLevels = playerInfo.activeSkillLevels;
+        GI.Inst.UIManager.RefreshActiveSkillUI(GetCurrentActiveSkills());
+        GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
     }
     
     #region Clone
@@ -453,4 +505,5 @@ public class SkillManager : MonoBehaviour
     }
     
     #endregion
+    
 }

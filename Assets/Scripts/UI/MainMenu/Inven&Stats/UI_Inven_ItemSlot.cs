@@ -44,7 +44,7 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         itemIconImage.color = Color.white;
         borderImage.color = Color.white;
         
-        itemAmount.text = amount.ToString("#,0");
+        itemAmount.text =  $"x{amount:#,0}";
     }
     
     public virtual void OnPointerClick(PointerEventData eventData)

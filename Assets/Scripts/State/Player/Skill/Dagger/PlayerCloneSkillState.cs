@@ -12,16 +12,16 @@ public class PlayerCloneSkillState : PlayerState
     {
         Animator.SetBool(AnimHash.isDaggerCloneSkill, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 
     public override void Update()
     {
         base.Update();
         
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.PlayerClone);
         }
        
@@ -31,6 +31,6 @@ public class PlayerCloneSkillState : PlayerState
     {
         base.EndState();
         Animator.SetBool(AnimHash.isDaggerCloneSkill, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

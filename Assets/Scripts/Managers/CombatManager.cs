@@ -3,13 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CombatManager : MonoBehaviour
 {
     public int CurrentComboNum { get; private set; }
     public float NormalAttackCoefficient { get; private set; }
     private PlayerController PlayerController { get; set; }
-    [SerializeField] public GameObject normalAttackOverlap;
+    private NormalAttackCollider NormalAttackCollider { get; set; }
+   
     private float attackRange;
     
     //todo 나중에 추가할거, 무기 교체하면 Combo 초기화
@@ -17,6 +19,7 @@ public class CombatManager : MonoBehaviour
     private void Awake()
     {
         PlayerController = GetComponent<PlayerController>();
+        NormalAttackCollider = GetComponentInChildren<NormalAttackCollider>();
         CurrentComboNum = 0;
         NormalAttackCoefficient = 1f;
     }
@@ -32,12 +35,8 @@ public class CombatManager : MonoBehaviour
         GameObject go = GI.Inst.ResourceManager.Instantiate("Arrow", PlayerController.ControlledPlayer.arrowSpawnPoint.position, quaternion.identity);
         Arrow arrow = go.GetComponent<Arrow>();
         
-        //todo 대미지 받아서 Init으로 넘겨줘야함 
-       
         arrow.Init(PlayerController.AttackDir, inOwner: PlayerController, NormalAttackCoefficient); 
     }
-    
-    
 
     public void InitCombo()
     {
@@ -57,8 +56,8 @@ public class CombatManager : MonoBehaviour
     public void ExecuteNormalAttack(string layerNameForSearch)
     {
         Collider2D[] colliders = new Collider2D[10];
-        Physics2D.OverlapCircleNonAlloc(normalAttackOverlap.transform.position, 0.3f, colliders, LayerMask.GetMask(layerNameForSearch));
-      
+        Physics2D.OverlapCircleNonAlloc(NormalAttackCollider.transform.position, 2f, colliders, LayerMask.GetMask(layerNameForSearch));
+        
         foreach (var collider in colliders)
         {
             if (collider == null) break;
@@ -67,7 +66,12 @@ public class CombatManager : MonoBehaviour
             PlayerController.ControlledPlayer.StatManager.CauseNormalAttack(enemyStatManager, NormalAttackCoefficient);
         }
     }
-
+    
+    public void NormalAttackSuccessful(StatManager enemyStatManager)
+    {
+        PlayerController.ControlledPlayer.StatManager.CauseNormalAttack(enemyStatManager, NormalAttackCoefficient);
+    }
+    
     public static List<Transform> GetCloseEnemiesTransforms(Transform origin, int maxEnemyNum)
     {
         List<Transform> transforms = new List<Transform>();

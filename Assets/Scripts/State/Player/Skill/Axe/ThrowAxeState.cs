@@ -10,16 +10,16 @@ public class ThrowAxeSkillState : PlayerState
     {
         Animator.SetBool(AnimHash.isThrowAxeSkill, true);
         Player.SetZeroVelocity();
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
     
     public override void Update()
     {
         base.Update();
 
-        if (bIsAnimTrigger)
+        if (IsAnimTrigger)
         {
-            bIsAnimTrigger = false;
+            IsAnimTrigger = false;
             GI.Inst.ListenerManager.OnExecuteActiveSkill(Player.InstId, Define.ESkillId.ThrowAxe);
         }
     }
@@ -27,6 +27,6 @@ public class ThrowAxeSkillState : PlayerState
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isThrowAxeSkill, false);
-        bIsAnimTrigger = false;
+        IsAnimTrigger = false;
     }
 }

@@ -12,7 +12,7 @@ public class BaseAcc : Equipment
     public EAccType accType;
 
     
-    public override void DataCopy(Item item)
+    protected override void DataCopy(Item item)
     {
         base.DataCopy(item);
         
