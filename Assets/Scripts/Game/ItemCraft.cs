@@ -67,14 +67,28 @@ public class ItemCraft : ScriptableObject
         }
     }
     
-    public void Exchange(string createdItemId, string equipmentMatId, Item.EItemCategory itemCategory)
+    private void Exchange(string createdItemId, string equipmentMatId, Item.EItemCategory itemCategory)
     {
-        Item createdItem = GI.Inst.ResourceManager.GetItemData(createdItemId);
+        Item createdItem = null;
+        
+        if (itemCategory == Item.EItemCategory.Weapon)
+        {
+            createdItem  = GI.Inst.ResourceManager.GetItemDataCopy(createdItemId);
+            ((BaseWeapon)createdItem).Element = (EWeaponElement)Random.Range(0, 4);
+        }
+        else
+        {
+            createdItem  = GI.Inst.ResourceManager.GetItemData(createdItemId);
+        }
+        
         RequireMatAmount requireMatAmount = requireMatAmounts.FirstOrDefault(r => r.itemCategory == itemCategory);
+        
         Item equipmentMat = GI.Inst.ResourceManager.GetItemData(equipmentMatId);
         GI.Inst.ListenerManager.SubItem(equipmentMat, false, requireMatAmount.requireEquipmentMatAmount);
+        
         Item sharedMat = GI.Inst.ResourceManager.GetItemData("SharedMat");
         GI.Inst.ListenerManager.SubItem(sharedMat, false, requireMatAmount.requireSharedMatAmount);
+        
         GI.Inst.ListenerManager.AddItem(createdItem, true, 1);
         
         GI.Inst.UIManager.SetCraftResult(createdItem.itemName);

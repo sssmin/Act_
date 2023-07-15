@@ -9,6 +9,7 @@ public class Player : BaseCharacter
     public PlayerController PlayerController { get; set; }
     public CombatManager CombatManager { get; private set; }
     public InventoryManager InventoryManager { get; private set; }
+  
    
     public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
@@ -25,6 +26,7 @@ public class Player : BaseCharacter
         CombatManager = GetComponent<CombatManager>();
         CapsuleCollider = GetComponent<CapsuleCollider2D>();
         InventoryManager = GetComponent<InventoryManager>();
+        StatManager = GetComponent<PlayerStatManager>();
 
         JumpForce = 5f;
         GroundSlideSpeed = 13f;

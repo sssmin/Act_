@@ -20,12 +20,12 @@ public class SO_Skill_NimbleReflexes : SO_PassiveSkill
         
          effectInfo.onExecuteIncreaseStat = () =>
          {
-             casterStatManager.stats.evasionChancePer.AddModifier(effectInfo.applyPerBySkillLevel);
+             casterStatManager.characterStats.evasionChancePer.AddModifier(effectInfo.applyPerBySkillLevel);
          };
          
          effectInfo.onExecuteDecreaseStat = () =>
          {
-             casterStatManager.stats.evasionChancePer.SubModifier(effectInfo.applyPerBySkillLevel);
+             casterStatManager.characterStats.evasionChancePer.SubModifier(effectInfo.applyPerBySkillLevel);
          };
         durationEffect = new DurationEffect_NimbleReflexes();
         

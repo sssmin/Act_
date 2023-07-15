@@ -55,9 +55,9 @@ public static class Define
         MonsterInfo,
         PlayerBaseStat,
         ItemCraft,
-        PlayerControl,
         AudioClip,
-        AudioMixer
+        AudioMixer,
+        StatusSprite
     }
 
     public enum ESkillId
@@ -75,9 +75,11 @@ public static class Define
     {
         None,
         Attack,
+        AttackIncValue,
         Defence,
-        ElemAttack,
+        DefenceIncValue,
         MaxHp,
+        CurrentHp,
         CriticalChancePer,
         CriticalResistPer,
         CriticalDamageIncPer,

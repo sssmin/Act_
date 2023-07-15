@@ -15,8 +15,8 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.resetCooltimeUI += ResetCooltimeUI;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots -= ClearSkillHotkeySlots;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots += ClearSkillHotkeySlots;
-        GI.Inst.UIManager.updateFillAmount -= UpdateFillAmount;
-        GI.Inst.UIManager.updateFillAmount += UpdateFillAmount;
+        GI.Inst.UIManager.updateFillAmount -= UpdateUltFillAmount;
+        GI.Inst.UIManager.updateFillAmount += UpdateUltFillAmount;
         
         for (int i = 0; i < (int)EActiveSkillOrder.Max; i++)
         {
@@ -71,7 +71,7 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         skillHotkeySlot.ResetCooltimeUI();
     }
     
-    public void UpdateFillAmount(float chargeAmount)
+    public void UpdateUltFillAmount(float chargeAmount)
     {
         foreach (UI_Main_SkillHotkeySlotBase skillHotkeySlot in SkillHotkeySlots)
         {

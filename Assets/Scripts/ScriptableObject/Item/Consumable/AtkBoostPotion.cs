@@ -12,11 +12,14 @@ public class AtkBoostPotion : Consumable
         effect = new DurationEffect();
         EffectInfo effectInfo = new EffectInfo();
         
+        float atkIncValue = casterStatManager.characterStats.attack.Value * 0.1f;
+        Debug.Log(atkIncValue);
+        
         effectInfo.onExecuteIncreaseStat = 
-            () => casterStatManager.stats.attack.AddModifier(15);
+            () => casterStatManager.characterStats.attackIncValue.AddModifier(atkIncValue);
         
         effectInfo.onExecuteDecreaseStat = 
-            () => casterStatManager.stats.attack.SubModifier(15);
+            () => casterStatManager.characterStats.attackIncValue.SubModifier(atkIncValue);
         
         float duration = 10f;
         

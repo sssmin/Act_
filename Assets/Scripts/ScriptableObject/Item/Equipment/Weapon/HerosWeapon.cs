@@ -11,9 +11,9 @@ public class HerosWeapon : BaseWeapon
         EffectInfo effectInfo = new EffectInfo();
         
         effectInfo.onExecuteIncreaseStat = 
-            () => ownerStatManager.stats.normalAttackDamageIncPer.AddModifier(EnhancementLevel);
+            () => ownerStatManager.characterStats.normalAttackDamageIncPer.AddModifier(EnhancementLevel);
         effectInfo.onExecuteDecreaseStat = 
-            () => ownerStatManager.stats.normalAttackDamageIncPer.SubModifier(EnhancementLevel);
+            () => ownerStatManager.characterStats.normalAttackDamageIncPer.SubModifier(EnhancementLevel);
         
         
         Effect durationEffect = new Effect();

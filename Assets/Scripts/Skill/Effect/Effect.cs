@@ -11,6 +11,9 @@ public enum EDurationEffectId
     LastStand,
     NimbleReflexes,
     DeadlyImpact,
+    Burn,
+    Frozen,
+    Poison,
     
     Max
 }
@@ -49,7 +52,7 @@ public class Effect
     public virtual void CheckConditionAndExecute(Define.EDamageType inDamageType, Define.EActivationCondition inActivationCondition, 
         StatManager enemyStatManager, StatManager casterStatManager, Sprite icon)
     {
-        
+        Debug.Log("부모");
     }
 }
 

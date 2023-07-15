@@ -20,17 +20,20 @@ public class SO_Skill_LastStand : SO_PassiveSkill
     public override void ExecSkill(StatManager casterStatManager, PlayerController playerController)
     {
         EffectInfo effectInfo = new EffectInfo();
+
+        float atkIncValue = casterStatManager.characterStats.attack.Value * atkPer * 0.01f;
+        float defIncValue = casterStatManager.characterStats.attack.Value * defPer * 0.01f;
         
         effectInfo.onExecuteIncreaseStat = () =>
         {
-            casterStatManager.stats.attack.AddModifier(atkPer);
-            casterStatManager.stats.defence.AddModifier(defPer);
+            casterStatManager.characterStats.attackIncValue.AddModifier(atkIncValue); 
+            casterStatManager.characterStats.defenceIncValue.AddModifier(defIncValue);
         };
          
         effectInfo.onExecuteDecreaseStat = () =>
         {
-            casterStatManager.stats.attack.SubModifier(atkPer);
-            casterStatManager.stats.defence.SubModifier(defPer);
+            casterStatManager.characterStats.attackIncValue.SubModifier(atkIncValue);
+            casterStatManager.characterStats.defenceIncValue.SubModifier(defIncValue);
         };
         durationEffect = new DurationEffect_LastStand();
         

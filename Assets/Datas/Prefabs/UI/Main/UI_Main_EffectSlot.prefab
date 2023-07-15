@@ -89,7 +89,6 @@ GameObject:
   - component: {fileID: 3844794751066607497}
   - component: {fileID: 5708469955184386576}
   - component: {fileID: 1029187598835038059}
-  - component: {fileID: 5002476834189190071}
   m_Layer: 18
   m_Name: UI_Main_EffectSlot
   m_TagString: Untagged
@@ -184,19 +183,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: UI_Main_EffectSlot
---- !u!114 &5002476834189190071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818140973099117752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b339bb8481c4ba245ba8da1a382ec1d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  poolingNum: 5
 --- !u!1 &8860205467113470460
 GameObject:
   m_ObjectHideFlags: 0

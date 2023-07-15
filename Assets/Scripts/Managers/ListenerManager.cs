@@ -5,49 +5,51 @@ using UnityEngine;
 public class ListenerManager
 {
     public Action<int, Define.ESkillId> onExecuteActiveSkill;
-    public Func<EActiveSkillOrder, SO_Skill> getSkill;
     public Action<int> onTriggerAnim;
     public Action<int, StatManager, DamageInfo> onExecPlayerClone;
     public Action<int, StatManager, DamageInfo> onExecEarthquake;
     public Action<int,  List<GiveToPlayerItemInfo>> giveItemsToPlayer;
-    public Func<Item.EItemCategory, List<Item>> getItems;
-    public Func<Item.EItemCategory, List<StackableItem>> getStackableItems;
-    public Action<Item> useItem;
-    public Func<List<Item>> getEquippedItems;
-    public Func<int, Stats> getStats;
-    public Func<int> getPlayerInstId;
     public Action<int, List<Stat>> onStatAddModifier;
     public Action<int, List<Stat>> onStatSubModifier;
+    public Action<Item> useItem;
     public Action<Item.EWeaponType> setActiveSkillCuzEquip;
-    public Func<EActiveSkillOrder, bool> isSkillReady;
-    public Func<List<SO_ActiveSkill>> getCurrentActiveSkills;
-    public Func<List<SO_PassiveSkill>> getAllPassiveSkills;
-    public Func<Item.EWeaponType> getEquippedWeaponType;
-    public Action initCombo;
     public Action<Item> unequip;
     public Action<Item, bool, int> subItem;
-    public Func<GoldInvenCapacity> getGoldInvenCapacity;
     public Action<Item.EItemHotkeyOrder> onPressedItemHotkey;
     public Action<Item.EItemHotkeyOrder, Item> registerItemHotkey;
+    public Action<Item, int> buyItem;
     public Action<ActiveSkill_ShortVer, int> requestActiveSkillLevelUp;
     public Action<PassiveSkill_ShortVer> requestPassiveSkillLevelUp;
     public Action<ESkillMatId, EActiveSkillOrder> useActiveSkillMat;
     public Action<PassiveSkill_ShortVer> usePassiveSkillMat;
     public Action<List<SO_ActiveSkill>> checkSkillMatCanLevelUpSkills;
-    public Func<EActiveSkillOrder, int> getActiveSkillLevel;
     public Action<Define.ESkillId, int> equipPassiveSkill;
     public Action<Define.ESkillId> unequipPassiveSkill;
     public Action<Define.EDamageType, StatManager> execTakeDamageEffect;
-    public Func<float> getUltSkillChargeAmount;
-    public Action<Item, int> buyItem;
-    public Func<Item, bool, int, bool> addItem;
-    public Func<string, int, bool> hasEnoughEtcItems;
+    public Action<bool> switchActionMap;
+    public Action initCombo;
+    public Action initUltSkillChargeAmount;
     public Action increaseCurrentInventoryNum;
     public Action decreaseCurrentInventoryNum;
-    public Func<bool> isEquippedWeapon;
     public Action playersNormalAttack;
+    public Func<int, Stats> getStats;
+    public Func<int> getPlayerInstId;
+    public Func<Item.EItemCategory, List<Item>> getItems;
+    public Func<Item.EItemCategory, List<StackableItem>> getStackableItems;
+    public Func<List<Item>> getEquippedItems;
+    public Func<BaseWeapon> getEquippedWeapon;
+    public Func<GoldInvenCapacity> getGoldInvenCapacity;
+    public Func<Item, bool, int, bool> addItem;
+    public Func<EActiveSkillOrder, SO_Skill> getSkill;
+    public Func<EActiveSkillOrder, bool> isSkillReady;
+    public Func<List<SO_ActiveSkill>> getCurrentActiveSkills;
+    public Func<List<SO_PassiveSkill>> getAllPassiveSkills;
+    public Func<Item.EWeaponType> getEquippedWeaponType;
+    public Func<EActiveSkillOrder, int> getActiveSkillLevel;
+    public Func<float> getUltSkillChargeAmount;
+    public Func<string, int, bool> hasEnoughEtcItems;
+    public Func<bool> isEquippedWeapon;
     public Func<bool> playersAttack;
-    public Action<bool> switchActionMap;
 
     public void OnExecuteActiveSkill(int instanceId, Define.ESkillId skillId)
     {
@@ -99,6 +101,11 @@ public class ListenerManager
         return getEquippedItems?.Invoke();
     }
 
+    public BaseWeapon GetEquippedWeapon()
+    {
+        return getEquippedWeapon?.Invoke();
+    }
+
     public Stats GetStats(int instanceId)
     {
         return getStats?.Invoke(instanceId);
@@ -123,6 +130,11 @@ public class ListenerManager
     {
         setActiveSkillCuzEquip?.Invoke(type);
         initCombo?.Invoke();
+    }
+
+    public void InitUltSkillChargeAmount()
+    {
+        initUltSkillChargeAmount?.Invoke();
     }
 
     public bool IsSkillReady(EActiveSkillOrder skillOrder)

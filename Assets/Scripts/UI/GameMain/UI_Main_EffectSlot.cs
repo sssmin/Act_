@@ -18,7 +18,7 @@ public class UI_Main_EffectSlot : MonoBehaviour
         }
         else
         {
-            cooltimeImage.fillAmount = GI.Inst.Player.StatManager.GetFillAmount(effectId);
+            cooltimeImage.fillAmount = ((PlayerStatManager)GI.Inst.Player.StatManager).GetFillAmount(effectId);
         }
         
         if (cooltimeImage.fillAmount <= 0f)
@@ -33,11 +33,13 @@ public class UI_Main_EffectSlot : MonoBehaviour
     {
         effectId = inEffectId;
         iconImage.sprite = icon;
+        cooltimeImage.fillAmount = 1f;
     }
     
     public void InitPassiveSkill(Define.ESkillId inSkillId, Sprite icon)
     {
         skillId = inSkillId;
         iconImage.sprite = icon;
+        cooltimeImage.fillAmount = 1f;
     }
 }

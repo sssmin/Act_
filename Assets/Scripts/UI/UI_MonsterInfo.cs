@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +8,12 @@ public class UI_MonsterInfo : MonoBehaviour
     [SerializeField] private RectTransform gameObjectTransform;
     [SerializeField] private RectTransform HpBar;
     [SerializeField] private Image statusImage;
+    [SerializeField] private Animator animator;
+    
+    
+    private Coroutine iconEndCoroutine;
+
+   
 
     public void SetBar(float ratio)
     {
@@ -29,4 +35,29 @@ public class UI_MonsterInfo : MonoBehaviour
         else 
             gameObjectTransform.localRotation = Quaternion.Euler(0f, 0f, 0f);
     }
+
+    public void SetStatusImage(Sprite icon, float endTime)
+    {
+        statusImage.color = Color.white;
+        statusImage.sprite = icon;
+        if (iconEndCoroutine != null) StopCoroutine(iconEndCoroutine);
+        float duration = endTime - Time.time;
+        iconEndCoroutine = StartCoroutine(CoSetStatusImage(duration));
+    }
+
+    private IEnumerator CoSetStatusImage(float second)
+    {
+        float blinkTime = second - 3f; //3초가 남았을 때 깜빡임
+        animator.SetBool("isIdle", true);
+        yield return new WaitForSeconds(blinkTime);
+        animator.SetBool("isIdle", false);
+        animator.SetBool("isBlink", true);
+        yield return new WaitForSeconds(3f);
+        animator.SetBool("isBlink", false);
+        statusImage.sprite = null;
+        statusImage.color = Color.clear;
+    }
+    
+    
+    
 }

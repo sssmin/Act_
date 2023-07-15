@@ -22,11 +22,28 @@ public class MonsterStatManager : StatManager
         MonsterInfoUI.InitPos(spawnXPos, spawnYPos);
     }
 
+    public override void Update()
+    {
+        if (DurationEffectEndTimePq.GetCount() > 0)
+        {
+            DurationEffect durationEffect = DurationEffectEndTimePq.Peek();
+            if (durationEffect.durationEndTime <= Time.time)//지속시간 끝
+            {
+                durationEffect = DurationEffectEndTimePq.Pop();
+                
+                if (DurationEffectDurationDict.ContainsKey(durationEffect.durationEffectId))
+                    DurationEffectDurationDict.Remove(durationEffect.durationEffectId);
+                
+                durationEffect.effectInfo.onExecuteDecreaseStat?.Invoke();
+            }
+        }
+    }
+
     public override void AddCurrentHp(float value)
     {
         base.AddCurrentHp(value);
         
-        float ratio = Mathf.Round((stats.currentHp.Value / stats.maxHp.Value * 100f) * 10) * 0.1f; 
+        float ratio = Mathf.Round((characterStats.currentHp.Value / characterStats.maxHp.Value * 100f) * 10) * 0.1f; 
         MonsterInfoUI.SetBar(ratio);
     }
 
@@ -40,27 +57,25 @@ public class MonsterStatManager : StatManager
         if (IsDead) return;
         float damage = damageInfo.damage;
         
-
         //회피
         float rand = Random.Range(0f, 100f);
-        if (stats.evasionChancePer.Value > rand)
+        if (characterStats.evasionChancePer.Value > rand)
         {
             SpawnDamageText(Define.EDamageTextType.Evasion);
             return;
         }
-       
-        
+
         if (damageInfo.bIsCritical)
         {
             rand = Random.Range(0f, 100f);
             //크리 저항
-            if (stats.criticalResistPer.Value > rand)
+            if (characterStats.criticalResistPer.Value > rand)
             {
                 damage = Mathf.Round((damage / 2.5f) * 10) * 0.1f;
             }
         }
 
-        float defence = stats.defence.Value;
+        float defence = characterStats.defence.Value + characterStats.defenceIncValue.Value;
         damage = Mathf.Clamp((damage * Random.Range(0.9f, 1.1f)) * (1 - (defence / (100 + defence))), 0f, float.MaxValue);
         damage = Mathf.Round((damage) * 10) * 0.1f;
       
@@ -81,9 +96,8 @@ public class MonsterStatManager : StatManager
                 SpawnDamageText(Define.EDamageTextType.MonsterDamaged, damage);
             }
         }
-
-
-        if (stats.currentHp.Value <= 0f)
+        
+        if (characterStats.currentHp.Value <= 0f)
         {
             Dead();
             if (instigatorSkillManager)
@@ -96,6 +110,55 @@ public class MonsterStatManager : StatManager
         if (instigatorSkillManager)
         {
             instigatorSkillManager.CauseDamageSuccessfully(damageType, ETakeDamageResult.TakeDamageOnly, this);
+        }
+    }
+
+    public override void ExecDurationEffect(Effect effect, Sprite icon)
+    {
+        DurationEffect newDurationEffect = effect as DurationEffect;
+        
+        if (newDurationEffect != null)
+        {
+            EDurationEffectId effectId = newDurationEffect.durationEffectId;
+            //이미 있는지 확인,
+            if (DurationEffectDurationDict.ContainsKey(effectId))
+            {
+                //이미 있으면 Reset인지, 누적인지 확인
+                if (newDurationEffect.bIsResetDuration) //Reset이면 duration을 리셋 => endTime을 새로운거로 바꿔준다.
+                {
+                    DurationEffectDurationDict[effectId] = newDurationEffect.duration;
+                    
+                    DurationEffectEndTimePq.Peek().effectInfo.onExecuteDecreaseStat?.Invoke();
+                    DurationEffectEndTimePq.Delete(item => item.durationEffectId == newDurationEffect.durationEffectId);
+
+                    DurationEffectEndTimePq.Push(newDurationEffect);
+                    newDurationEffect.effectInfo.onExecuteIncreaseStat?.Invoke();
+                }
+                else //누적이면 기존 duration에 새로운 duration 더하기 => 기존 endTime에 duration 더하기
+                {
+                    DurationEffect oldEffect = DurationEffectEndTimePq.FindPop(item =>
+                        item.durationEffectId == effectId);
+                    oldEffect.effectInfo.onExecuteDecreaseStat?.Invoke();
+                    
+                    float leftDuration = oldEffect.durationEndTime - Time.time; //남은 지속 시간
+                    DurationEffectDurationDict[effectId] = leftDuration + newDurationEffect.duration;
+                    
+                    oldEffect.durationEndTime += newDurationEffect.duration;
+                    newDurationEffect.durationEndTime = oldEffect.durationEndTime; //갱신된 콜백 호출위해 end time만 덮어쓰기.
+                    
+                    DurationEffectEndTimePq.Push(newDurationEffect);
+                    newDurationEffect.effectInfo.onExecuteIncreaseStat?.Invoke();
+                    
+                }
+            }
+            else  //없으면 새롭게 추가
+            {
+                DurationEffectDurationDict.Add(effectId, newDurationEffect.duration);
+                
+                DurationEffectEndTimePq.Push(newDurationEffect);
+                newDurationEffect.effectInfo.onExecuteIncreaseStat?.Invoke();
+            }
+            MonsterInfoUI.SetStatusImage(icon, newDurationEffect.durationEndTime);
         }
     }
 }

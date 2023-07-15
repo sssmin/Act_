@@ -12,11 +12,7 @@ public class UI_InventoryWrapper : MonoBehaviour
         
         invenCategoryHolder.InitOnce();
     }
-
-    private void OnDestroy()
-    {
-        Debug.Log("파개");
-    }
+    
 
     public void RefreshInventoryUI()
     {

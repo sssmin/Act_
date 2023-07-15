@@ -18,41 +18,44 @@ MonoBehaviour:
     attack:
       statType: 1
       statValue: 90
-    defence:
+    attackIncPer:
       statType: 2
-      statValue: 120
-    elemAttack:
+      statValue: 0
+    defence:
       statType: 3
+      statValue: 120
+    defenceIncPer:
+      statType: 4
       statValue: 0
     maxHp:
-      statType: 4
+      statType: 5
       statValue: 1000
     currentHp:
-      statType: 0
-      statValue: 0
+      statType: 6
+      statValue: 1000
     criticalChancePer:
-      statType: 5
+      statType: 7
       statValue: 10
     criticalResistPer:
-      statType: 6
-      statValue: 5
-    criticalDamageIncPer:
-      statType: 7
-      statValue: 0
-    normalAttackDamageIncPer:
       statType: 8
-      statValue: 0
-    skillAttackDamageIncPer:
+      statValue: 10
+    criticalDamageIncPer:
       statType: 9
       statValue: 0
-    evasionChancePer:
+    normalAttackDamageIncPer:
       statType: 10
-      statValue: 10
-    skillCooltimeDecRate:
+      statValue: 0
+    skillAttackDamageIncPer:
       statType: 11
       statValue: 0
-    moveSpeed:
+    evasionChancePer:
       statType: 12
+      statValue: 10
+    skillCooltimeDecRate:
+      statType: 13
+      statValue: 0
+    moveSpeed:
+      statType: 14
       statValue: 6
   dropTable:
     itemInfos:

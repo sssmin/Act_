@@ -20,12 +20,12 @@ public class SO_Skill_DeadlyImpact : SO_PassiveSkill
         
         effectInfo.onExecuteIncreaseStat = () =>
         {
-            casterStatManager.stats.criticalChancePer.AddModifier(effectInfo.applyPerBySkillLevel);
+            casterStatManager.characterStats.criticalChancePer.AddModifier(effectInfo.applyPerBySkillLevel);
         };
          
         effectInfo.onExecuteDecreaseStat = () =>
         {
-            casterStatManager.stats.criticalChancePer.SubModifier(effectInfo.applyPerBySkillLevel);
+            casterStatManager.characterStats.criticalChancePer.SubModifier(effectInfo.applyPerBySkillLevel);
         };
         durationEffect = new DurationEffect_DeadlyImpact();
         

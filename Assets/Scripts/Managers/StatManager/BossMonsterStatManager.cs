@@ -19,7 +19,7 @@ public class BossMonsterStatManager : MonsterStatManager
 
         //회피
         float rand = Random.Range(0f, 100f);
-        if (stats.evasionChancePer.Value > rand)
+        if (characterStats.evasionChancePer.Value > rand)
         {
             SpawnDamageText(Define.EDamageTextType.Evasion);
             return;
@@ -29,13 +29,13 @@ public class BossMonsterStatManager : MonsterStatManager
         {
             rand = Random.Range(0f, 100f);
             //크리 저항
-            if (stats.criticalResistPer.Value > rand)
+            if (characterStats.criticalResistPer.Value > rand)
             {
                 damage = Mathf.Round((damage / 2.5f) * 10) * 0.1f;
             }
         }
 
-        float defence = stats.defence.Value;
+        float defence = characterStats.defence.Value;
         damage = Mathf.Clamp((damage * Random.Range(0.9f, 1.1f)) * (1 - (defence / (100 + defence))), 0f, float.MaxValue);
         damage = Mathf.Round((damage) * 10) * 0.1f;
         
@@ -70,7 +70,7 @@ public class BossMonsterStatManager : MonsterStatManager
         }
 
 
-        if (stats.currentHp.Value <= 0f)
+        if (characterStats.currentHp.Value <= 0f)
         {
             Dead();
             if (instigatorSkillManager)

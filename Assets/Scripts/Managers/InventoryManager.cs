@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [Serializable]
 public class GoldInvenCapacity
@@ -79,12 +80,26 @@ public class RegisteredHotkeyItemDictionary : SerializableDictionary<Item.EItemH
 }
 
 [Serializable]
+public class WeaponItemSaveInfo : ItemSaveInfo
+{
+   [SerializeField] public EWeaponElement element;
+   [SerializeField] public int enhanceLevel;
+
+   public override void SetInfo(Item item)
+   {
+      base.SetInfo(item);
+      element = ((BaseWeapon)item).Element;
+      enhanceLevel = ((BaseWeapon)item).EnhanceLevel;
+   }
+}
+
+[Serializable]
 public class ItemSaveInfo
 {
    [SerializeField] public string itemId;
    [SerializeField] public int amount;
 
-   public void SetInfo(Item item)
+   public virtual void SetInfo(Item item)
    {
       itemId = item.itemId;
       amount = item.amount;
@@ -118,7 +133,7 @@ public class InventoryInfo
          inGoldInvenCapacity);
    }
    
-   [SerializeField] public ItemSaveInfo[] weaponInventory;
+   [SerializeField] public WeaponItemSaveInfo[] weaponInventory;
    [SerializeField] public ItemSaveInfo[] armorInventory;
    [SerializeField] public ItemSaveInfo[] accInventory;
    [SerializeField] public ItemSaveInfo[] equippedItems;
@@ -132,10 +147,10 @@ public class InventoryInfo
       Dictionary<string, StackableItem> inEtcDictionary,
       Dictionary<Item.EItemHotkeyOrder, Consumable> inRegisteredHotkeyItemDictionary, GoldInvenCapacity inGoldInvenCapacity)
    {
-      weaponInventory = new ItemSaveInfo[inWeaponInventory.Count];
+      weaponInventory = new WeaponItemSaveInfo[inWeaponInventory.Count];
       for (int i = 0; i < inWeaponInventory.Count; i++)
       {
-         weaponInventory[i] = new ItemSaveInfo();
+         weaponInventory[i] = new WeaponItemSaveInfo();
          weaponInventory[i].SetInfo(inWeaponInventory[i]);
       }
       
@@ -248,6 +263,8 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       GI.Inst.ListenerManager.useItem += UseItem;
       GI.Inst.ListenerManager.getEquippedItems -= GetEquippedItems;
       GI.Inst.ListenerManager.getEquippedItems += GetEquippedItems;
+      GI.Inst.ListenerManager.getEquippedWeapon -= GetEquippedWeapon;
+      GI.Inst.ListenerManager.getEquippedWeapon += GetEquippedWeapon;
       GI.Inst.ListenerManager.getEquippedWeaponType -= GetEquippedWeaponType;
       GI.Inst.ListenerManager.getEquippedWeaponType += GetEquippedWeaponType;
       GI.Inst.ListenerManager.unequip -= Unequip;
@@ -321,7 +338,8 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
    {
       if (Input.GetKeyDown(KeyCode.H))
       { 
-         Item item = GI.Inst.ResourceManager.GetItemData("InfinityBow");
+         Item item = GI.Inst.ResourceManager.GetItemDataCopy("WoodBow");
+         ((BaseWeapon)item).Element = (EWeaponElement)Random.Range(0, 4);
          AddItemTest(item);
          item = GI.Inst.ResourceManager.GetItemData("WeaponMat");
          AddItemTest(item);
@@ -795,7 +813,6 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
    private void UseItem(Item item)
    {
-      Debug.Log(GetInstanceID());
       switch (item.ItemCategory)
       {
          case Item.EItemCategory.Weapon:
@@ -871,9 +888,12 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       }
       //기본 스탯 적용
       GI.Inst.ListenerManager.OnStatAddModifier(playerInstId, equipment.itemStats);
-      
+
       if (equipment.ItemCategory == Item.EItemCategory.Weapon)
-         GI.Inst.ListenerManager.SetActiveSkillCuzEquip(((BaseWeapon)equipment).weaponType);
+      {
+         BaseWeapon weapon = (BaseWeapon)equipment;
+         GI.Inst.ListenerManager.SetActiveSkillCuzEquip(weapon.weaponType);
+      }
       if (shouldRefreshUI)
          RefreshInventoryUI();
    }
@@ -971,6 +991,17 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
    {
       return EquippedItems;
    }
+
+   public BaseWeapon GetEquippedWeapon()
+   {
+      foreach (Item item in EquippedItems)
+      {
+         BaseWeapon baseWeapon = item as BaseWeapon;
+         if (baseWeapon) return baseWeapon;
+      }
+
+      return null;
+   }
    
    public Item.EWeaponType GetEquippedWeaponType()
    {
@@ -1023,14 +1054,14 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
    {
       inventoryInfo.Deserialize();
       
-      ItemSaveInfo[] infos = inventoryInfo.weaponInventory;
-      foreach (ItemSaveInfo info in infos)
+      WeaponItemSaveInfo[] weaponInfos = inventoryInfo.weaponInventory;
+      foreach (WeaponItemSaveInfo info in weaponInfos)
       {
          Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
          WeaponInventory.Add(item);
       }
 
-      infos = inventoryInfo.armorInventory;
+      ItemSaveInfo[] infos = inventoryInfo.armorInventory;
       foreach (ItemSaveInfo info in infos)
       {
          Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);

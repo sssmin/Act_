@@ -43,7 +43,6 @@ public class UI_MainMenu : UI_Popup
                 inventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
                 break;
             case Define.EMainMenuType.Skill:
-                Debug.Log("스킬창3");
                 SkillContentUI.transform.SetParent(contentUIParent);
                 skillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
                 break;

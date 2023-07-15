@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum ETakeDamageResult
@@ -13,10 +14,11 @@ public enum ETakeDamageResult
 public class Stats
 {
     public Stat attack = new Stat(Define.EStatType.Attack);
+    public Stat attackIncValue = new Stat(Define.EStatType.AttackIncValue);
     public Stat defence = new Stat(Define.EStatType.Defence);
-    public Stat elemAttack = new Stat(Define.EStatType.ElemAttack);
+    public Stat defenceIncValue = new Stat(Define.EStatType.DefenceIncValue);
     public Stat maxHp = new Stat(Define.EStatType.MaxHp);
-    public Stat currentHp = new Stat(Define.EStatType.None);
+    public Stat currentHp = new Stat(Define.EStatType.CurrentHp);
     public Stat criticalChancePer = new Stat(Define.EStatType.CriticalChancePer); // - %임 Value가 50이면 50%.
     public Stat criticalResistPer = new Stat(Define.EStatType.CriticalResistPer); // - %임 Value가 50이면 50%.
     public Stat criticalDamageIncPer = new Stat(Define.EStatType.CriticalDamageIncPer); //크리티컬 피해량 증가율
@@ -29,8 +31,9 @@ public class Stats
     public void StatCopy(Stats stats)
     {
         attack.StatCopy(stats.attack);
+        attackIncValue.StatCopy(stats.attackIncValue);
         defence.StatCopy(stats.defence);
-        elemAttack.StatCopy(stats.elemAttack);
+        defenceIncValue.StatCopy(stats.defenceIncValue);
         maxHp.StatCopy(stats.maxHp);
         currentHp.StatCopy(stats.currentHp);
         criticalChancePer.StatCopy(stats.criticalChancePer);
@@ -64,7 +67,7 @@ public class Stat
         statType = other.statType;
     }
 
-    public Define.EStatType statType;
+    public Define.EStatType statType = Define.EStatType.None;
     [SerializeField]
     private float statValue;
     public float Value
@@ -82,24 +85,6 @@ public class Stat
             return finalValue;
         }
         set => statValue = value;
-    }
-
-    public float DefaultValue
-    {
-        get => statValue;
-    }
-
-    public float ModifierValue
-    {
-        get
-        {
-            float modifierValue = 0;
-            foreach (var modi in Modifiers)
-            {
-                modifierValue += modi;
-            }
-            return modifierValue;
-        }
     }
     
     private List<float> Modifiers = new List<float>();
@@ -119,6 +104,8 @@ public class Stat
     public void StatCopy(Stat stat)
     {
         statValue = stat.statValue;
+        if (statType != Define.EStatType.CurrentHp)
+            statType = stat.statType;
         Modifiers = new List<float>(stat.Modifiers);
     }
 }
@@ -133,13 +120,13 @@ public struct DamageInfo
 public class StatManager : MonoBehaviour
 {
     public int InstId { get; set; }
-    public Stats stats = new Stats();
+    public Stats characterStats = new Stats();
     [SerializeField] private Transform damageSpawnTransform;
     
     public PriorityQueue<DurationEffect> DurationEffectEndTimePq { get; set; } = new PriorityQueue<DurationEffect>();
     //value = 지속시간
     public Dictionary<EDurationEffectId, float> DurationEffectDurationDict { get; set; } = new Dictionary<EDurationEffectId, float>();
-    public Dictionary<EDurationEffectId, float> IconFillAmount { get; set; } = new Dictionary<EDurationEffectId, float>();
+    
 
     public BaseCharacter Character { get; set; }
     
@@ -147,13 +134,10 @@ public class StatManager : MonoBehaviour
 
     public virtual void Awake()
     {
-        
-        
     }
 
     public virtual void Start()
     {
-        
     }
 
     public virtual void Update()
@@ -162,13 +146,13 @@ public class StatManager : MonoBehaviour
 
     public void InitStat(Stats inStat)
     {
-        stats.InitStat(inStat);
+        characterStats.InitStat(inStat);
     }
 
     public Stats GetStats(int instanceId)
     {
         if (instanceId == InstId)
-            return stats;
+            return characterStats;
         return null;
     }
 
@@ -194,7 +178,7 @@ public class StatManager : MonoBehaviour
         damageInfo.damage = Mathf.Round((damageInfo.damage * normalAttackCoef) * 10) * 0.1f; //계수 적용
         
         //********* 기본공격 피해량 증가분
-        damageInfo.damage += Mathf.Round(damageInfo.damage * (stats.normalAttackDamageIncPer.Value / 100f) * 10) * 0.1f;
+        damageInfo.damage += Mathf.Round(damageInfo.damage * (characterStats.normalAttackDamageIncPer.Value / 100f) * 10) * 0.1f;
         
         CalcCriticalDamage(ref damageInfo);
         
@@ -209,7 +193,7 @@ public class StatManager : MonoBehaviour
         damageInfo.damage = CalcDamage();
         
         //********* 스킬공격 피해량 증가분
-        damageInfo.damage += Mathf.Round((damageInfo.damage * (stats.skillAttackDamageIncPer.Value / 100f)) * 10) * 0.1f;
+        damageInfo.damage += Mathf.Round((damageInfo.damage * (characterStats.skillAttackDamageIncPer.Value / 100f)) * 10) * 0.1f;
         
         CalcCriticalDamage(ref damageInfo);
         
@@ -218,8 +202,7 @@ public class StatManager : MonoBehaviour
     
     private float CalcDamage()
     {
-        //todo 속성은 일단 보류
-        float damage = stats.attack.Value + stats.elemAttack.Value;
+        float damage = characterStats.attack.Value + characterStats.attackIncValue.Value;
         
         return damage;
     }
@@ -227,19 +210,19 @@ public class StatManager : MonoBehaviour
     private void CalcCriticalDamage(ref DamageInfo damageInfo)
     {
         int rand = Random.Range(0, 100);
-        if (stats.criticalChancePer.Value > rand)
+        if (characterStats.criticalChancePer.Value > rand)
         {
             damageInfo.bIsCritical = true;
             //********* 크리티컬 피해량 증가분 계산
-            damageInfo.damage += Mathf.Round((damageInfo.damage * (1.5f + stats.criticalDamageIncPer.Value / 100f)) * 10) * 0.1f;
+            damageInfo.damage += Mathf.Round((damageInfo.damage * (1.5f + characterStats.criticalDamageIncPer.Value / 100f)) * 10) * 0.1f;
         }
     }
     
     public virtual void AddCurrentHp(float value)
     {
-        stats.currentHp.Value = Mathf.Clamp(stats.currentHp.Value + value, 0f, stats.maxHp.Value);
-        float ratio = stats.currentHp.Value / stats.maxHp.Value * 100f;
-        //hpbar ui에 보내기.
+        characterStats.currentHp.Value = Mathf.Clamp(characterStats.currentHp.Value + value, 0f, characterStats.maxHp.Value);
+        float ratio = characterStats.currentHp.Value / characterStats.maxHp.Value * 100f;
+      
     }
 
     protected void Dead()
@@ -261,58 +244,8 @@ public class StatManager : MonoBehaviour
         }
     }
 
-    public void ExecDurationEffect(Effect effect, Sprite icon)
+    public virtual void ExecDurationEffect(Effect effect, Sprite icon)
     {
-        DurationEffect durationEffect = effect as DurationEffect;
-        
-        if (durationEffect != null)
-        {
-            EDurationEffectId effectId = durationEffect.durationEffectId;
-            //이미 있는지 확인,
-            if (DurationEffectDurationDict.ContainsKey(effectId))
-            {
-                //이미 있으면 Reset인지, 누적인지 확인
-                if (durationEffect.bIsResetDuration) //Reset이면 duration을 리셋 => endTime을 새로운거로 바꿔준다.
-                {
-                    DurationEffectDurationDict[effectId] = durationEffect.duration;
-                    
-                    DurationEffectEndTimePq.Delete(item => item.durationEffectId == durationEffect.durationEffectId);
-
-                    DurationEffect tempEffect = new DurationEffect();
-                    tempEffect = durationEffect;
-                    DurationEffectEndTimePq.Push(tempEffect);
-                    
-                    IconFillAmount[effectId] = 1;
-                }
-                else //누적이면 기존 duration에 새로운 duration 더하기 => 기존 endTime에 duration 더하기
-                {
-                    DurationEffect tempEffect = DurationEffectEndTimePq.FindPop(item =>
-                        item.durationEffectId == effectId);
-                    
-                    float leftDuration = tempEffect.durationEndTime - Time.time;
-                    DurationEffectDurationDict[effectId] = leftDuration;
-                    DurationEffectDurationDict[effectId] += durationEffect.duration;
-                    
-                    tempEffect.durationEndTime += durationEffect.duration;
-                    DurationEffectEndTimePq.Push(tempEffect);
-                    
-                    IconFillAmount[effectId] = 1;
-                }
-            }
-            else  //없으면 새롭게 추가
-            {
-                DurationEffectDurationDict.Add(effectId, durationEffect.duration);
-                
-                DurationEffectEndTimePq.Push(durationEffect);
-                
-                durationEffect.effectInfo.onExecuteIncreaseStat?.Invoke();
-                RefreshInventoryUI();
-                
-                GI.Inst.UIManager.SetEffectSlot(effectId, icon);
-                IconFillAmount.Add(effectId, 1);
-                
-            }
-        }
     }
 
     protected void RefreshInventoryUI()
@@ -329,40 +262,37 @@ public class StatManager : MonoBehaviour
                 switch (stat.statType)
                 {
                     case Define.EStatType.Attack:
-                        stats.attack.AddModifier(stat.Value);
+                        characterStats.attack.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.Defence:
-                        stats.defence.AddModifier(stat.Value);
-                        break;
-                    case Define.EStatType.ElemAttack:
-                        stats.elemAttack.AddModifier(stat.Value);
+                        characterStats.defence.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.MaxHp:
-                        stats.maxHp.AddModifier(stat.Value);
+                        characterStats.maxHp.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalChancePer:
-                        stats.criticalChancePer.AddModifier(stat.Value);
+                        characterStats.criticalChancePer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalResistPer:
-                        stats.criticalResistPer.AddModifier(stat.Value);
+                        characterStats.criticalResistPer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalDamageIncPer:
-                        stats.criticalDamageIncPer.AddModifier(stat.Value);
+                        characterStats.criticalDamageIncPer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.NormalAttackDamageIncPer:
-                        stats.normalAttackDamageIncPer.AddModifier(stat.Value);
+                        characterStats.normalAttackDamageIncPer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.SkillAttackDamageIncPer:
-                        stats.skillAttackDamageIncPer.AddModifier(stat.Value);
+                        characterStats.skillAttackDamageIncPer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.EvasionChancePer:
-                        stats.evasionChancePer.AddModifier(stat.Value);
+                        characterStats.evasionChancePer.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.SkillCooltimeDecRate:
-                        stats.skillCooltimeDecRate.AddModifier(stat.Value);
+                        characterStats.skillCooltimeDecRate.AddModifier(stat.Value);
                         break;
                     case Define.EStatType.MoveSpeed:
-                        stats.moveSpeed.AddModifier(stat.Value);
+                        characterStats.moveSpeed.AddModifier(stat.Value);
                         break;
                 }
             }
@@ -378,56 +308,47 @@ public class StatManager : MonoBehaviour
                 switch (stat.statType)
                 {
                     case Define.EStatType.Attack:
-                        stats.attack.SubModifier(stat.Value);
+                        characterStats.attack.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.Defence:
-                        stats.defence.SubModifier(stat.Value);
-                        break;
-                    case Define.EStatType.ElemAttack:
-                        stats.elemAttack.SubModifier(stat.Value);
+                        characterStats.defence.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.MaxHp:
-                        stats.maxHp.SubModifier(stat.Value);
+                        characterStats.maxHp.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalChancePer:
-                        stats.criticalChancePer.SubModifier(stat.Value);
+                        characterStats.criticalChancePer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalResistPer:
-                        stats.criticalResistPer.SubModifier(stat.Value);
+                        characterStats.criticalResistPer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.CriticalDamageIncPer:
-                        stats.criticalDamageIncPer.SubModifier(stat.Value);
+                        characterStats.criticalDamageIncPer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.NormalAttackDamageIncPer:
-                        stats.normalAttackDamageIncPer.SubModifier(stat.Value);
+                        characterStats.normalAttackDamageIncPer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.SkillAttackDamageIncPer:
-                        stats.skillAttackDamageIncPer.SubModifier(stat.Value);
+                        characterStats.skillAttackDamageIncPer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.EvasionChancePer:
-                        stats.evasionChancePer.SubModifier(stat.Value);
+                        characterStats.evasionChancePer.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.SkillCooltimeDecRate:
-                        stats.skillCooltimeDecRate.SubModifier(stat.Value);
+                        characterStats.skillCooltimeDecRate.SubModifier(stat.Value);
                         break;
                     case Define.EStatType.MoveSpeed:
-                        stats.moveSpeed.SubModifier(stat.Value);
+                        characterStats.moveSpeed.SubModifier(stat.Value);
                         break;
                 }
             }
         }
     }
-
-    public float GetFillAmount(EDurationEffectId effectId)
-    {
-        if (IconFillAmount.ContainsKey(effectId))
-            return IconFillAmount[effectId];
-        return 0f;
-    }
+    
 
     public void ApplyHealthSteal(float percentage)
     {
-        float loseHp = stats.maxHp.Value - stats.currentHp.Value;
+        float loseHp = characterStats.maxHp.Value - characterStats.currentHp.Value;
         float addToHp = loseHp * percentage * 0.01f;
         AddCurrentHp(addToHp);
     }
@@ -435,7 +356,7 @@ public class StatManager : MonoBehaviour
     public bool IsCurrentHpBelowPercent(float per)
     {
         //최대 * 퍼센트 * 0.01 >= 현재
-        return stats.maxHp.Value * per * 0.01f >= stats.currentHp.Value;
+        return characterStats.maxHp.Value * per * 0.01f >= characterStats.currentHp.Value;
     }
     
 }

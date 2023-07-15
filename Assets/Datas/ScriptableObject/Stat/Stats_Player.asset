@@ -12,44 +12,46 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb575f44433e463192da412c4b6eeca7, type: 3}
   m_Name: Stats_Player
   m_EditorClassIdentifier: 
-  level: 1
   stats:
     attack:
       statType: 1
       statValue: 108
-    defence:
+    attackIncPer:
       statType: 2
-      statValue: 32
-    elemAttack:
+      statValue: 0
+    defence:
       statType: 3
+      statValue: 32
+    defenceIncPer:
+      statType: 4
       statValue: 0
     maxHp:
-      statType: 4
+      statType: 6
       statValue: 200
     currentHp:
-      statType: 0
-      statValue: 0
-    criticalChancePer:
-      statType: 5
-      statValue: 5
-    criticalResistPer:
-      statType: 6
-      statValue: 5
-    criticalDamageIncPer:
       statType: 7
       statValue: 0
-    normalAttackDamageIncPer:
+    criticalChancePer:
       statType: 8
-      statValue: 0
-    skillAttackDamageIncPer:
-      statType: 9
-      statValue: 0
-    evasionChancePer:
-      statType: 10
       statValue: 5
-    skillCooltimeDecRate:
+    criticalResistPer:
+      statType: 9
+      statValue: 5
+    criticalDamageIncPer:
+      statType: 10
+      statValue: 0
+    normalAttackDamageIncPer:
       statType: 11
       statValue: 0
-    moveSpeed:
+    skillAttackDamageIncPer:
       statType: 12
+      statValue: 0
+    evasionChancePer:
+      statType: 13
+      statValue: 5
+    skillCooltimeDecRate:
+      statType: 14
+      statValue: 0
+    moveSpeed:
+      statType: 15
       statValue: 5

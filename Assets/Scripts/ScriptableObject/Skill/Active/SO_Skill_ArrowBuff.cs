@@ -18,12 +18,12 @@ public class SO_Skill_ArrowBuff : SO_ActiveSkill
 
         effectInfo.onExecuteIncreaseStat = () =>
         {
-            casterStatManager.stats.normalAttackDamageIncPer.AddModifier(perDmg);
+            casterStatManager.characterStats.normalAttackDamageIncPer.AddModifier(perDmg);
         };
         
         effectInfo.onExecuteDecreaseStat = () =>
         {
-            casterStatManager.stats.normalAttackDamageIncPer.SubModifier(perDmg);
+            casterStatManager.characterStats.normalAttackDamageIncPer.SubModifier(perDmg);
         };
         duration = 10f;
         

@@ -7,7 +7,6 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-
 [Serializable]
 public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, PassiveSaveInfo>
 {
@@ -15,7 +14,7 @@ public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, Pa
 
 
 [Serializable]
-public class PassiveSaveInfo //todo Effect도 다 resource에서 get 해야함.
+public class PassiveSaveInfo
 {
     [SerializeField] public Define.ESkillId skillId;
     [SerializeField] public int level;
@@ -58,11 +57,8 @@ public class SkillManager : MonoBehaviour
     public Dictionary<Define.ESkillId, SO_PassiveSkill> PassiveSkills { get; private set; } =
         new Dictionary<Define.ESkillId, SO_PassiveSkill>();
 
-    // public Dictionary<Define.ESkillId, SO_PassiveSkill> EquippedPassiveSkills { get; private set; } =
-    //     new Dictionary<Define.ESkillId, SO_PassiveSkill>();
-
     private Player Player { get; set; }
-    private float UltSkillChargeAmount { get; set; } //대미지 받는 쪽에서 
+    private float UltSkillChargeAmount { get; set; }
     
 
     private void Awake()
@@ -103,17 +99,19 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.execTakeDamageEffect += ExecTakeDamageEffect;
         GI.Inst.ListenerManager.getUltSkillChargeAmount -= GetUltSkillChargeAmount;
         GI.Inst.ListenerManager.getUltSkillChargeAmount += GetUltSkillChargeAmount;
+        GI.Inst.ListenerManager.initUltSkillChargeAmount -= InitUltSkillChargeAmount;
+        GI.Inst.ListenerManager.initUltSkillChargeAmount += InitUltSkillChargeAmount;
     }
     
     public void SetStartPassiveSkills()
     {
-        //패시브
         List<SO_PassiveSkill> passiveSkills = new List<SO_PassiveSkill>();
         for (int i = (int)Define.ESkillId.HealthSteal; i < (int)Define.ESkillId.Max; i++)
         {
             SO_PassiveSkill skill = GI.Inst.ResourceManager.GetPassiveSkillData((Define.ESkillId)i);
             skill.skillLevel = 1;
             skill.Init();
+            skill.ExecSkill(Player.StatManager, Player.PlayerController);
             PassiveSkills.Add((Define.ESkillId)i, skill);
             passiveSkills.Add(skill);
         }
@@ -137,7 +135,7 @@ public class SkillManager : MonoBehaviour
 
     void ActiveSkillSetCooltime(EActiveSkillOrder skillOrder, float cooltime)
     {
-        float skillCooltimeDecRate = Player.StatManager.stats.skillCooltimeDecRate.Value;
+        float skillCooltimeDecRate = Player.StatManager.characterStats.skillCooltimeDecRate.Value;
         cooltime -= cooltime * skillCooltimeDecRate * 0.01f;
         switch (skillOrder)
         {
@@ -296,7 +294,6 @@ public class SkillManager : MonoBehaviour
             GI.Inst.ListenerManager.UsePassiveSkillMat(ref skill);
             PassiveSkills[skill.skillId].skillLevel++;
 
-            ReEquipPassive(skill.skillId);
             PassiveSkills[skill.skillId].Init();
             GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
         }
@@ -327,15 +324,94 @@ public class SkillManager : MonoBehaviour
     {
         foreach (var pair in PassiveSkills)
         {
-            if (pair.Value.equipIndex != -1)
+            SO_PassiveSkill passvieSkill = pair.Value;
+            if (passvieSkill.equipIndex != -1)
             {
                 if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
                 {
-                    Effect effect = pair.Value.effect;
+                    passvieSkill.ExecSkill(Player.StatManager, Player.PlayerController);
+                    Effect effect = passvieSkill.effect;
+                    
                     effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, 
-                        victimStatManager, Player.StatManager, pair.Value.icon);
+                        victimStatManager, Player.StatManager, passvieSkill.icon);
                 }
             }
+        }
+
+        ExecWeaponElementEffect(causeDamageType, victimStatManager);
+    }
+
+    private void ExecWeaponElementEffect(Define.EDamageType causeDamageType, StatManager victimStatManager)
+    {
+        BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
+        if (equippedWeapon == null) return;
+        if (equippedWeapon.Element == EWeaponElement.None) return;
+        
+        EDurationEffectId durationEffectId = EDurationEffectId.None;
+        DurationEffect weaponEffect = null;
+        EffectInfo effectInfo = new EffectInfo();
+        if (equippedWeapon)
+        {
+            switch (equippedWeapon.Element)
+            {
+                case EWeaponElement.Fire:
+                {
+                    weaponEffect = new DurationEffect_Debuff_ArmorDecrease();
+                    durationEffectId = EDurationEffectId.Burn;
+
+                    float value = victimStatManager.characterStats.defence.Value * 5f * 0.01f;
+                    effectInfo.onExecuteIncreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.defenceIncValue.AddModifier(-value);
+                    };
+
+                    effectInfo.onExecuteDecreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.defenceIncValue.SubModifier(-value);
+                    };
+                }
+                    break;
+                case EWeaponElement.Water:
+                {
+                    weaponEffect = new DurationEffect_Debuff_CriticalResistDecrease();
+                    durationEffectId = EDurationEffectId.Frozen;
+
+                    float value = victimStatManager.characterStats.criticalResistPer.Value * 5f * 0.01f;
+                    effectInfo.onExecuteIncreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.criticalResistPer.AddModifier(-value);
+                    };
+
+                    effectInfo.onExecuteDecreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.criticalResistPer.SubModifier(-value);
+                    };
+                }
+                    break;
+                case EWeaponElement.Leaf:
+                {
+                    weaponEffect = new DurationEffect_Debuff_AttackDecrease();
+                    durationEffectId = EDurationEffectId.Poison;
+
+                    float value = victimStatManager.characterStats.attackIncValue.Value * 5f * 0.01f;
+                    effectInfo.onExecuteIncreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.attackIncValue.AddModifier(-value);
+                    };
+
+                    effectInfo.onExecuteDecreaseStat = () =>
+                    {
+                        victimStatManager.characterStats.attackIncValue.SubModifier(-value);
+                    };
+                }
+                    break;
+            }
+
+            weaponEffect.Init(Define.EActivationCondition.CauseDamage, 10f, Define.EDamageType.Both, effectInfo, 5f,
+                durationEffectId, true);
+            Sprite statusIcon = GI.Inst.ResourceManager.GetStatusSprite(Enum.GetName(typeof(EDurationEffectId), durationEffectId));
+            weaponEffect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage,
+                Player.StatManager, victimStatManager, statusIcon);
         }
     }
 
@@ -367,6 +443,7 @@ public class SkillManager : MonoBehaviour
             passiveSkill.bCanLevelUp = pair.Value.bCanLevelUp;
             passiveSkill.equipIndex = pair.Value.equipIndex;
             passiveSkill.Init();
+            passiveSkill.ExecSkill(Player.StatManager, Player.PlayerController);
             PassiveSkills.Add(pair.Key, passiveSkill);
             if (passiveSkill.equipIndex != -1)
             {
@@ -502,6 +579,12 @@ public class SkillManager : MonoBehaviour
     public float GetUltSkillChargeAmount()
     {
         return UltSkillChargeAmount;
+    }
+
+    public void InitUltSkillChargeAmount()
+    {
+        UltSkillChargeAmount = 0;
+        GI.Inst.UIManager.UpdateFillAmount(UltSkillChargeAmount);
     }
     
     #endregion

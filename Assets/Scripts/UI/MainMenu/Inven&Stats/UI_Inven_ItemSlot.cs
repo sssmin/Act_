@@ -1,7 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -10,6 +10,7 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
     public Item Item { get; protected set; }
     [SerializeField] protected TextMeshProUGUI itemAmount;
     [SerializeField] protected Image itemIconImage;
+    [SerializeField] protected Image elementIconImage;
     [SerializeField] protected Image borderImage;
     [SerializeField] protected Transform equippedTransform;
     [SerializeField] protected RectTransform slotTransform;
@@ -21,7 +22,7 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         itemAmount = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    public virtual void SetItem(Item inItem) //장비
+    public void SetItem(Item inItem) //장비
     {
         Item = inItem;
         itemIconSprite = Item.itemIcon;
@@ -31,8 +32,22 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         
         itemAmount.text = "";
         Equipment equipment = Item as Equipment;
-        if (equipment.bIsEquipped)
-            equippedTransform.gameObject.SetActive(true);
+        if (equipment)
+        {
+            if (equipment.bIsEquipped)
+                equippedTransform.gameObject.SetActive(true);
+            BaseWeapon weapon = equipment as BaseWeapon;
+            if (weapon)
+            {
+                string elementName = Enum.GetName(typeof(EWeaponElement), weapon.Element);
+                if (elementName != "None")
+                {
+                    elementIconImage.sprite = GI.Inst.ResourceManager.GetStatusSprite(elementName);
+                    elementIconImage.color = Color.white;
+                }
+            }
+        }
+        
        
     }
 

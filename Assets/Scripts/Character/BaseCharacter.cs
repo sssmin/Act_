@@ -15,10 +15,10 @@ public class BaseCharacter : MonoBehaviour
     private SpriteRenderer Sr { get; set; }
     public Animator Animator { get; set; }
     public StateMachine StateMachine { get; set; }
-    public StatManager StatManager { get; private set; }
+    public StatManager StatManager { get; protected set; }
     protected Coroutine HitEffectCoroutine { get; set; }
 
-    public float MoveSpeed => StatManager.stats.moveSpeed.Value;
+    public float MoveSpeed => StatManager.characterStats.moveSpeed.Value;
     
 
     protected virtual void Awake()

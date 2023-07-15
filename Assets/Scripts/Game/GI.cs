@@ -4,7 +4,6 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 public enum EScene
 {
@@ -234,6 +233,7 @@ public class GI : MonoBehaviour
                     GameObject playerStartPoint = GameObject.Find("PlayerStartPoint");
                     Player.transform.position = playerStartPoint.transform.position;
                     StartGameProgress = EStartGameProgress.PlayingGame;
+                    
                     CameraInitialize();
                 }
                     break;
@@ -292,7 +292,7 @@ public class GI : MonoBehaviour
         PlayerInfo playerInfo = new PlayerInfo(
             SceneManager.GetActiveScene().name, 
             Player.transform.position, 
-            Player.StatManager.stats.currentHp.Value, 
+            Player.StatManager.characterStats.currentHp.Value, 
             PlayerSkillManager.PassiveSkills,
             PlayerSkillManager.ActiveSkillLevels);
         path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");

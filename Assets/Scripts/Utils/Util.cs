@@ -95,15 +95,11 @@ public class Util
         {
             case Define.EStatType.Attack:
                 name = "공격력";
-                value = stats.attack.Value.ToString("#,0");
+                value = stats.attack.Value.ToString("#,0") + " + " + stats.attackIncValue.Value.ToString("#,0");
                 break;
             case Define.EStatType.Defence:
                 name = "방어력";
-                value = stats.defence.Value.ToString("#,0");
-                break;
-            case Define.EStatType.ElemAttack:
-                name = "속성 공격력";
-                value = stats.elemAttack.Value.ToString("#,0");
+                value = stats.defence.Value.ToString("#,0") + " + " + stats.defenceIncValue.Value.ToString("#,0");
                 break;
             case Define.EStatType.MaxHp:
                 name = "최대 체력";
@@ -156,10 +152,6 @@ public class Util
                 break;
             case Define.EStatType.Defence:
                 name = "방어력";
-                value = stat.Value.ToString("#,0");
-                break;
-            case Define.EStatType.ElemAttack:
-                name = "속성 공격력";
                 value = stat.Value.ToString("#,0");
                 break;
             case Define.EStatType.MaxHp:

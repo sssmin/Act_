@@ -18,7 +18,8 @@ public class BaseWeapon : Equipment
     [Header("Equipment")]
     public EWeaponType weaponType;
 
-    private EWeaponElement Element { get; set; }
+    public EWeaponElement Element { get; set; } = EWeaponElement.None;
+    public int EnhanceLevel { get; set; } = 0; 
 
     protected override void DataCopy(Item item)
     {

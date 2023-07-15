@@ -18,13 +18,15 @@ public class ResourceManager : MonoBehaviour
         Prefab,
         PlayerBaseStat,
         AudioClip,
-        AudioMixer
+        AudioMixer,
+        StatusSprites
     }
    
     private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
     private Dictionary<string, Item> ItemData { get; } = new Dictionary<string, Item>();
     private Dictionary<string, GameObject> Prefabs { get; } = new Dictionary<string, GameObject>();
     private Dictionary<string, AudioClip> AudioClips { get; } = new Dictionary<string, AudioClip>();
+    private Dictionary<string, Sprite> StatusSprites { get; } = new Dictionary<string, Sprite>();
     public AudioMixer AudioMixer { get; set; }
     public PlayerBaseStats PlayerBaseStats { get; private set; }
 
@@ -92,18 +94,12 @@ public class ResourceManager : MonoBehaviour
                     SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
                     SaveData<AudioClip>(Define.ELabel.AudioClip, SaveType.AudioClip);
                     SaveData<AudioMixer>(Define.ELabel.AudioMixer, SaveType.AudioMixer);
+                    SaveData<Sprite>(Define.ELabel.StatusSprite, SaveType.StatusSprites);
                     SaveData<GameObject>(Define.ELabel.Prefab, SaveType.Prefab, callback);
                 }
                 //Addressables.Release(handle);
             };
         }
-    }
-
-    public void ClearDatas()
-    {
-        SkillData.Clear();
-        ItemData.Clear();
-        Prefabs.Clear();
     }
 
     public void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
@@ -230,7 +226,27 @@ public class ResourceManager : MonoBehaviour
                 };
             }
                 break;
-        }
+            case SaveType.StatusSprites:
+            {
+                if (StatusSprites.ContainsKey(key))
+                {
+                    Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                    return;
+                }
+                
+                var asyncOperation = Addressables.LoadAssetAsync<IList<Sprite>>(key);
+                asyncOperation.Completed += (aop) =>
+                {
+                    foreach (Sprite spriteValue in aop.Result)
+                    {
+                        StatusSprites.Add(spriteValue.name, spriteValue);
+                    }
+                };
+            }
+                break;
+
+        
+    }
     }
     
     public GameObject Instantiate(string prefabName, Transform parent = null)
@@ -323,6 +339,15 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
     
+    public Item GetItemDataCopy(string itemId)
+    {
+        if (ItemData.ContainsKey(itemId))
+        {
+            return ScriptableObject.Instantiate(ItemData[itemId]);
+        }
+        return null;
+    }
+
     public Item GetItemData(string itemId)
     {
         if (ItemData.ContainsKey(itemId))
@@ -366,9 +391,14 @@ public class ResourceManager : MonoBehaviour
             return AudioClips[name];
         return null;
     }
+
+    public Sprite GetStatusSprite(string name)
+    {
+        if (StatusSprites.ContainsKey(name))
+            return StatusSprites[name];
+        return null;
+    }
     
-    
-    //콜백에 상점 여는거. 열 때 ItemCraft 넘겨주기.
     public void CreateItemCraft(Define.ELabel label ,Action<ItemCraft> callback)
     {
         string key = Enum.GetName(typeof(Define.ELabel), label);

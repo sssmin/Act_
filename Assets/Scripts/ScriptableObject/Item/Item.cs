@@ -3,8 +3,6 @@ using UnityEngine;
 
 
 
-
-
 [Serializable]
 public class Item : ScriptableObject, IComparable<Item>
 {

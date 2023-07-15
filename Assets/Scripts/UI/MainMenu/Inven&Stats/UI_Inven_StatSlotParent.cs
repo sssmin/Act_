@@ -21,6 +21,9 @@ public class UI_Inven_StatSlotParent : MonoBehaviour
         
         for (int i = 1; i <= maxStatNum; i++)
         {
+            if (i == (int)Define.EStatType.AttackIncValue || 
+                i == (int)Define.EStatType.DefenceIncValue || 
+                i == (int)Define.EStatType.CurrentHp) continue;
             GameObject go =
                 GI.Inst.ResourceManager.Instantiate("UI_Inven_StatSlot", transform);
             UI_Inven_StatSlot invenStatSlot = go.GetComponent<UI_Inven_StatSlot>();
