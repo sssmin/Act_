@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,12 +13,16 @@ public class UI_Option_SoundLine : MonoBehaviour
     {
         slider.onValueChanged.RemoveListener(OnValueChanged);
         slider.onValueChanged.AddListener(OnValueChanged);
-        
 
         GI.Inst.SoundManager.GetAudioVolume(soundType, out float value);
         value = 100 * (value + 80) / 80; //dB -> 0~100
         slider.value = value * 0.01f;
         valueText.text = Mathf.FloorToInt(value).ToString();
+    }
+
+    private void OnDestroy()
+    {
+        slider.onValueChanged.RemoveListener(OnValueChanged);
     }
 
     private void OnValueChanged(float value)

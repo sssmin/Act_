@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +8,7 @@ public class Player : BaseCharacter
     public PlayerController PlayerController { get; set; }
     public CombatManager CombatManager { get; private set; }
     public InventoryManager InventoryManager { get; private set; }
-  
-   
+    
     public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
     
@@ -41,8 +39,7 @@ public class Player : BaseCharacter
     {
         GI.Inst.ListenerManager.getPlayerInstId -= GetPlayerInstId;
     }
-
-
+    
     protected override void Start()
     {
         base.Start();

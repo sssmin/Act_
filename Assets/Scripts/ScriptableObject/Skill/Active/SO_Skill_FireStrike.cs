@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Skill_", menuName ="Data/ActiveSkill/FireStrike")]

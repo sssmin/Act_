@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AIController_Boss : AIController
@@ -72,7 +70,7 @@ public class AIController_Boss : AIController
 
     }
     
-    public void TryToDodge()
+    private void TryToDodge()
     {
         if (CanDodge())
         {
@@ -90,7 +88,7 @@ public class AIController_Boss : AIController
         return DodgeCooltimer <= Time.time;
     }
 
-    public bool IsDefend()
+    private bool IsDefend()
     {
         if (CanDefend())
         {
@@ -106,7 +104,7 @@ public class AIController_Boss : AIController
         return false;
     }
 
-    public bool CanDefend()
+    private bool CanDefend()
     {
         return DefendCooltimer <= Time.time;
     }

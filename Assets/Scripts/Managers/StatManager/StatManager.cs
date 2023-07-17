@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public enum ETakeDamageResult
@@ -100,6 +99,11 @@ public class Stat
         if (value != 0)
             Modifiers.Remove(value);
     }
+
+    public void ClearModifier()
+    {
+        Modifiers.Clear();
+    }
     
     public void StatCopy(Stat stat)
     {
@@ -123,11 +127,10 @@ public class StatManager : MonoBehaviour
     public Stats characterStats = new Stats();
     [SerializeField] private Transform damageSpawnTransform;
     
-    public PriorityQueue<DurationEffect> DurationEffectEndTimePq { get; set; } = new PriorityQueue<DurationEffect>();
+    protected PriorityQueue<DurationEffect> DurationEffectEndTimePq { get; set; } = new PriorityQueue<DurationEffect>();
     //value = 지속시간
-    public Dictionary<EDurationEffectId, float> DurationEffectDurationDict { get; set; } = new Dictionary<EDurationEffectId, float>();
+    protected Dictionary<EDurationEffectId, float> DurationEffectDurationDict { get; set; } = new Dictionary<EDurationEffectId, float>();
     
-
     public BaseCharacter Character { get; set; }
     
     protected bool IsDead { get; private set; }
@@ -149,7 +152,7 @@ public class StatManager : MonoBehaviour
         characterStats.InitStat(inStat);
     }
 
-    public Stats GetStats(int instanceId)
+    protected Stats GetStats(int instanceId)
     {
         if (instanceId == InstId)
             return characterStats;
@@ -218,7 +221,7 @@ public class StatManager : MonoBehaviour
         }
     }
     
-    public virtual void AddCurrentHp(float value)
+    protected virtual void AddCurrentHp(float value)
     {
         characterStats.currentHp.Value = Mathf.Clamp(characterStats.currentHp.Value + value, 0f, characterStats.maxHp.Value);
         float ratio = characterStats.currentHp.Value / characterStats.maxHp.Value * 100f;
@@ -299,7 +302,7 @@ public class StatManager : MonoBehaviour
         }
     }
     
-    public void StatSubModifier(int InstId, List<Stat> statsList)
+    protected void StatSubModifier(int InstId, List<Stat> statsList)
     {
         if (InstId == this.InstId)
         {
@@ -344,13 +347,13 @@ public class StatManager : MonoBehaviour
             }
         }
     }
-    
 
-    public void ApplyHealthSteal(float percentage)
+    public void HealPerLoseHp(float percentage) //잃은 체력의 % 회복
     {
         float loseHp = characterStats.maxHp.Value - characterStats.currentHp.Value;
         float addToHp = loseHp * percentage * 0.01f;
         AddCurrentHp(addToHp);
+        SpawnDamageText(Define.EDamageTextType.Heal, addToHp);
     }
 
     public bool IsCurrentHpBelowPercent(float per)

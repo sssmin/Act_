@@ -6,9 +6,7 @@ public class UI_Main_SkillHotkeySlot : UI_Main_SkillHotkeySlotBase
     [SerializeField] private Image cooltimeImage;
     [SerializeField] private ParticleSystem temporalDistortionParticle;
     [SerializeField] private Animator animator;
-   
-
-
+    
     private float cooltime = -1f;
     
     private void Update()
@@ -49,7 +47,7 @@ public class UI_Main_SkillHotkeySlot : UI_Main_SkillHotkeySlotBase
         animator.SetBool(AnimHash.temporal, true);
     }
 
-    public void PlayTemporalDistortionParticle()
+    private void PlayTemporalDistortionParticle()
     {
         temporalDistortionParticle.Play();
     }

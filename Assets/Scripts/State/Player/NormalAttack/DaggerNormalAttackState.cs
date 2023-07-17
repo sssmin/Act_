@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DaggerNormalAttackState : BaseNormalAttackState
@@ -11,13 +9,6 @@ public class DaggerNormalAttackState : BaseNormalAttackState
     {
         base.BeginState();
         Animator.SetBool(AnimHash.isDaggerNormalAttack, true);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        //todo ?
     }
 
     public override void EndState()

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum EInventoryPopupType
@@ -17,15 +15,7 @@ public enum EThrowawayBuyPopupType
     Buy, //구매
 }
 
-public class UI_Popup : MonoBehaviour
+public abstract class UI_Popup : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
+    public abstract void Close();
 }

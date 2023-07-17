@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 public static class Define
 {
     public const int MAX_NORMAL_ATTACK_COMBO_NUM = 3;
@@ -27,7 +26,8 @@ public static class Define
         MonsterDamagedCritical,
         MonsterDefendDamagedCritical,
         Evasion,
-        Dodge
+        Dodge,
+        Heal
     }
 
     public enum EActivationCondition //발동 조건
@@ -57,7 +57,8 @@ public static class Define
         ItemCraft,
         AudioClip,
         AudioMixer,
-        StatusSprite
+        StatusSprite,
+        WeaponEnhanceValueByLevel
     }
 
     public enum ESkillId

@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public class UI_Inven_EquippedSlotParent : MonoBehaviour
 {
     public List<UI_Inven_EquippedSlot> equippedSlots = new List<UI_Inven_EquippedSlot>();
     
-    public void Init()
+    private void Init()
     {
         ClearItemSlots();
         List<Item> items = GI.Inst.ListenerManager.GetEquippedItems();
@@ -17,7 +16,7 @@ public class UI_Inven_EquippedSlotParent : MonoBehaviour
         }
     }
 
-    public void ClearItemSlots()
+    private void ClearItemSlots()
     {
         foreach (UI_Inven_EquippedSlot equippedSlot in equippedSlots)
         {

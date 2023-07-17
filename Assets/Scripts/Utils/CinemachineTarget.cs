@@ -13,14 +13,9 @@ public class CinemachineTarget : MonoBehaviour
         cursorTransform = GameObject.FindWithTag("Cursor").transform;
     }
 
-    void Start()
-    {
-    }
-
     public void Init()
     {
         CameraFoucs = GI.Inst.Player.transform.Find("CameraFocus");
-       
         ActivateCamera();
     }
 

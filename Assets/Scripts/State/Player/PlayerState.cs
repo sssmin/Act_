@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState : State
@@ -18,11 +16,6 @@ public class PlayerState : State
     protected PlayerController PlayerController { get; set; }
     protected Player Player { get; set; }
     
-    
-    void Start()
-    {
-        
-    }
 
     public override void Update()
     {

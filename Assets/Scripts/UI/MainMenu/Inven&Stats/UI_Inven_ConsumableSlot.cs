@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -23,7 +22,6 @@ public class UI_Inven_ConsumableSlot : UI_Inven_ItemSlot
         borderImage.color = Color.white;
         
         itemAmount.text =  $"x{amount:#,0}";
-       
     }
     
     

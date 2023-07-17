@@ -1,7 +1,5 @@
 using System;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum EDurationEffectId
 {
@@ -21,11 +19,8 @@ public enum EDurationEffectId
 [Serializable]
 public class EffectInfo
 {
-    public Func<int, int> onExecuteCalcValue;
     public Action onExecuteIncreaseStat;
     public Action onExecuteDecreaseStat;
-    public Action<int> onExecuteSpawn;
-    public Action<int> onExecuteDebuffToEnemy;
 
     //레벨에 따라 증가하는 적용 퍼센트 ex) 회피율 7.5%~15% , 피흡량 5~10%
     public float applyPerBySkillLevel;
@@ -52,7 +47,7 @@ public class Effect
     public virtual void CheckConditionAndExecute(Define.EDamageType inDamageType, Define.EActivationCondition inActivationCondition, 
         StatManager enemyStatManager, StatManager casterStatManager, Sprite icon)
     {
-        Debug.Log("부모");
+        
     }
 }
 

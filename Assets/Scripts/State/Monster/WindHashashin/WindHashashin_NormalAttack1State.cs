@@ -14,13 +14,6 @@ public class WindHashashin_NormalAttack1State : MonsterState
         Monster.SetZeroVelocity();
     }
 
-    public override void Update()
-    {
-        base.Update();
-
-       
-    }
-
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isNormalAttack1, false);

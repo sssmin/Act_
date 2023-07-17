@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public struct ActiveSkill_ShortVer
 {
@@ -43,8 +42,14 @@ public class UI_Skill_ActiveSkillSlot : UI_Skill_BaseSkillSlot
     public override void InitOnce()
     {
         base.InitOnce();
+        skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
         skillUpButton.onClick.AddListener(OnClickLevelUpButton);
         Clear();
+    }
+
+    private void OnDestroy()
+    {
+        skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
     }
 
     public void Refresh(ActiveSkill_ShortVer inSkill, int index)

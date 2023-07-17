@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -18,19 +16,7 @@ public class SkillAbility_PlayerClone : MonoBehaviour
         Animator = GetComponent<Animator>();
         Sr = GetComponent<SpriteRenderer>();
     }
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        //분신 애니메이션 실행
-        //
-    }
-
-    //todo StatManager는 필요 없을 수도
+    
     public void Init(StatManager ownerStatManager, DamageInfo damageInfo, StatManager enemyStatManager)
     {
         Sr.color = Color.white;

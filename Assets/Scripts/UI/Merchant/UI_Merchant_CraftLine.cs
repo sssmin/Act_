@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Merchant_CraftLine : MonoBehaviour
@@ -13,7 +10,7 @@ public class UI_Merchant_CraftLine : MonoBehaviour
     [SerializeField] private TextMeshProUGUI craftText;
     [SerializeField] private TextMeshProUGUI requireSharedMatText;
     
-    public Item.EItemCategory ItemCategory { get; private set; }
+    private Item.EItemCategory ItemCategory { get; set; }
 
     private ItemCraft ItemCraft { get; set; }
     private RequireMatAmount requireMatAmount;
@@ -46,6 +43,11 @@ public class UI_Merchant_CraftLine : MonoBehaviour
         });
     }
 
+    private void OnDestroy()
+    {
+        craftButton.onClick.RemoveListener(OnClickCraftButton);
+    }
+
     public void Init(ItemCraft itemCraft)
     {
         ItemCraft = itemCraft;
@@ -56,23 +58,8 @@ public class UI_Merchant_CraftLine : MonoBehaviour
     {
         int requireEquipmentMatAmount = requireMatAmount.requireEquipmentMatAmount;
         int requireSharedMatAmount = requireMatAmount.requireSharedMatAmount;
-        string requireEquipmentMat = null;
-        string requireSharedMat = "SharedMat";
-        switch (ItemCategory)
-        {
-            case Item.EItemCategory.Weapon:
-                requireEquipmentMat = "WeaponMat";
-                break;
-            case Item.EItemCategory.Armor:
-                requireEquipmentMat = "ArmorMat";
-                break;
-            case Item.EItemCategory.Acc:
-                requireEquipmentMat = "AccMat";
-                break;
-        }
 
-        if (GI.Inst.ListenerManager.HasEnoughEtcItems(requireEquipmentMat, requireEquipmentMatAmount) &&
-            GI.Inst.ListenerManager.HasEnoughEtcItems(requireSharedMat, requireSharedMatAmount))
+        if (GI.Inst.ListenerManager.HasEnoughCraftMat(ItemCategory, requireEquipmentMatAmount, requireSharedMatAmount))
         {
             craftButton.enabled = true;
             craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
@@ -84,7 +71,7 @@ public class UI_Merchant_CraftLine : MonoBehaviour
         }
     }
 
-    public void OnClickCraftButton()
+    private void OnClickCraftButton()
     {
         ItemCraft.CreateRandomItem(ItemCategory);
         GI.Inst.UIManager.RefreshCraftLines();

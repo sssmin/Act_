@@ -27,12 +27,11 @@ public class SkillAbility_ThrowDagger : MonoBehaviour
         DamageInfo = damageInfo;
         CoDestroy = StartCoroutine(CoDestroyMyself());
         prenetrationCount = 0;
-        maxPenetrationNum = 5; //todo 이것도 아이템 효과로 늘어날수도
+        maxPenetrationNum = 5;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        //여길 안들어옴
         if (other.CompareTag("Monster"))
         {
             other.GetComponent<StatManager>()?.TakeDamage(DamageInfo, OwnerStatManager, Define.EDamageType.Skill);

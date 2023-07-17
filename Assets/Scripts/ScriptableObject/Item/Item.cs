@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 
 
-
 [Serializable]
 public class Item : ScriptableObject, IComparable<Item>
 {
@@ -12,24 +11,11 @@ public class Item : ScriptableObject, IComparable<Item>
     [SerializeField] public string itemName;
     [SerializeField] public string itemDesc;
     [SerializeField] public Sprite itemIcon;
-    //[SerializeField] public bool bIsCanStack;
 
     [SerializeField] [HideInInspector] public int amount;
     
     [SerializeField] public int maxStackSize = 50;
     
-    protected virtual void DataCopy(Item item)
-    {
-        itemId = item.itemId;
-        ItemCategory = item.ItemCategory;
-        itemName = item.itemName;
-        itemDesc = item.itemDesc;
-        itemIcon = item.itemIcon;
-        //bIsCanStack = item.bIsCanStack;
-        maxStackSize = item.maxStackSize;
-        
-        name = item.name;
-    }
     
     public enum EItemCategory
     {
@@ -105,10 +91,6 @@ public class Item : ScriptableObject, IComparable<Item>
         Max
     }
     
-    private void OnDestroy()
-    {
-        //Debug.Log($"{itemId} 아이템 파괴");
-    }
 
     public int CompareTo(Item other)
     {
@@ -122,8 +104,6 @@ public class Item : ScriptableObject, IComparable<Item>
         if (itemNameComparison != 0) return itemNameComparison;
         var itemDescComparison = string.Compare(itemDesc, other.itemDesc, StringComparison.Ordinal);
         if (itemDescComparison != 0) return itemDescComparison;
-        //var bIsCanStackComparison = bIsCanStack.CompareTo(other.bIsCanStack);
-        //if (bIsCanStackComparison != 0) return bIsCanStackComparison;
         var amountComparison = amount.CompareTo(other.amount);
         if (amountComparison != 0) return amountComparison;
         return maxStackSize.CompareTo(other.maxStackSize);

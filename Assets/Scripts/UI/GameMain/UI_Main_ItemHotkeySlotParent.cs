@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,13 +17,17 @@ public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
         {
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Main_ItemHotkeySlot", transform);
             UI_Main_ItemHotkeySlot mainItemHotkeySlot = go.GetComponent<UI_Main_ItemHotkeySlot>();
-            mainItemHotkeySlot.InitOnce((Item.EItemHotkeyOrder)i);
             ItemHotkeySlots.Add((Item.EItemHotkeyOrder)i, mainItemHotkeySlot);
         }
-        
     }
 
-    public void InitItemHotkeySlot(Item.EItemHotkeyOrder order, Item item)
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshItemHotkeyUI -= InitItemHotkeySlot;
+        GI.Inst.UIManager.clearItemHotkeyUI -= ClearItemHotkeySlot;
+    }
+
+    private void InitItemHotkeySlot(Item.EItemHotkeyOrder order, Item item)
     {
         if (ItemHotkeySlots.ContainsKey(order))
         {
@@ -30,7 +35,7 @@ public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
         }
     }
     
-    public void ClearItemHotkeySlot(Item.EItemHotkeyOrder order)
+    private void ClearItemHotkeySlot(Item.EItemHotkeyOrder order)
     {
         if (ItemHotkeySlots.ContainsKey(order))
         {

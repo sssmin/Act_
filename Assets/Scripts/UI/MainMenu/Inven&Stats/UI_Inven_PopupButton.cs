@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -18,6 +16,11 @@ public class UI_Inven_PopupButton : MonoBehaviour
             button.onClick.RemoveListener(call);
         call = () => CallbackInvoke(item, callback);
         button.onClick.AddListener(call);
+    }
+
+    private void OnDestroy()
+    {
+        button.onClick.RemoveListener(call);
     }
 
     void CallbackInvoke(Item item, Action<Item> callback)

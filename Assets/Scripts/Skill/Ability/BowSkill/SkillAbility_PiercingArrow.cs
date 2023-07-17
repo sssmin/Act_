@@ -70,7 +70,4 @@ public class SkillAbility_PiercingArrow : MonoBehaviour
     
     
     
-
-    
-    
 }

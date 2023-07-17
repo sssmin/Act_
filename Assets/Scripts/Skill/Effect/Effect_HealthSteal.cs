@@ -9,7 +9,7 @@ public class Effect_HealthSteal : Effect
         {
             if (activateChancePer >= Random.Range(0f, 100f))
             {
-                casterStatManager.ApplyHealthSteal(effectInfo.applyPerBySkillLevel);
+                casterStatManager.HealPerLoseHp(effectInfo.applyPerBySkillLevel);
             }
         }
     }

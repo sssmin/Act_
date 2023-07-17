@@ -21,8 +21,6 @@ public class AIController_WindHashashin : AIController_Boss
         
     }
     
-
-
     public override void ExecSpecialAttack()
     {
         Collider2D[] colliders = new Collider2D[10];

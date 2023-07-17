@@ -40,8 +40,14 @@ public class UI_Skill_PassiveSkillSlot : UI_Skill_BaseSkillSlot, IDragHandler, I
     public override void InitOnce()
     { 
         base.InitOnce();
+        skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
         skillUpButton.onClick.AddListener(OnClickLevelUpButton);
         SetActiveObject(false);
+    }
+
+    private void OnDestroy()
+    {
+        skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
     }
 
     public void Refresh(PassiveSkill_ShortVer inSkill)

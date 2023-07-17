@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -19,7 +18,7 @@ public class UI_Main_DamageText : MonoBehaviour
         damageText.color = new Color(damageText.color.r, damageText.color.g, damageText.color.b, a);
     }
 
-    public void Init(Define.EDamageTextType damageTextType, Vector3 spawnLocation, float damage)
+    public void Init(Define.EDamageTextType damageTextType, float damage)
     {
         string assembleDamage = "";
         switch (damageTextType)
@@ -51,6 +50,10 @@ public class UI_Main_DamageText : MonoBehaviour
                 assembleDamage = "Evasion!\n";
                 damageText.text = assembleDamage;
                 return;
+            case Define.EDamageTextType.Heal:
+                damageText.color = Color.green;
+                damageText.text = assembleDamage;
+                break;
             case Define.EDamageTextType.Dodge:
                 damageText.color = new Color(183f/255f, 183f/255f, 183f/255f, 255f/255f);
                 assembleDamage = "Dodge!\n";

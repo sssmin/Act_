@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_IdleState : PlayerState
@@ -7,7 +5,6 @@ public class Player_IdleState : PlayerState
     public Player_IdleState(Animator animator, Rigidbody2D rigidbody2D, BaseCharacter character,
         BaseController baseController)
         : base(animator, rigidbody2D, character, baseController) { }
-
     
     
     public override void BeginState()

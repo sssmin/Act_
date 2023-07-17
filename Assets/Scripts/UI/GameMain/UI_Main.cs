@@ -16,7 +16,6 @@ public class UI_Main : MonoBehaviour
         itemHotkeySlotParent.InitOnce();
         hotkeyBarParent.InitOnce();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        //canvas.worldCamera = GI.Inst.uiCamera;
     }
 
     public void SetHpBar(float ratio)

@@ -15,12 +15,12 @@ public class UI_Merchant_Result : MonoBehaviour
         GI.Inst.UIManager.clearCraftResult += Clear;
     }
 
-    public void SetCraftResult(string itemName)
+    private void SetCraftResult(string itemName)
     {
         resultText.text = $"{itemName} 제작 성공";
     }
 
-    public void Clear()
+    private void Clear()
     {
         resultText.text = "";
     }

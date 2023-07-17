@@ -49,7 +49,7 @@ public class ItemCraft : ScriptableObject
         }
     }
 
-    public void CalcProbability(Item.EItemCategory itemCategory, string equipmentMatId, List<ProbabilityInfo> probabilityInfos)
+    private void CalcProbability(Item.EItemCategory itemCategory, string equipmentMatId, List<ProbabilityInfo> probabilityInfos)
     {
         for (int i = 0; i < probabilityInfos.Count + 1; ++i)
         {

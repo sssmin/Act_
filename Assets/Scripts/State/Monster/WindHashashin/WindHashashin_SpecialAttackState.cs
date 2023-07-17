@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindHashashin_SpecialAttackState : MonsterState
@@ -19,14 +17,7 @@ public class WindHashashin_SpecialAttackState : MonsterState
         Monster.SetZeroVelocity();
         aiControllerWindHashashin.SetAttackTimer(Define.EBossAttackType.SpecialAttack1);
     }
-
-    public override void Update()
-    {
-        base.Update();
-
-        
-        
-    }
+    
 
     public override void EndState()
     {

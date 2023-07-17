@@ -9,7 +9,6 @@ public enum EMerchantType
 
 public class UI_Merchant_Menu : UI_Popup
 {
-    [SerializeField] private Button closeButton; 
     [SerializeField] private Button buyButton; 
     [SerializeField] private Button craftButton;
     [SerializeField] private Transform contentParentTransform;
@@ -17,7 +16,7 @@ public class UI_Merchant_Menu : UI_Popup
 
     private GameObject inventoryWrapper;
     private UI_Merchant_ItemLineParent itemLineParentUI;
-    private UI_Merchant_CraftLineParent craftLineParent;
+    private UI_Merchant_CraftLineParent craftLineParentUI;
 
     private EMerchantType currentType;
     private Merchant Merchant { get; set; }
@@ -28,8 +27,8 @@ public class UI_Merchant_Menu : UI_Popup
         itemLineParentUI = go.GetComponent<UI_Merchant_ItemLineParent>();
         
         go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLineParent", transform);
-        craftLineParent = go.GetComponent<UI_Merchant_CraftLineParent>();
-        craftLineParent.InitOnce();
+        craftLineParentUI = go.GetComponent<UI_Merchant_CraftLineParent>();
+        craftLineParentUI.InitOnce();
     }
     
     public void Open(EMerchantType type, Merchant merchant)
@@ -40,14 +39,14 @@ public class UI_Merchant_Menu : UI_Popup
         GI.Inst.ResourceManager.CreateItemCraft(Define.ELabel.ItemCraft, craft =>
         {
             TempItemCraft = craft;
+            craftLineParentUI.transform.SetParent(null);
+            itemLineParentUI.transform.SetParent(null);
             
             switch (type)
             {
                 case EMerchantType.Buy:
                 {
-                    craftLineParent.transform.SetParent(null);
                     itemLineParentUI.transform.SetParent(contentParentTransform);
-                    
                     itemLineParentUI.rectTransform.localPosition = Vector3.zero;
                     
                     itemLineParentUI.Init(Merchant.GetItemIds());
@@ -60,11 +59,10 @@ public class UI_Merchant_Menu : UI_Popup
                     break;
                 case EMerchantType.Craft:
                 {
-                    itemLineParentUI.transform.SetParent(null);
-                    craftLineParent.transform.SetParent(contentParentTransform);
-                    craftLineParent.transform.localPosition = Vector3.zero;
+                    craftLineParentUI.transform.SetParent(contentParentTransform);
+                    craftLineParentUI.transform.localPosition = Vector3.zero;
                     
-                    craftLineParent.Init(TempItemCraft);
+                    craftLineParentUI.Init(TempItemCraft);
                     
                     inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
                     inventoryWrapper.transform.SetParent(inventoryParentTransform);
@@ -73,13 +71,10 @@ public class UI_Merchant_Menu : UI_Popup
                 }
                     break;
             }
-            
         });
-        
-       
     }
 
-    public void Init(EMerchantType type, Merchant merchant)
+    private void Init(EMerchantType type, Merchant merchant)
     {
         currentType = type;
         Merchant = merchant;
@@ -88,9 +83,8 @@ public class UI_Merchant_Menu : UI_Popup
         {
             case EMerchantType.Buy:
                 {
-                    craftLineParent.transform.SetParent(null);
+                    craftLineParentUI.transform.SetParent(null);
                     itemLineParentUI.transform.SetParent(contentParentTransform);
-                    
                     itemLineParentUI.rectTransform.localPosition = Vector3.zero;
                     
                     itemLineParentUI.Init(Merchant.GetItemIds());
@@ -104,10 +98,10 @@ public class UI_Merchant_Menu : UI_Popup
             case EMerchantType.Craft:
                 {
                     itemLineParentUI.transform.SetParent(null);
-                    craftLineParent.transform.SetParent(contentParentTransform);
-                    craftLineParent.transform.localPosition = Vector3.zero;
+                    craftLineParentUI.transform.SetParent(contentParentTransform);
+                    craftLineParentUI.transform.localPosition = Vector3.zero;
                     
-                    craftLineParent.Init(TempItemCraft);
+                    craftLineParentUI.Init(TempItemCraft);
                     
                     
                     inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
@@ -119,19 +113,14 @@ public class UI_Merchant_Menu : UI_Popup
         }
     }
 
-    public void OnClickCloseButton()
-    {
-        CloseMerchant();
-    }
-
-    public void CloseMerchant()
+    private void CloseMerchant()
     {
         inventoryWrapper.transform.SetParent(null);
         itemLineParentUI.transform.SetParent(null);
-        craftLineParent.transform.SetParent(null);
+        craftLineParentUI.transform.SetParent(null);
         
-        GI.Inst.UIManager.InvisibleMerchantUI();
-        craftLineParent.Close();
+        GI.Inst.UIManager.ClosePopup();
+        craftLineParentUI.Close();
         Destroy(TempItemCraft);
         TempItemCraft = null;
     }
@@ -150,5 +139,10 @@ public class UI_Merchant_Menu : UI_Popup
         GI.Inst.UIManager.ClearCraftResult();
         Init(EMerchantType.Craft, Merchant);
     }
-     
+
+    public override void Close()
+    {
+        CloseMerchant();
+        gameObject.SetActive(false);
+    }
 }

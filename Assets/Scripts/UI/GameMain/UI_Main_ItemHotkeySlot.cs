@@ -7,16 +7,11 @@ public class UI_Main_ItemHotkeySlot : MonoBehaviour
     [SerializeField] private  Image itemIconImage;
     [SerializeField] private  TextMeshProUGUI bindKeyText;
     [SerializeField] private  Image cooltimeImage;
-    private Item.EItemHotkeyOrder keyOrder;
     [HideInInspector] public string itemId = "";//없는 상태는 빈칸으로, 쿨타임 표시 위함
     [SerializeField] protected TextMeshProUGUI itemAmount;
     [SerializeField] private Sprite defaultSlotSprite;
 
     
-    public void InitOnce(Item.EItemHotkeyOrder order)
-    {
-        keyOrder = order;
-    }
     
     private void Update()
     {

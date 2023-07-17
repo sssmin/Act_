@@ -12,12 +12,6 @@ public class Monster_DeadState : MonsterState
         Monster.SetZeroVelocity();
     }
     
-    public override void Update()
-    {
-        base.Update();
-
-        
-    }
     
     public override void EndState()
     {

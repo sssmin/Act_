@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -93,7 +92,6 @@ public class SkillAbility_ThrowAxe : MonoBehaviour
         }
     }
     
-
     IEnumerator CoSpinInPlace()
     {
         yield return new WaitForSeconds(.5f); //0.5초 동안 날아감

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimTrigger : MonoBehaviour
@@ -15,11 +12,9 @@ public class AnimTrigger : MonoBehaviour
         
         CombatManager = GetComponentInParent<CombatManager>();
     }
-
-    //나중에 이 클래스 베이스로 하고 플레이어, 몬스터 나누기.
+    
     public virtual void GoToIdleState()
     {
-       
     }
 
     public void OnSpawnArrow()
@@ -30,8 +25,7 @@ public class AnimTrigger : MonoBehaviour
     public virtual void OnExecSkillTrigger()
     {
     }
-
-    //나중에 이 클래스 베이스로 하고 플레이어, 몬스터 나누기.
+    
     public virtual void PauseAnimation()
     {
     }
@@ -40,8 +34,7 @@ public class AnimTrigger : MonoBehaviour
     {
         Animator.speed = 1f;
     }
-
-    //나중에 이 클래스 베이스로 하고 플레이어, 몬스터 나누기.
+    
     public virtual void SweepOverlapCircle()
     {
     }

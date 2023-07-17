@@ -82,7 +82,7 @@ public class UI_ItemTooltip : MonoBehaviour
         }
     }
 
-    void InitSize(Vector3 slotPos, int pivot)
+    private void InitSize(Vector3 slotPos, int pivot)
     {
         contentWrapper.pivot = new Vector2(pivot, 0.5f);
         contentWrapper.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 250f);
@@ -90,13 +90,13 @@ public class UI_ItemTooltip : MonoBehaviour
         contentWrapper.transform.position = slotPos;
     }
 
-    void IncreaseWrapperSize()
+    private void IncreaseWrapperSize()
     {
         contentWrapper.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, contentWrapper.rect.height + 50f);
         contentParent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, contentParent.rect.height + 50f);
     }
 
-    public void AllClear()
+    private void AllClear()
     {
         foreach (UI_ItemTooltip_ItemStats itemStats in itemStatsList)
         {

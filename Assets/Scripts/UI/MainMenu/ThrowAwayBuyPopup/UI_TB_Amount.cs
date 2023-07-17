@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
@@ -24,6 +21,7 @@ public class UI_TB_Amount : MonoBehaviour
     {
         tempItem = item;
         popupType = type;
+        RemoveListener();
         minButton.onClick.AddListener(OnClickMinButton);
         maxButton.onClick.AddListener(OnClickMaxButton);
         subButton.onClick.AddListener(OnClickSubButton);
@@ -34,18 +32,32 @@ public class UI_TB_Amount : MonoBehaviour
         _goldInvenCapacity = GI.Inst.ListenerManager.GetGoldInvenCapacity();
     }
 
+    private void OnDestroy()
+    {
+        RemoveListener();
+    }
+
+    private void RemoveListener()
+    {
+        minButton.onClick.RemoveListener(OnClickMinButton);
+        maxButton.onClick.RemoveListener(OnClickMaxButton);
+        subButton.onClick.RemoveListener(OnClickSubButton);
+        addButton.onClick.RemoveListener(OnClickAddButton);
+        amountInputField.onValueChanged.RemoveListener(OnValueChanged);
+    }
+
     public void BuyInit(Item item, EThrowawayBuyPopupType type, Action<string> callback)
     {
         Init(item, type);
         buyCallback = callback;
     }
 
-    void OnClickMinButton()
+    private void OnClickMinButton()
     {
         amountInputField.text = "0";
         Amount = 0;
     }
-    void OnClickMaxButton()
+    private void OnClickMaxButton()
     {
         switch (popupType)
         {
@@ -64,7 +76,7 @@ public class UI_TB_Amount : MonoBehaviour
                 break;
         }
     }
-    void OnClickSubButton()
+    private void OnClickSubButton()
     {
         Amount = Mathf.Clamp(--Amount, 0, tempItem.amount);
         amountInputField.text = Amount.ToString("#,0");
@@ -74,7 +86,7 @@ public class UI_TB_Amount : MonoBehaviour
         buyCallback?.Invoke(maxPrice.ToString("#,0"));
         
     }
-    void OnClickAddButton()
+    private void OnClickAddButton()
     {
         switch (popupType)
         {
@@ -84,7 +96,7 @@ public class UI_TB_Amount : MonoBehaviour
                 break;
             case EThrowawayBuyPopupType.Buy:
                 int tempAmount = Amount + 1;
-                //todo 갯수마다 Price에 값 다른거 줘야하는데.
+                
                 int price = ((Consumable)tempItem).storeSellPrice;
                 if ((price * tempAmount) > _goldInvenCapacity.gold)
                 {
@@ -104,7 +116,7 @@ public class UI_TB_Amount : MonoBehaviour
         }
     }
 
-    void OnValueChanged(string value)
+    private void OnValueChanged(string value)
     {
         bool success = int.TryParse(value, out int valueToInt);
         Amount = valueToInt;
@@ -122,7 +134,6 @@ public class UI_TB_Amount : MonoBehaviour
                     break;
                 case EThrowawayBuyPopupType.Buy:
                     //골드에 맞춰야함
-                    //todo 갯수마다 Price에 값 다른거 줘야하는데.
                     int price = ((Consumable)tempItem).storeSellPrice;
                     if ((price * tempItem.amount) > _goldInvenCapacity.gold)
                     {

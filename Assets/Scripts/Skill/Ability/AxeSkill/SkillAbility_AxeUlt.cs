@@ -34,11 +34,8 @@ public class SkillAbility_AxeUlt : MonoBehaviour
           
             aiController.SetDisableState(Define.EMonsterState.Freeze);
         }
-
-        //StartCoroutine(CoExplosion());
     }
     
-
     public void TakeDamageNotify()
     {
         Sr.color = Color.clear;
@@ -55,7 +52,7 @@ public class SkillAbility_AxeUlt : MonoBehaviour
         SkillEnd();
     }
 
-    public void SkillEnd()
+    private void SkillEnd()
     {
         foreach (AIController aiController in tempAIControllers)
         {

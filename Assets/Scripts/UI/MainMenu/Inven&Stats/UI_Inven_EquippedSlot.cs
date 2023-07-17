@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
@@ -11,21 +11,20 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
     private Sprite itemIconSprite;
     private Item item;
     [SerializeField] Image itemIconImage;
+    [SerializeField] public Image elementIconImage;
     [SerializeField] public Item.EItemCategory itemCategory;
     [SerializeField] public Item.EArmorType armorType;
     [SerializeField] public Item.EAccType accType;
     [SerializeField] RectTransform slotTransform;
+    [SerializeField] TextMeshProUGUI enhanceLevelText;
 
     public void SetItem(List<Item> inItem)
     {
         Item findItem = inItem.FirstOrDefault(i => i.ItemCategory == itemCategory);
         item = findItem;
         if (item == null)
-        {
-            //Debug.Log("처음엔 장착된 장비가 없어요.");
             return;
-        }
-
+        
         if (item.ItemCategory == Item.EItemCategory.Armor)
         {
             BaseArmor baseArmor = (BaseArmor)item;
@@ -48,6 +47,23 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
         }
         else
         {
+            BaseWeapon weapon = findItem as BaseWeapon;
+            if (weapon)
+            {
+                enhanceLevelText.text = 
+                    weapon.EnhanceLevel > 0 ? enhanceLevelText.text = $"+{weapon.EnhanceLevel}" : enhanceLevelText.text = "";
+                
+                string elementName = Enum.GetName(typeof(EWeaponElement), weapon.Element);
+                if (elementName == "None")
+                {
+                    elementIconImage.color = Color.clear;
+                }
+                else
+                {
+                    elementIconImage.sprite = GI.Inst.ResourceManager.GetStatusSprite(elementName);
+                    elementIconImage.color = Color.white;
+                }
+            }
             itemIconSprite = item.itemIcon;
             itemIconImage.sprite = itemIconSprite;
             itemIconImage.color = Color.white;
@@ -61,6 +77,8 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
         itemIconSprite = null;
         itemIconImage.sprite = null;
         itemIconImage.color = Color.clear;
+        if (elementIconImage)
+            elementIconImage.color = Color.clear;
     }
 
     

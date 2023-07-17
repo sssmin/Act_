@@ -102,7 +102,27 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.initUltSkillChargeAmount -= InitUltSkillChargeAmount;
         GI.Inst.ListenerManager.initUltSkillChargeAmount += InitUltSkillChargeAmount;
     }
-    
+
+    private void OnDestroy()
+    {
+        GI.Inst.ListenerManager.onExecuteActiveSkill -= ExecuteActiveSkill;
+        GI.Inst.ListenerManager.getSkill -= GetSkill;
+        GI.Inst.ListenerManager.onExecPlayerClone -= ExecPlayerClone;
+        GI.Inst.ListenerManager.onExecEarthquake -= ExecEarthquake;
+        GI.Inst.ListenerManager.setActiveSkillCuzEquip -= SetActiveSkillCuzEquip;
+        GI.Inst.ListenerManager.isSkillReady -= IsSkillReady;
+        GI.Inst.ListenerManager.getCurrentActiveSkills -= GetCurrentActiveSkills;
+        GI.Inst.ListenerManager.getAllPassiveSkills -= GetAllPassiveSkills;
+        GI.Inst.ListenerManager.requestActiveSkillLevelUp -= RequestActiveSkillLevelUp;
+        GI.Inst.ListenerManager.requestPassiveSkillLevelUp -= RequestPassiveSkillLevelUp;
+        GI.Inst.ListenerManager.getActiveSkillLevel -= GetActiveSkillLevel;
+        GI.Inst.ListenerManager.equipPassiveSkill -= EquipPassiveSkill;
+        GI.Inst.ListenerManager.unequipPassiveSkill -= UnequipPassiveSkill;
+        GI.Inst.ListenerManager.execTakeDamageEffect -= ExecTakeDamageEffect;
+        GI.Inst.ListenerManager.getUltSkillChargeAmount -= GetUltSkillChargeAmount;
+        GI.Inst.ListenerManager.initUltSkillChargeAmount -= InitUltSkillChargeAmount;
+    }
+
     public void SetStartPassiveSkills()
     {
         List<SO_PassiveSkill> passiveSkills = new List<SO_PassiveSkill>();
@@ -338,9 +358,23 @@ public class SkillManager : MonoBehaviour
             }
         }
 
+        ExecWeaponEffect(causeDamageType, victimStatManager);
         ExecWeaponElementEffect(causeDamageType, victimStatManager);
     }
 
+    //무기가 가진 부가효과 실행 (ex. 인피니티 무기 피흡)
+    private void ExecWeaponEffect(Define.EDamageType causeDamageType, StatManager victimStatManager)
+    {
+        BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
+        if (equippedWeapon == null) return;
+        foreach (Effect effect in equippedWeapon.effects)
+        {
+            
+            effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, victimStatManager, Player.StatManager, null);
+        }
+    }
+
+    //무기가 가진 속성효과 실행 (ex. 불 속성 방감)=>상대방의 현재 스탯에 디버프 효과를 주는 것이기 때문에 다른 효과들과 다르게 피해 입힐때마다 Effect 생성.
     private void ExecWeaponElementEffect(Define.EDamageType causeDamageType, StatManager victimStatManager)
     {
         BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();

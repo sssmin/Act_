@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,8 +23,14 @@ public class UI_ActiveSkillSlotParent : MonoBehaviour
             activeSkillSlots.Add(skillActiveSkillSlot);
         }
     }
-    
-    public void RefreshActiveSkillSlots(List<SO_ActiveSkill> skills)
+
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshActiveSkillSlots -= RefreshActiveSkillSlots;
+        GI.Inst.UIManager.clearActiveSkillSlots -= Clear;
+    }
+
+    private void RefreshActiveSkillSlots(List<SO_ActiveSkill> skills)
     {
         int index = 0;
         for (int i = 0; i < skills.Count; i++)

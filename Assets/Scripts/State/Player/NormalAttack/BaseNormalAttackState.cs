@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseNormalAttackState : PlayerState
@@ -30,8 +28,6 @@ public class BaseNormalAttackState : PlayerState
         base.Update();
 
         IsAttacking = true;
-        
-        
         
     }
 

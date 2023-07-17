@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WindHashashin_DefendState : MonsterState
@@ -15,12 +13,6 @@ public class WindHashashin_DefendState : MonsterState
     {
         Animator.SetBool(AnimHash.isDefend, true);
         Monster.SetZeroVelocity();
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
     }
 
     public override void EndState()

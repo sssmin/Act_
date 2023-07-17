@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,12 +6,10 @@ public class UI_Merchant_ItemLineParent : MonoBehaviour
     private List<UI_Merchant_ItemLine> itemLines = new List<UI_Merchant_ItemLine>();
     private List<Item> items = new List<Item>();
     [SerializeField] public RectTransform rectTransform;
-    private int itemCount;
-    
+
     public void Init(List<string> inItems)
     {
         Clear();
-        itemCount = inItems.Count;
         foreach (string itemId in inItems)
         {
             Item item = GI.Inst.ResourceManager.GetItemData(itemId);
@@ -21,8 +18,7 @@ public class UI_Merchant_ItemLineParent : MonoBehaviour
 
         InitItemLines();
     }
-
-
+    
     private void InitItemLines()
     {
         items.Sort();
@@ -35,7 +31,7 @@ public class UI_Merchant_ItemLineParent : MonoBehaviour
         }
     }
     
-    public void Clear()
+    private void Clear()
     {
         foreach (UI_Merchant_ItemLine merchantItemLine in itemLines)
         {

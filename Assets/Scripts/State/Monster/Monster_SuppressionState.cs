@@ -14,11 +14,6 @@ public class Monster_SuppressionState : MonsterState
         Monster.SetZeroVelocity();
     }
 
-    public override void Update()
-    {
-        base.Update();
-    }
-
     public override void EndState()
     {
     }

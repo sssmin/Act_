@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum EActiveSkillOrder
 {
@@ -40,7 +38,7 @@ public class SO_ActiveSkill : SO_Skill
         skillLevel = inSkillLevel;
     }
     
-    public float GetSkillTotalDamage(float damage)
+    protected float GetSkillTotalDamage(float damage)
     {
         return Mathf.Round((damage * coef[skillLevel - 1] / 100f) * 10) * 0.1f;
     }

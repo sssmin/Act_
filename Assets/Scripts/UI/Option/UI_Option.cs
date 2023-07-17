@@ -13,9 +13,12 @@ public class UI_Option : UI_Popup
     private UI_Option_SoundContent SoundContentUI { get; set; }
     private UI_Option_DisplayContent DisplayContentUI { get; set; }
     private UI_Option_BindKeyContent BindKeyContentUI { get; set; }
+
+    private bool IsMainMenu { get; set; }
     
     public void InitOnce()
     {
+        closeButton.onClick.RemoveListener(CloseOption);
         closeButton.onClick.AddListener(CloseOption);
         
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Option_SoundContent", contentUIParent);
@@ -30,8 +33,20 @@ public class UI_Option : UI_Popup
         BindKeyContentUI.InitOnce();
     }
 
+    private void OnDestroy()
+    {
+        closeButton.onClick.RemoveListener(CloseOption);
+    }
+
     public void OnVisible(Define.EOptionType type)
     {
+        OnVisible(type, IsMainMenu);
+    }
+
+    public void OnVisible(Define.EOptionType type, bool isMainMenu)
+    {
+        IsMainMenu = isMainMenu;
+        closeButton.gameObject.SetActive(IsMainMenu);
         SoundContentUI.transform.SetParent(null);
         DisplayContentUI.transform.SetParent(null);
         BindKeyContentUI.transform.SetParent(null);
@@ -59,7 +74,7 @@ public class UI_Option : UI_Popup
     
     private void CloseOption()
     {
-        GI.Inst.UIManager.PressedCloseButtonOption();
+        GI.Inst.UIManager.ClosePopup();
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
 
@@ -67,11 +82,15 @@ public class UI_Option : UI_Popup
     {
         GI.Inst.SaveSoundData();
         GI.Inst.SaveDisplayData();
-        //바인드키 모두 저장
     }
 
     public void SetVisibleBindKeyPopup(bool isVisible)
     {
         BindKeyContentUI.SetVisibleBindKeyPopup(isVisible);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

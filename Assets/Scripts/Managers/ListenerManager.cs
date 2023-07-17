@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ListenerManager
 {
@@ -18,6 +17,7 @@ public class ListenerManager
     public Action<Item.EItemHotkeyOrder> onPressedItemHotkey;
     public Action<Item.EItemHotkeyOrder, Item> registerItemHotkey;
     public Action<Item, int> buyItem;
+    public Action<BaseWeapon, Item> enhance;
     public Action<ActiveSkill_ShortVer, int> requestActiveSkillLevelUp;
     public Action<PassiveSkill_ShortVer> requestPassiveSkillLevelUp;
     public Action<ESkillMatId, EActiveSkillOrder> useActiveSkillMat;
@@ -47,7 +47,7 @@ public class ListenerManager
     public Func<Item.EWeaponType> getEquippedWeaponType;
     public Func<EActiveSkillOrder, int> getActiveSkillLevel;
     public Func<float> getUltSkillChargeAmount;
-    public Func<string, int, bool> hasEnoughEtcItems;
+    public Func<Item.EItemCategory, int, int, bool> hasEnoughCraftMat;
     public Func<bool> isEquippedWeapon;
     public Func<bool> playersAttack;
 
@@ -237,14 +237,19 @@ public class ListenerManager
         buyItem?.Invoke(item, amount);
     }
 
+    public void Enhance(BaseWeapon original, Item weaponMat)
+    {
+        enhance?.Invoke(original, weaponMat);
+    }
+
     public bool AddItem(Item item, bool shouldRefreshUI, int amount)
     {
         return addItem.Invoke(item, shouldRefreshUI, amount);
     }
 
-    public bool HasEnoughEtcItems(string itemId, int amount)
+    public bool HasEnoughCraftMat(Item.EItemCategory itemCategory, int equipmentMatAmount, int sharedMatAmount)
     {
-        return hasEnoughEtcItems.Invoke(itemId, amount);
+        return hasEnoughCraftMat.Invoke(itemCategory, equipmentMatAmount, sharedMatAmount);
     }
 
     public void IncreaseCurrentInventoryNum()

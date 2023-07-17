@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,10 +9,8 @@ public class UI_MonsterInfo : MonoBehaviour
     [SerializeField] private Image statusImage;
     [SerializeField] private Animator animator;
     
-    
     private Coroutine iconEndCoroutine;
-
-   
+    
 
     public void SetBar(float ratio)
     {

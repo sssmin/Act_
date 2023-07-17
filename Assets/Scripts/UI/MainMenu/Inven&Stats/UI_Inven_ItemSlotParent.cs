@@ -63,23 +63,10 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
                     
                 }
                 break;
-                
-        }
-        
-        
-        
-
-        if (itemCategory != Item.EItemCategory.Consumable)
-        {
-            
-        }
-        else
-        {
-            
         }
     }
 
-    public void ClearItemSlots()
+    private void ClearItemSlots()
     {
         if (itemSlots.Count > 0)
         {
@@ -102,6 +89,14 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
     public void RefreshInventoryUI()
     {
         Init(_currentActiveItemCategory);
+    }
+
+    public void EnableCanWeaponMat(BaseWeapon weapon)
+    {
+        foreach (UI_Inven_ItemSlot itemSlot in itemSlots)
+        {
+            itemSlot.CheckDisableSlot(weapon);
+        }
     }
     
     

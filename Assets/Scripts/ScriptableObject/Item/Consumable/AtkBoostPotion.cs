@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Consumable_", menuName ="Data/Item/Consumable/AtkBoostPotion")]

@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseProjectile : BaseActor
 {
-    
-    public float AttackCoefficient { get; set; }
-    
+    protected float AttackCoefficient { get; set; }
     
     
     public virtual void Init(Vector2 dir, BaseController inOwner, float inAttackCoefficient)

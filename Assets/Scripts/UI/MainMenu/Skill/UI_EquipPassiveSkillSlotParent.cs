@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,22 +27,16 @@ public class UI_EquipPassiveSkillSlotParent : MonoBehaviour
             equipPassiveSkillSlots.Add(equipPassiveSkillSlot);
         }
     }
-    
-    public void RefreshEquipPassiveSkillUI(List<SO_Skill> skills)
+
+    private void OnDestroy()
     {
-        if (!InitCompleted)
-        {
-            InitCompleted = true;
-            //객체생성
-            foreach (SO_Skill skill in skills)
-            {
-                
-            }
-        }
+        GI.Inst.UIManager.checkEquippedPassive -= CheckEquippedPassive;    
+        GI.Inst.UIManager.blinkEquipPassiveSkillSlot -= Blink;   
+        GI.Inst.UIManager.setEquipPassive -= SetEquipPassive;   
     }
 
     //불러오기 로드시 한번 호출
-    public void SetEquipPassive(SO_PassiveSkill passiveSkill)
+    private void SetEquipPassive(SO_PassiveSkill passiveSkill)
     {
         PassiveSkill_ShortVer skillShortVer = new PassiveSkill_ShortVer();
         skillShortVer.DataCopy(passiveSkill);

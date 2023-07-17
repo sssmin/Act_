@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI_Skill_BaseSkillSlot : MonoBehaviour
@@ -32,7 +31,7 @@ public class UI_Skill_BaseSkillSlot : MonoBehaviour
     {
     }
     
-    protected void EndOverlapMouseOnIcon()
+    private void EndOverlapMouseOnIcon()
     {
         GI.Inst.UIManager.InvisibleSkillTooltip();
     }

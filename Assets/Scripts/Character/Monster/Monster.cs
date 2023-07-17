@@ -42,7 +42,6 @@ public class Monster : BaseCharacter
         States.Add(Define.EMonsterState.Suppression, new Monster_SuppressionState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.Dead, new Monster_DeadState(Animator, Rb, this, AIController));
         States.Add(Define.EMonsterState.NormalAttack1, new Monster_NormalAttackState(Animator, Rb, this, AIController));
-        // States.Add(Define.EMonsterState.CrowdControl, new Monster_IdleState(Animator, Rb, this, AIController));
 
 
         foreach (var pair in States)

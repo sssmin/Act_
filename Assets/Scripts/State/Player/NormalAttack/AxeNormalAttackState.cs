@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AxeNormalAttackState : BaseNormalAttackState
@@ -12,13 +10,6 @@ public class AxeNormalAttackState : BaseNormalAttackState
     {
         base.BeginState();
         Animator.SetBool(AnimHash.isAxeNormalAttack, true);
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        //todo ?
     }
 
     public override void EndState()

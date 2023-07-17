@@ -10,9 +10,4 @@ public class UI_BindKey : MonoBehaviour
     {
         keyText.text = GI.Inst.Player.PlayerController.GetBindingKeyString(bindKeyType);
     }
-    
-    public void Init(string key)
-    {
-        keyText.text = key;
-    }
 }

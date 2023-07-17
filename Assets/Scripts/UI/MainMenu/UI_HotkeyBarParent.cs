@@ -14,7 +14,12 @@ public class UI_HotkeyBarParent : MonoBehaviour
         Init();
     }
 
-    public void Init()
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshHotKeyMainUI -= Init;
+    }
+
+    private void Init()
     {
         foreach (UI_BindKey bindKey in bindKeys)
         {

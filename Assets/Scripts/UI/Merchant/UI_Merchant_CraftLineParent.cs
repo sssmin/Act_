@@ -29,7 +29,12 @@ public class UI_Merchant_CraftLineParent : MonoBehaviour
         resultLine = go.GetComponent<UI_Merchant_Result>();
         resultLine.InitOnce();
     }
-    
+
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshCraftLines -= RefreshCraftLines;
+    }
+
     public void Init(ItemCraft itemCraft)
     {
         WeaponCraftLine.Init(itemCraft);
@@ -37,7 +42,7 @@ public class UI_Merchant_CraftLineParent : MonoBehaviour
         AccCraftLine.Init(itemCraft);
     }
 
-    public void RefreshCraftLines()
+    private void RefreshCraftLines()
     {
         WeaponCraftLine.RefreshCraftLine();
         ArmorCraftLine.RefreshCraftLine();

@@ -1,9 +1,8 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerClickHandler
+public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPointerClickHandler
 {
     public int index;
     [SerializeField] private Image skillIconImage;
@@ -30,7 +29,7 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
             Clear(skill.skillId);
     }
     
-    public void Clear(Define.ESkillId skillId)
+    private void Clear(Define.ESkillId skillId)
     {
         skill = new PassiveSkill_ShortVer();
         skill.skillId = Define.ESkillId.Max;
@@ -55,11 +54,7 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
             GI.Inst.ListenerManager.EquipPassiveSkill(passiveSkill.skillId, index);
         }
     }
-
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        //todo skill desc
-    }
+    
     
     public void OnPointerClick(PointerEventData eventData)
     {

@@ -7,6 +7,7 @@ public class UI_Option_ScreenMode : MonoBehaviour
 
     private void Start()
     {
+        dropdown.onValueChanged.RemoveListener(DropdownChanged);
         dropdown.onValueChanged.AddListener(DropdownChanged);
 
         string value = GI.Inst.IsFullscreen ? "전체 화면" : "창모드";
@@ -18,6 +19,11 @@ public class UI_Option_ScreenMode : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        dropdown.onValueChanged.RemoveListener(DropdownChanged);
     }
 
     private void DropdownChanged(int value)

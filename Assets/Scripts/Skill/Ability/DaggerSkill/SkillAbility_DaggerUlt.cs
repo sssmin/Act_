@@ -12,13 +12,13 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
 
     List<StatManager> tempMonsterStats = new List<StatManager>();
     List<AIController> tempAIControllers = new List<AIController>();
+    
     private void Awake()
     {
         Animator = GetComponent<Animator>();
         Sr = GetComponent<SpriteRenderer>();
     }
     
-
     public void Init(PlayerController playerController, StatManager statManager, DamageInfo damageInfo, List<Transform> monsters)
     {
         OwnerPlayerController = playerController;
@@ -61,7 +61,7 @@ public class SkillAbility_DaggerUlt : MonoBehaviour
         SkillEnd();
     }
 
-    public void SkillEnd()
+    private void SkillEnd()
     {
         foreach (AIController aiController in tempAIControllers)
         {

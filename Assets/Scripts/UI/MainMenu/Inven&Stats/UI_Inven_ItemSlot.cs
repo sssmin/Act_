@@ -4,26 +4,28 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     protected Sprite itemIconSprite;
-    public Item Item { get; protected set; }
+    protected Item Item { get; set; }
     [SerializeField] protected TextMeshProUGUI itemAmount;
+    [SerializeField] protected TextMeshProUGUI enhanceLevel;
     [SerializeField] protected Image itemIconImage;
     [SerializeField] protected Image elementIconImage;
     [SerializeField] protected Image borderImage;
+    [SerializeField] protected Image disableImage;
     [SerializeField] protected Transform equippedTransform;
     [SerializeField] protected RectTransform slotTransform;
     protected float lastClickTime = 0f;
     protected float currentClickTime = 0f;
-
-    private void Awake()
-    {
-        itemAmount = GetComponentInChildren<TextMeshProUGUI>();
-    }
+    private bool isEnable;
+    
 
     public void SetItem(Item inItem) //장비
     {
+        disableImage.gameObject.SetActive(false);
+        isEnable = true;
         Item = inItem;
         itemIconSprite = Item.itemIcon;
         itemIconImage.sprite = itemIconSprite;
@@ -39,20 +41,23 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
             BaseWeapon weapon = equipment as BaseWeapon;
             if (weapon)
             {
-                string elementName = Enum.GetName(typeof(EWeaponElement), weapon.Element);
-                if (elementName != "None")
+                if (weapon.EnhanceLevel != 0)
+                    enhanceLevel.text = $"+{weapon.EnhanceLevel}";
+                
+                if (weapon.Element != EWeaponElement.None)
                 {
+                    string elementName = Enum.GetName(typeof(EWeaponElement), weapon.Element);
                     elementIconImage.sprite = GI.Inst.ResourceManager.GetStatusSprite(elementName);
                     elementIconImage.color = Color.white;
                 }
             }
         }
-        
-       
     }
 
     public virtual void SetStackableItem(Item inItem, int amount) //소모품, 기타
     {
+        disableImage.gameObject.SetActive(false);
+        isEnable = true;
         Item = inItem;
         itemIconSprite = Item.itemIcon;
         itemIconImage.sprite = itemIconSprite;
@@ -61,53 +66,87 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         
         itemAmount.text =  $"x{amount:#,0}";
     }
+
+    public void CheckDisableSlot(BaseWeapon original)
+    {
+        BaseWeapon slotItem = Item as BaseWeapon;
+        if (slotItem)
+        {
+            if (slotItem.bIsEquipped || 
+                (slotItem.Element != original.Element) || 
+                (slotItem.weaponType != original.weaponType) ||
+                (slotItem.rarity != original.rarity) ||
+                (slotItem == original))
+            {
+                //disable
+                disableImage.gameObject.SetActive(true);
+                isEnable = false;
+            }
+        }
+    }
     
     public virtual void OnPointerClick(PointerEventData eventData)
     {
-        currentClickTime = Time.time;
-        if (currentClickTime - lastClickTime < 0.3f)
+        if (isEnable)
         {
-            GI.Inst.ListenerManager.UseItem(Item);
-        }
-        else
-        {
-            lastClickTime = currentClickTime;
-        }
-
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            Vector3 goPos = gameObject.transform.position;
-            Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
-            switch (Item.ItemCategory)
+            if (GI.Inst.UIManager.MainMenuUI.InventoryStatus == EInventoryStatus.Enhance)
             {
-                case Item.EItemCategory.Weapon:
-                case Item.EItemCategory.Armor:
-                case Item.EItemCategory.Acc:
-                    Equipment equipment = (Equipment)Item;
-                    if (equipment.bIsEquipped)
-                        GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.EquippedEquipment, Item, pos);
-                    else
-                        GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Equipment, Item, pos);
-                    break;
-                case Item.EItemCategory.Consumable:
-                    GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Consumable, Item, pos);
-                    break;
-                case Item.EItemCategory.Etc:
-                    GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Etc, Item, pos);
-                    break;
+                GI.Inst.UIManager.SetSameEquipment(Item);
+            }
+            else
+            {
+                currentClickTime = Time.time;
+                if (currentClickTime - lastClickTime < 0.3f)
+                {
+                    GI.Inst.ListenerManager.UseItem(Item);
+                }
+                else
+                {
+                    lastClickTime = currentClickTime;
+                }
+
+                if (eventData.button == PointerEventData.InputButton.Right)
+                {
+                    Vector3 goPos = gameObject.transform.position;
+                    Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
+                    switch (Item.ItemCategory)
+                    {
+                        case Item.EItemCategory.Weapon:
+                        case Item.EItemCategory.Armor:
+                        case Item.EItemCategory.Acc:
+                            Equipment equipment = (Equipment)Item;
+                            if (equipment.bIsEquipped)
+                                GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.EquippedEquipment, Item, pos);
+                            else
+                                GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Equipment, Item, pos);
+                            break;
+                        case Item.EItemCategory.Consumable:
+                            GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Consumable, Item, pos);
+                            break;
+                        case Item.EItemCategory.Etc:
+                            GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Etc, Item, pos);
+                            break;
+                    }
+                }
             }
         }
     }
 
     public virtual void OnPointerEnter(PointerEventData eventData)
     {
-        Vector3 goPos = gameObject.transform.position;
-        Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
-        GI.Inst.UIManager.VisibleItemTooltip(Item, pos, Define.RIGHT_PIVOT);
+        if (GI.Inst.UIManager.MainMenuUI.InventoryStatus == EInventoryStatus.Default)
+        {
+            Vector3 goPos = gameObject.transform.position;
+            Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
+            GI.Inst.UIManager.VisibleItemTooltip(Item, pos, Define.RIGHT_PIVOT);
+        }
     }
 
     public virtual void OnPointerExit(PointerEventData eventData)
     {
-        GI.Inst.UIManager.InvisibleItemTooltip();
+        if (GI.Inst.UIManager.MainMenuUI.InventoryStatus == EInventoryStatus.Default)
+        {
+            GI.Inst.UIManager.InvisibleItemTooltip();
+        }
     }
 }

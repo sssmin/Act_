@@ -2,8 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
-
 public class UI_PassiveSkillSlotParent : MonoBehaviour
 {
     private List<UI_Skill_PassiveSkillSlot> passiveSkillSlots = new List<UI_Skill_PassiveSkillSlot>();

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -114,13 +113,11 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
         AttractionCollider.enabled = true;
         StartCoroutine(CoDestroyMyself());
     }
-
-   
     
     IEnumerator CoDestroyMyself()
     {
         yield return new WaitForSeconds(2.5f);
-        //todo 몬스터들 풀기
+        
         foreach (Transform monster in Monsters)
         {
             AIController aiController = monster.GetComponent<AIController>();

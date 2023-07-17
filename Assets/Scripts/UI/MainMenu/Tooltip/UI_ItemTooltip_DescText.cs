@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -9,6 +7,18 @@ public class UI_ItemTooltip_DescText : MonoBehaviour
 
     public void Init(string desc)
     {
-        descText.text = desc;
+        string[] sub = desc.Split("Y");
+
+        if (sub.Length > 1)
+        {
+            descText.text = sub[1];
+            descText.color = Color.yellow;
+        }
+        else
+        {
+            descText.text = desc;
+            descText.color = Color.white;
+        }
+
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -30,8 +29,6 @@ public class SkillAbility_ArrowRain : MonoBehaviour
 
     //대미지 3초인데 9번 대미지
     //0.3초에 1번 대미지/
-    
-
     private void OnTriggerStay2D(Collider2D other)
     {
         damageTimer -= Time.deltaTime;
@@ -48,8 +45,6 @@ public class SkillAbility_ArrowRain : MonoBehaviour
         GI.Inst.ResourceManager.Destroy(gameObject);
     }
     
-    
-
     
     
 }

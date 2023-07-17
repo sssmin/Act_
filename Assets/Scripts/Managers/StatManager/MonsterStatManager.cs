@@ -39,7 +39,7 @@ public class MonsterStatManager : StatManager
         }
     }
 
-    public override void AddCurrentHp(float value)
+    protected override void AddCurrentHp(float value)
     {
         base.AddCurrentHp(value);
         
@@ -81,7 +81,6 @@ public class MonsterStatManager : StatManager
       
         Character.HitEffect();
         AddCurrentHp(-damage);
-   
         
         SkillManager instigatorSkillManager = instigatorStatManager.GetComponent<SkillManager>();
         

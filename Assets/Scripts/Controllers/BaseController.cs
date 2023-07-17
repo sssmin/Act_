@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class BaseController : MonoBehaviour
 {
-    protected StatManager StatManager { get; set; }
+    protected StatManager StatManager { get; private set; }
     private SpriteRenderer Sr { get; set; }
     [SerializeField] protected GameObject groundDetectObject;
     [SerializeField] public GameObject wallDetectObject;
-    public float GroundDetectDist { get; private set; }
+    private float GroundDetectDist { get; set; }
     protected float WallDetectDist { get; set; }
     private Vector2 currentDir = Vector2.right;
     public virtual Vector2 CurrentDir

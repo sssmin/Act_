@@ -15,7 +15,6 @@ public class AIController : BaseController
     public float NormalAttackCooltime { get; private set; }
     public bool CanNormalAttack { get; private set; }
     private float RandDistModifier { get; set; }
-    public BaseProjectile BaseProjectile { get; set; }
     private Transform NormalAttackCollider { get; set; }
     
     public override Vector2 CurrentDir

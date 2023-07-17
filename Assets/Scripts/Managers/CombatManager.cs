@@ -1,20 +1,16 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CombatManager : MonoBehaviour
 {
     public int CurrentComboNum { get; private set; }
-    public float NormalAttackCoefficient { get; private set; }
+    private float NormalAttackCoefficient { get; set; }
     private PlayerController PlayerController { get; set; }
     private NormalAttackCollider NormalAttackCollider { get; set; }
    
     private float attackRange;
     
-    //todo 나중에 추가할거, 무기 교체하면 Combo 초기화
 
     private void Awake()
     {
@@ -28,6 +24,11 @@ public class CombatManager : MonoBehaviour
     {
         GI.Inst.ListenerManager.initCombo -= InitCombo;
         GI.Inst.ListenerManager.initCombo += InitCombo;
+    }
+
+    private void OnDestroy()
+    {
+        GI.Inst.ListenerManager.initCombo -= InitCombo;
     }
 
     public void BowPrimaryAttack()

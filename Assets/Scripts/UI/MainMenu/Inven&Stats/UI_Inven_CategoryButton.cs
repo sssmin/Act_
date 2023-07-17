@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 [Serializable]
@@ -15,17 +13,25 @@ public struct InventoryIcon
 public class UI_Inven_CategoryButton : MonoBehaviour
 {
     [SerializeField] List<InventoryIcon> iconInfos = new List<InventoryIcon>();
-    private Item.EItemCategory itemCategory;
+    public Item.EItemCategory itemCategory;
     private Button button;
     private Sprite iconSprite;
     [SerializeField] Image image;
-    private Image background;
 
+    private void Start()
+    {
+        button.onClick.RemoveListener(OnClickCategoryButton);
+        button.onClick.AddListener(OnClickCategoryButton);
+    }
+    
+    private void OnDestroy()
+    {
+        button.onClick.RemoveListener(OnClickCategoryButton);
+    }
     
     public void Init(Item.EItemCategory category)
     {
         button = GetComponent<Button>();
-        background = GetComponent<Image>();
         itemCategory = category;
         
         foreach (InventoryIcon inventoryIcon in iconInfos)
@@ -40,14 +46,8 @@ public class UI_Inven_CategoryButton : MonoBehaviour
         }
         iconInfos.Clear();
     }
-    
 
-    private void Start()
-    {
-        button.onClick.AddListener(OnClickCategoryButton);
-    }
-
-    public void OnClickCategoryButton()
+    private void OnClickCategoryButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
         GI.Inst.UIManager.OnClickCategoryButton(itemCategory);

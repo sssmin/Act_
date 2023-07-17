@@ -7,7 +7,7 @@ public class UI_OptionHolderButton : MonoBehaviour
 
     public void OnClickButton()
     {
-        GI.Inst.UIManager.VisibleOptionSetting(type);
+        GI.Inst.UIManager.VisibleOptionCuzPressedHolderButton(type);
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
     }
 }

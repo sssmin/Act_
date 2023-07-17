@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster_FreezeState : MonsterState
@@ -13,11 +11,6 @@ public class Monster_FreezeState : MonsterState
     public override void BeginState()
     {
         Monster.SetZeroVelocity();
-    }
-
-    public override void Update()
-    {
-        base.Update();
     }
 
     public override void EndState()

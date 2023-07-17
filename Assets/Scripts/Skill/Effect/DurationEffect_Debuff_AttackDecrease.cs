@@ -9,8 +9,6 @@ public class DurationEffect_Debuff_AttackDecrease : DurationEffect
         {
             durationEndTime = duration + Time.time;
             casterStatManager.ExecDurationEffect(this, icon);
-            //스킬 쿨타임 적용
-            
         }
     }
 }

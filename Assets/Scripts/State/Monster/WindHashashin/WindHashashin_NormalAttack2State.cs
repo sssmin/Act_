@@ -17,14 +17,7 @@ public class WindHashashin_NormalAttack2State : MonsterState
         Monster.SetZeroVelocity();
         aiControllerWindHashashin.SetAttackTimer(Define.EBossAttackType.NormalAttack2);
     }
-
-    public override void Update()
-    {
-        base.Update();
-
-       
-    }
-
+    
     public override void EndState()
     {
         Animator.SetBool(AnimHash.isNormalAttack2, false);

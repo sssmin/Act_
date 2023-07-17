@@ -1,5 +1,3 @@
-
-
 using UnityEngine;
 
 public class Necromancer_NormalAttackState : MonsterState

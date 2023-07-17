@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.refreshSkillHotkeyMainUI += Init;
         GI.Inst.UIManager.setSkillCooltimeUI -= SetSkillCooltimeUI;
         GI.Inst.UIManager.setSkillCooltimeUI += SetSkillCooltimeUI;
-        GI.Inst.UIManager.resetCooltimeUI += ResetCooltimeUI;
+        GI.Inst.UIManager.resetCooltimeUI -= ResetCooltimeUI;
         GI.Inst.UIManager.resetCooltimeUI += ResetCooltimeUI;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots -= ClearSkillHotkeySlots;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots += ClearSkillHotkeySlots;
@@ -39,7 +40,16 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         ClearSkillHotkeySlots();
     }
 
-    public void Init(List<Sprite> icons)
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshSkillHotkeyMainUI -= Init;
+        GI.Inst.UIManager.setSkillCooltimeUI -= SetSkillCooltimeUI;
+        GI.Inst.UIManager.resetCooltimeUI -= ResetCooltimeUI;
+        GI.Inst.UIManager.clearActiveSkillHotkeySlots -= ClearSkillHotkeySlots;
+        GI.Inst.UIManager.updateFillAmount -= UpdateUltFillAmount;
+    }
+
+    private void Init(List<Sprite> icons)
     {
         ClearSkillHotkeySlots();
         
@@ -57,21 +67,21 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         }  
     }
 
-    public void SetSkillCooltimeUI(EActiveSkillOrder order, float cooltime)
+    private void SetSkillCooltimeUI(EActiveSkillOrder order, float cooltime)
     {
         int index = (int)order;
         UI_Main_SkillHotkeySlot skillHotkeySlot = SkillHotkeySlots[index] as UI_Main_SkillHotkeySlot;
         skillHotkeySlot.SetCooltime(cooltime);
     }
     
-    public void ResetCooltimeUI(EActiveSkillOrder order)
+    private void ResetCooltimeUI(EActiveSkillOrder order)
     {
         int index = (int)order;
         UI_Main_SkillHotkeySlot skillHotkeySlot = SkillHotkeySlots[index] as UI_Main_SkillHotkeySlot;
         skillHotkeySlot.ResetCooltimeUI();
     }
     
-    public void UpdateUltFillAmount(float chargeAmount)
+    private void UpdateUltFillAmount(float chargeAmount)
     {
         foreach (UI_Main_SkillHotkeySlotBase skillHotkeySlot in SkillHotkeySlots)
         {

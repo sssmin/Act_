@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public class WandererMagician_ChaseState : Monster_ChaseState
@@ -33,8 +32,7 @@ public class WandererMagician_ChaseState : Monster_ChaseState
         }
 
         float dist = Vector3.Distance(AIController.Target.transform.position, Monster.transform.position);
-        
-            //3               2.5
+
         if (dist <= AIController.NormalAttackRange + randDistModifier)
         {
             Monster.SetZeroVelocity();
@@ -45,7 +43,7 @@ public class WandererMagician_ChaseState : Monster_ChaseState
             {
                 TransitionState(Define.EMonsterState.NormalAttack1);
             }
-        } //3               4
+        }
         else if (dist <= projectileRange + randDistModifier)
         {
             Monster.SetZeroVelocity();

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillAbility_DaggerBall : MonoBehaviour
@@ -10,7 +9,6 @@ public class SkillAbility_DaggerBall : MonoBehaviour
     private RuntimeAnimatorController AnimatorController { get; set; }
     private DamageInfo DamageInfo { get; set; }
     public float speed;
-    private Coroutine CoDestroy;
   
 
     private void Awake()
@@ -25,9 +23,8 @@ public class SkillAbility_DaggerBall : MonoBehaviour
         OwnerStatManager = inOwner;
         Rb.velocity = new Vector2(dir.x * speed, 0f);
         DamageInfo = damageInfo;
-        CoDestroy = StartCoroutine(CoDestroyMyself());
+        StartCoroutine(CoDestroyMyself());
     }
-    
 
     private void OnTriggerEnter2D(Collider2D other)
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,11 +39,15 @@ public class UI_Option_BindKeyContent : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshBindKeyUI -= RefreshAll;
+    }
+
     public void SetVisibleBindKeyPopup(bool isVisible)
     {
         bindKeyPopup.SetActive(isVisible);
     }
-
     
 
     private void RefreshAll()

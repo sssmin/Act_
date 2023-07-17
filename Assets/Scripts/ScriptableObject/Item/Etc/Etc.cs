@@ -1,7 +1,6 @@
 using UnityEngine;
 
 
-
 public enum ESkillMatId
 {
     ActiveNormalMat,
@@ -19,18 +18,6 @@ public class Etc : Item
     }
     [Header("Etc")]
     public EEtcCategory etcCategory;
-
-    public void ItemCopy(Etc item)
-    {
-        itemId = item.itemId;
-        ItemCategory = item.ItemCategory;
-        itemName = item.itemName;
-        itemDesc = item.itemDesc;
-        itemIcon = item.itemIcon;
-        //bIsCanStack = item.bIsCanStack;
-        maxStackSize = item.maxStackSize;
-        name = item.name;
-        etcCategory = item.etcCategory;
-    }
+    
 
 }

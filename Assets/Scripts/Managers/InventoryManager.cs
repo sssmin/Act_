@@ -84,12 +84,14 @@ public class WeaponItemSaveInfo : ItemSaveInfo
 {
    [SerializeField] public EWeaponElement element;
    [SerializeField] public int enhanceLevel;
+   [SerializeField] public bool isEquipped;
 
    public override void SetInfo(Item item)
    {
       base.SetInfo(item);
       element = ((BaseWeapon)item).Element;
       enhanceLevel = ((BaseWeapon)item).EnhanceLevel;
+      isEquipped = ((BaseWeapon)item).bIsEquipped;
    }
 }
 
@@ -136,12 +138,12 @@ public class InventoryInfo
    [SerializeField] public WeaponItemSaveInfo[] weaponInventory;
    [SerializeField] public ItemSaveInfo[] armorInventory;
    [SerializeField] public ItemSaveInfo[] accInventory;
-   [SerializeField] public ItemSaveInfo[] equippedItems;
    [SerializeField] public ConsumableDictionary consumableInventory;
    [SerializeField] public EtcDictionary etcInventory;
    [SerializeField] public RegisteredHotkeyItemDictionary registeredHotkeyItems;
    [SerializeField] public GoldInvenCapacity goldInvenCapacity;
 
+   //직렬화할때 
    private InventoryInfo Convert(List<Item> inWeaponInventory, List<Item> inArmorInventory, List<Item> inAccInventory, List<Item> inEquippedItems,
       Dictionary<Item.EConsumableType, StackableItem> inConsumableDictionary, 
       Dictionary<string, StackableItem> inEtcDictionary,
@@ -166,13 +168,6 @@ public class InventoryInfo
       {
          accInventory[i] = new ItemSaveInfo();
          accInventory[i].SetInfo(inAccInventory[i]);
-      }
-      
-      equippedItems = new ItemSaveInfo[inEquippedItems.Count];
-      for (int i = 0; i < inEquippedItems.Count; i++)
-      {
-         equippedItems[i] = new ItemSaveInfo();
-         equippedItems[i].SetInfo(inEquippedItems[i]);
       }
 
       consumableInventory = new ConsumableDictionary();
@@ -287,15 +282,18 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       GI.Inst.ListenerManager.buyItem += BuyItem;
       GI.Inst.ListenerManager.addItem -= AddItem;
       GI.Inst.ListenerManager.addItem += AddItem;
-      GI.Inst.ListenerManager.hasEnoughEtcItems -= HasEnoughEtcItems;
-      GI.Inst.ListenerManager.hasEnoughEtcItems += HasEnoughEtcItems;
+      GI.Inst.ListenerManager.hasEnoughCraftMat -= HasEnoughCraftMat;
+      GI.Inst.ListenerManager.hasEnoughCraftMat += HasEnoughCraftMat;
       GI.Inst.ListenerManager.increaseCurrentInventoryNum -= IncreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.increaseCurrentInventoryNum += IncreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.decreaseCurrentInventoryNum -= DecreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.decreaseCurrentInventoryNum += DecreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.isEquippedWeapon -= IsEquippedWeapon;
       GI.Inst.ListenerManager.isEquippedWeapon += IsEquippedWeapon;
-      
+      GI.Inst.ListenerManager.enhance -= Enhance;
+      GI.Inst.ListenerManager.enhance += Enhance;
+      ;
+
    }
 
    private void OnDestroy()
@@ -316,29 +314,18 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       GI.Inst.ListenerManager.checkSkillMatCanLevelUpSkills -= CheckMatCanLevelUpActiveSkills;
       GI.Inst.ListenerManager.buyItem -= BuyItem;
       GI.Inst.ListenerManager.addItem -= AddItem;
-      GI.Inst.ListenerManager.hasEnoughEtcItems -= HasEnoughEtcItems;
+      GI.Inst.ListenerManager.hasEnoughCraftMat -= HasEnoughCraftMat;
       GI.Inst.ListenerManager.increaseCurrentInventoryNum -= IncreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.decreaseCurrentInventoryNum -= DecreaseCurrentInventoryNum;
       GI.Inst.ListenerManager.isEquippedWeapon -= IsEquippedWeapon;
    }
-
-   public void Init()
-   {
-      
-   }
    
-
-   private void Start()
-   {
-      
-   }
-
    //test
    private void Update()
    {
       if (Input.GetKeyDown(KeyCode.H))
       { 
-         Item item = GI.Inst.ResourceManager.GetItemDataCopy("WoodBow");
+         Item item = GI.Inst.ResourceManager.GetItemDataCopy("InfinityBow");
          ((BaseWeapon)item).Element = (EWeaponElement)Random.Range(0, 4);
          AddItemTest(item);
          item = GI.Inst.ResourceManager.GetItemData("WeaponMat");
@@ -361,24 +348,24 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       AddItemTest(item);
    }
 
-   public void IncreaseCurrentInventoryNum()
+   private void IncreaseCurrentInventoryNum()
    {
       GoldInvenCapacity.currentInvenNum++;
-      GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
+      RefreshGoldInvenCapacityUI();
    }
 
-   public void DecreaseCurrentInventoryNum()
+   private void DecreaseCurrentInventoryNum()
    {
       GoldInvenCapacity.currentInvenNum--;
-      GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
+      RefreshGoldInvenCapacityUI();
    }
 
-   public void AddItemTest(Item item)
+   private void AddItemTest(Item item)
    {
       AddItem(item, true,1);
    }
 
-   public bool AddItem(Item item, bool shouldRefreshUI, int amount)
+   private bool AddItem(Item item, bool shouldRefreshUI, int amount)
    {
       if (GoldInvenCapacity.currentInvenNum >= GoldInvenCapacity.maxInvenNum) return false;
       
@@ -451,7 +438,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return true;
    }
 
-   public void SubItem(Item item, bool shouldRefreshUI, int amount = 0) //버릴 때, 사용했을 때
+   private void SubItem(Item item, bool shouldRefreshUI, int amount = 0) //버릴 때, 사용했을 때
    {
       switch (item.ItemCategory)
       {
@@ -517,7 +504,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
    }
    
    //갯수만 체크 후 레벨업 버튼 활성화/비활성화 (AddItem할 때) => 모든 스킬 확인
-   public void CheckSkillMatOnly(ESkillMatId skillMatId)
+   private void CheckSkillMatOnly(ESkillMatId skillMatId)
    {
       string itemId = Enum.GetName(typeof(ESkillMatId), skillMatId);
       switch (skillMatId)
@@ -546,7 +533,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       }
    }
 
-   public void BuyItem(Item item, int amount)
+   private void BuyItem(Item item, int amount)
    {
       if (!AddItem(item, false, amount)) return;
       Consumable consumable = item as Consumable;
@@ -554,7 +541,27 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       RefreshInventoryUI();
    }
 
-   public bool HasEnoughEtcItems(string itemId, int amount)
+   private bool HasEnoughCraftMat(Item.EItemCategory itemCategory, int equipmentMatAmount, int sharedMatAmount)
+   {
+      string requireEquipmentMat = "";
+      
+      switch (itemCategory)
+      {
+         case Item.EItemCategory.Weapon:
+            requireEquipmentMat = "WeaponMat";
+            break;
+         case Item.EItemCategory.Armor:
+            requireEquipmentMat = "ArmorMat";
+            break;
+         case Item.EItemCategory.Acc:
+            requireEquipmentMat = "AccMat";
+            break;
+      }
+
+      return HasEnoughEtcItems(requireEquipmentMat, equipmentMatAmount) && HasEnoughEtcItems("SharedMat", sharedMatAmount);
+   }
+
+   private bool HasEnoughEtcItems(string itemId, int amount)
    {
       if (EtcInventory.ContainsKey(itemId))
       {
@@ -724,7 +731,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
    #endregion
    
    //아이템 장착할 때 변경되는 액티브 스킬들을 체크
-   public void CheckMatCanLevelUpActiveSkills(List<SO_ActiveSkill> skills)
+   private void CheckMatCanLevelUpActiveSkills(List<SO_ActiveSkill> skills)
    {
       foreach (SO_ActiveSkill skill in skills)
       {
@@ -876,7 +883,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return false;
    }
 
-   public void Equip(Item item, bool shouldRefreshUI = true)
+   private void Equip(Item item, bool shouldRefreshUI = true)
    {
       Equipment equipment = (Equipment)item;
       equipment.bIsEquipped = true;
@@ -982,6 +989,14 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
          return 3;
       return 0;
    }
+
+   private void Enhance(BaseWeapon original, Item weaponMat)
+   {
+      original.EnhanceLevel++;
+      original.Init(GI.Inst.Player.StatManager);
+      original.InitEnhanceStat();
+      SubItem(weaponMat, true);
+   }
    
    
    
@@ -992,7 +1007,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return EquippedItems;
    }
 
-   public BaseWeapon GetEquippedWeapon()
+   private BaseWeapon GetEquippedWeapon()
    {
       foreach (Item item in EquippedItems)
       {
@@ -1003,7 +1018,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return null;
    }
    
-   public Item.EWeaponType GetEquippedWeaponType()
+   private Item.EWeaponType GetEquippedWeaponType()
    {
       foreach (Item item in EquippedItems)
       {
@@ -1016,22 +1031,22 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return Item.EWeaponType.None;
    }
 
-   public GoldInvenCapacity GetGoldInvenCapacity()
+   private GoldInvenCapacity GetGoldInvenCapacity()
    {
       return GoldInvenCapacity;
    }
 
-   void RefreshInventoryUI()
+   private void RefreshInventoryUI()
    {
       GI.Inst.UIManager.RefreshInventoryUI();
    }
 
-   void RefreshGoldInvenCapacityUI()
+   private void RefreshGoldInvenCapacityUI()
    {
       GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
    }
 
-   bool IsEquippedWeapon()
+   private bool IsEquippedWeapon()
    {
       foreach (Item item in EquippedItems)
       {
@@ -1057,29 +1072,34 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       WeaponItemSaveInfo[] weaponInfos = inventoryInfo.weaponInventory;
       foreach (WeaponItemSaveInfo info in weaponInfos)
       {
-         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
-         WeaponInventory.Add(item);
+         Item item = GI.Inst.ResourceManager.GetItemDataCopy(info.itemId);
+         BaseWeapon weapon = item as BaseWeapon;
+         if (weapon)
+         {
+            weapon.Element = info.element;
+            weapon.EnhanceLevel = info.enhanceLevel;
+            weapon.InitEnhanceStat();
+            
+            WeaponInventory.Add(weapon);
+            if (info.isEquipped)
+            {
+               Equip(item, false);
+            }
+         }
       }
 
       ItemSaveInfo[] infos = inventoryInfo.armorInventory;
       foreach (ItemSaveInfo info in infos)
       {
-         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         Item item = GI.Inst.ResourceManager.GetItemDataCopy(info.itemId);
          ArmorInventory.Add(item);
       }
       
       infos = inventoryInfo.accInventory;
       foreach (ItemSaveInfo info in infos)
       {
-         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
+         Item item = GI.Inst.ResourceManager.GetItemDataCopy(info.itemId);
          AccInventory.Add(item);
-      }
-      
-      infos = inventoryInfo.equippedItems;
-      foreach (ItemSaveInfo info in infos)
-      {
-         Item item = GI.Inst.ResourceManager.GetItemData(info.itemId);
-         Equip(item, false);
       }
 
       ConsumableDictionary consumableInventory = inventoryInfo.consumableInventory;
@@ -1119,7 +1139,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
 
       GoldInvenCapacity = inventoryInfo.goldInvenCapacity;
       
-      GI.Inst.UIManager.RefreshGoldInvenCapacityUI();
+      RefreshGoldInvenCapacityUI();
       RefreshInventoryUI();
       
    }

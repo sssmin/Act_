@@ -8,6 +8,7 @@ public class UI_Option_Resolution : MonoBehaviour
 
     private void Start()
     {
+        dropdown.onValueChanged.RemoveListener(DropdownChanged);
         dropdown.onValueChanged.AddListener(DropdownChanged);
         int width = GI.Inst.ScreenWidth;
         int height = GI.Inst.ScreenHeight;
@@ -20,6 +21,11 @@ public class UI_Option_Resolution : MonoBehaviour
                 break;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        dropdown.onValueChanged.RemoveListener(DropdownChanged);
     }
 
     private void DropdownChanged(int value)

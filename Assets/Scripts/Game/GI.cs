@@ -5,15 +5,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum EScene
-{
-    Title,
-    Tutorial,
-    Town,
-    Dungeon,
-    Boss
-}
-
 public enum EStartGameProgress
 {
     None,
@@ -124,7 +115,7 @@ public class GI : MonoBehaviour
         });
     }
 
-    public void InitializePlayer()
+    private void InitializePlayer()
     {
         if (Player)
         {
@@ -138,7 +129,7 @@ public class GI : MonoBehaviour
         DontDestroyOnLoad(go);
     }
 
-    public void InitializeUI()
+    private void InitializeUI()
     {
         if (Inst.UIManager)
         {
@@ -169,7 +160,7 @@ public class GI : MonoBehaviour
         Inst.ResourceManager.DownloadAdvance(labels, callback);
     }
     
-    T Generate<T>(string objectName, bool isInitialize = false) where T : Component
+    private T Generate<T>(string objectName, bool isInitialize = false) where T : Component
     {
         GameObject go = null;
         if (isInitialize)
@@ -188,17 +179,17 @@ public class GI : MonoBehaviour
         return go.GetComponent<T>();
     }
     
-    void TitleInit()
+    private void TitleInit()
     {
         //타이틀 화면 생성
         Inst.ResourceManager.Instantiate("UI_TitleMainMenu");
         
-        //리소스 저장정보 새로 초기화해야할듯함.
-        List<Define.ELabel> labels = new List<Define.ELabel>()
-        {
-            Define.ELabel.Skill, Define.ELabel.Item 
-        };
-        Inst.ResourceManager.InitData(labels);
+        //리소스 저장정보 새로 초기화
+        // List<Define.ELabel> labels = new List<Define.ELabel>()
+        // {
+        //     Define.ELabel.Skill, Define.ELabel.Item 
+        // };
+        // Inst.ResourceManager.InitData(labels);
         
         //쿨타임 매니저도 새로
         Inst.CooltimeManager.InitCooltime();
@@ -235,6 +226,8 @@ public class GI : MonoBehaviour
                     StartGameProgress = EStartGameProgress.PlayingGame;
                     
                     CameraInitialize();
+                    if (SceneManager.GetActiveScene().name == "town")
+                        Inst.ListenerManager.InitUltSkillChargeAmount();
                 }
                     break;
                 case EStartGameProgress.LoadGame:
@@ -255,7 +248,7 @@ public class GI : MonoBehaviour
             Inst.SoundManager.SFXPlay(scene.name, ESoundType.Background);
         }
     }
-
+    
     public void NewGame(EStartGameProgress startGameProgress)
     {
         Player.gameObject.SetActive(true);
@@ -265,7 +258,7 @@ public class GI : MonoBehaviour
         inventory.SetStartItem();
         PlayerSkillManager.SetStartPassiveSkills();
     }
-    //todo 이 둘 함수명 변경해야함. 이거 AsyncLoader에서 호출하고 있고 얘네는 타이틀에서 한번만 호출됨
+    
     public string LoadGame(EStartGameProgress startGameProgress)
     {
         Player.gameObject.SetActive(true);
@@ -312,7 +305,7 @@ public class GI : MonoBehaviour
         }
     }
     
-    public PlayerInfo LoadPlayerData()
+    private PlayerInfo LoadPlayerData()
     {
         string path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
         if (File.Exists(path))
@@ -335,7 +328,7 @@ public class GI : MonoBehaviour
         PlayerPrefs.SetFloat("AudioEffect", value);
     }
     
-    public void LoadSoundData()
+    private void LoadSoundData()
     {
         float value = PlayerPrefs.GetFloat("AudioMaster", 0f);
         Inst.SoundManager.SetAudioVolume(ESoundType.Master, value);
@@ -369,7 +362,7 @@ public class GI : MonoBehaviour
         File.WriteAllText(path, resolutionJson);
     }
     
-    public void LoadDisplayData()
+    private void LoadDisplayData()
     {
         string path = Path.Combine(Application.persistentDataPath, "DisplaySaveData.json");
         if (File.Exists(path))
@@ -428,8 +421,6 @@ public class GI : MonoBehaviour
             }
         }
     }
-    
-    
 }
 
 [Serializable]

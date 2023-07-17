@@ -5,12 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class BaseCharacter : MonoBehaviour
 {
-    private int instId;
-    public int InstId
-    {
-        get => instId;
-        private set => instId = value;
-    }
+    public int InstId { get; private set; }
     protected Rigidbody2D Rb { get; set; }
     private SpriteRenderer Sr { get; set; }
     public Animator Animator { get; set; }
@@ -76,7 +71,7 @@ public class BaseCharacter : MonoBehaviour
         HitEffectCoroutine = StartCoroutine(CoActivateHitEffect());
     }
     
-    public IEnumerator CoActivateHitEffect()
+    private IEnumerator CoActivateHitEffect()
     {
         Sr.color = Color.red;
         while (true)
@@ -87,7 +82,5 @@ public class BaseCharacter : MonoBehaviour
                 yield break;
         }
     }
-    
-    
     
 }

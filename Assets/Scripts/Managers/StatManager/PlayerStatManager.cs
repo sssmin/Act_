@@ -1,12 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
-
+using Random = UnityEngine.Random;
 
 public class PlayerStatManager : StatManager
 {
-    public Dictionary<EDurationEffectId, float> IconFillAmount { get; set; } = new Dictionary<EDurationEffectId, float>();
+    private Dictionary<EDurationEffectId, float> IconFillAmount { get; } = new Dictionary<EDurationEffectId, float>();
     
     public override void Awake()
     {
@@ -18,7 +18,13 @@ public class PlayerStatManager : StatManager
         GI.Inst.ListenerManager.onStatAddModifier += StatAddModifier;
         GI.Inst.ListenerManager.onStatSubModifier -= StatSubModifier;
         GI.Inst.ListenerManager.onStatSubModifier += StatSubModifier;
-        
+    }
+
+    private void OnDestroy()
+    {
+        GI.Inst.ListenerManager.getStats -= GetStats;
+        GI.Inst.ListenerManager.onStatAddModifier -= StatAddModifier;
+        GI.Inst.ListenerManager.onStatSubModifier -= StatSubModifier;
     }
 
     public override void Update()
@@ -100,13 +106,9 @@ public class PlayerStatManager : StatManager
         
         
         if (damageInfo.bIsCritical)
-        {
             SpawnDamageText(Define.EDamageTextType.PlayerDamagedCritical, damage);
-        }
         else
-        {
             SpawnDamageText(Define.EDamageTextType.PlayerDamaged, damage);
-        }
         
         if (characterStats.currentHp.Value <= 0f)
         {
@@ -125,12 +127,18 @@ public class PlayerStatManager : StatManager
         base.CauseNormalAttack(enemyStatManager, normalAttackCoef);
     }
 
-    public override void AddCurrentHp(float value)
+    protected override void AddCurrentHp(float value)
     {
         base.AddCurrentHp(value);
         
         float ratio = Mathf.Round((characterStats.currentHp.Value / characterStats.maxHp.Value * 100f) * 10) * 0.1f; 
         GI.Inst.UIManager.SetHpBar(ratio);
+    }
+
+    public void HealMaxHpPer(float per)
+    {
+        float addToValue = characterStats.maxHp.Value * per * 0.01f;
+        AddCurrentHp(addToValue);
     }
 
     public void InitCurrentHp(float currentHp)

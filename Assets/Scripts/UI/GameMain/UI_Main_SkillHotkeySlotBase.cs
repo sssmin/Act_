@@ -10,7 +10,6 @@ public class UI_Main_SkillHotkeySlotBase : MonoBehaviour
 
     public virtual void InitOnce()
     {
-        
     }
     
     public virtual void SetSkillIcon(Sprite icon)

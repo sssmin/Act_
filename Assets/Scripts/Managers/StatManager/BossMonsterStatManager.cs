@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossMonsterStatManager : MonsterStatManager
@@ -47,8 +45,7 @@ public class BossMonsterStatManager : MonsterStatManager
       
         Character.HitEffect();
         AddCurrentHp(-damage);
-   
-        
+
         SkillManager instigatorSkillManager = instigatorStatManager.GetComponent<SkillManager>();
         
         if (instigatorSkillManager)
@@ -68,7 +65,6 @@ public class BossMonsterStatManager : MonsterStatManager
                     SpawnDamageText(Define.EDamageTextType.MonsterDamaged, damage);
             }
         }
-
 
         if (characterStats.currentHp.Value <= 0f)
         {

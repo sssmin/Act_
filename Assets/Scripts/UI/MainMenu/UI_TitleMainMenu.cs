@@ -10,10 +10,24 @@ public class UI_TitleMainMenu : MonoBehaviour
 
     public void Awake()
     {
+        RemoveListener();
         newGameButton.onClick.AddListener(OnClickNewGameButton);
         continueButton.onClick.AddListener(OnClickContinueButton);
         optionButton.onClick.AddListener(OnClickOptionButton);
         exitButton.onClick.AddListener(OnClickExitButton);
+    }
+
+    private void RemoveListener()
+    {
+        newGameButton.onClick.RemoveListener(OnClickNewGameButton);
+        continueButton.onClick.RemoveListener(OnClickContinueButton);
+        optionButton.onClick.RemoveListener(OnClickOptionButton);
+        exitButton.onClick.RemoveListener(OnClickExitButton);
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListener();
     }
 
     private void OnClickNewGameButton()
@@ -31,7 +45,7 @@ public class UI_TitleMainMenu : MonoBehaviour
     private void OnClickOptionButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
-        GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound);
+        GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound, true);
     }
     
     private void OnClickExitButton()

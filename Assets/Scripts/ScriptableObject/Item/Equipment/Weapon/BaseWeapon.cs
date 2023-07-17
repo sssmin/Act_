@@ -19,17 +19,32 @@ public class BaseWeapon : Equipment
     public EWeaponType weaponType;
 
     public EWeaponElement Element { get; set; } = EWeaponElement.None;
-    public int EnhanceLevel { get; set; } = 0; 
+    public int EnhanceLevel { get; set; }
+    
 
-    protected override void DataCopy(Item item)
+    public void InitEnhanceStat()
     {
-        base.DataCopy(item);
-        
-        weaponType = ((BaseWeapon)item).weaponType;
+        if (EnhanceLevel <= 0) return;
+        float addToValue = 0;
+        foreach (EnhanceValueByRarity enhanceValueByRarity in GI.Inst.ResourceManager.WeaponEnhanceValueByLevel.enhanceValueByRarities)
+        {
+            if (enhanceValueByRarity.rarity == rarity)
+            {
+                for (int i = 0; i < enhanceValueByRarity.enhanceValue.Count; i++)
+                {
+                    addToValue += enhanceValueByRarity.enhanceValue[i];
+                    if (i == EnhanceLevel - 1)
+                        break;
+                }
+                break;
+            }
+        }
+       
+        foreach (Stat stat in itemStats)
+        {
+            stat.ClearModifier();
+            stat.AddModifier(addToValue);
+        }
     }
-
-    public override void Init(StatManager ownerStatManager)
-    {
-        base.Init(ownerStatManager);
-    }
+    
 }

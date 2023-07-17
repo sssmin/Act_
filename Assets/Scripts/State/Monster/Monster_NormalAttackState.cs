@@ -13,13 +13,7 @@ public class Monster_NormalAttackState : MonsterState
         Animator.SetBool(AnimHash.isNormalAttack1, true);
         Monster.SetZeroVelocity();
     }
-
-    public override void Update()
-    {
-        base.Update();
-
-       
-    }
+    
 
     public override void EndState()
     {

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +42,7 @@ public class UI_SkillTooltip : MonoBehaviour
             skillCooltimeText.text = "";
     }
     
-    void InitSize(Vector3 slotPos, int pivot)
+    private void InitSize(Vector3 slotPos, int pivot)
     {
         contentWrapper.pivot = new Vector2(pivot, 0.5f);
         contentWrapper.transform.position = slotPos;

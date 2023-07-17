@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+
 
 public class UI_InventoryWrapper : MonoBehaviour
 {
@@ -12,14 +14,18 @@ public class UI_InventoryWrapper : MonoBehaviour
         
         invenCategoryHolder.InitOnce();
     }
-    
+
+    private void OnDestroy()
+    {
+        GI.Inst.UIManager.refreshGoldInvenCapacityUI -= RefreshGoldInvenCapacityUI;
+    }
 
     public void RefreshInventoryUI()
     {
         invenCategoryHolder.RefreshInventoryUI();
     }
     
-    public void RefreshGoldInvenCapacityUI()
+    private void RefreshGoldInvenCapacityUI()
     {
         invenGoldInvenCapacityParent.RefreshGoldInvenCapacityUI();
     }

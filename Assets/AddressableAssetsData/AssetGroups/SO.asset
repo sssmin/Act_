@@ -22,6 +22,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - ItemCraft
+  - m_GUID: 6934338f18437ff419f7ea9a1256d5df
+    m_Address: WeaponEnhanceValueByLevel
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - WeaponEnhanceValueByLevel
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

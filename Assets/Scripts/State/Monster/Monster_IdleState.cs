@@ -44,7 +44,6 @@ public class Monster_IdleState : MonsterState
             Monster.TransitionState(Define.EMonsterState.Patrol);
         }
         
-        
     }
 
     public override void EndState()

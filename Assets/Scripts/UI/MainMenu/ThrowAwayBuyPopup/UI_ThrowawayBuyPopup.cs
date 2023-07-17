@@ -118,8 +118,25 @@ public class UI_ThrowawayBuyPopup : UI_Popup
                         GI.Inst.ListenerManager.BuyItem(i, tbAmount.Amount);
                     }, "구매");
                 }
-                
                 break;
         }
+    }
+
+    private void OnDestroy()
+    {
+        background.onClick.RemoveListener(() =>
+        {
+            GI.Inst.UIManager.ClosePopup();
+        });
+        
+        closeButton.onClick.RemoveListener(() =>
+        {
+            GI.Inst.UIManager.ClosePopup();
+        });
+    }
+
+    public override void Close()
+    {
+        GI.Inst.ResourceManager.Destroy(gameObject);
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PoolManager
 {
-    class Pool
+    private class Pool
     {
         public GameObject Original { get; private set; }
         public Transform Head { get; set; }
@@ -78,7 +77,7 @@ public class PoolManager
         return false;
     }
 
-    public void CreatePool(GameObject origin, string prefabId, int count = 5)
+    private void CreatePool(GameObject origin, string prefabId, int count = 5)
     {
         Pool pool = new Pool();
         pool.Init(origin, count);
@@ -113,12 +112,6 @@ public class PoolManager
         return pools[prefabId].Pop(parent);
     }
 
-    // public GameObject GetOriginal(EPrefabId id)
-    // {
-    //     if (pools.ContainsKey(id) == false) return null;
-    //     return pools[id].Original;
-    // }
-
     public void Clear()
     {
         foreach (Transform child in root)
@@ -135,27 +128,6 @@ public class PoolManager
         {
             CreatePool(poolable.gameObject,  prefabId, poolable.poolingNum);
         }
-        
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

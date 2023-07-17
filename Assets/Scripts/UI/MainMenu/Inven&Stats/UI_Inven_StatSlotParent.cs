@@ -1,17 +1,13 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-//무기냐, 방어구냐, 소모품, 기타 등에 따라 해당하는 가진 아이템들
-//ItemSlot_UI에 초기화하면서 여기 Grid에 하나씩 채워야함.
+
 public class UI_Inven_StatSlotParent : MonoBehaviour
 {
     private List<UI_Inven_StatSlot> statSlots = new List<UI_Inven_StatSlot>();
 
     
-    public void Init()
+    private void Init()
     {
         ClearStatSlots();
         
@@ -32,7 +28,7 @@ public class UI_Inven_StatSlotParent : MonoBehaviour
         }
     }
 
-    public void ClearStatSlots()
+    private void ClearStatSlots()
     {
         if (statSlots.Count > 0)
         {

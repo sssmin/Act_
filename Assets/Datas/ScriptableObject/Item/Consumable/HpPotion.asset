@@ -15,22 +15,13 @@ MonoBehaviour:
   itemId: HpPotion
   ItemCategory: 3
   itemName: "\uCCB4\uB825 \uD3EC\uC158"
-  itemDesc: "\uCCB4\uB825\uC744 \uD68C\uBCF5\uC2DC\uCF1C\uC90D\uB2C8\uB2E4."
+  itemDesc: "\uCCB4\uB825\uC744 \uCD5C\uB300 \uCCB4\uB825\uC758 15%\uB9CC\uD07C \uD68C\uBCF5\uC2DC\uCF1C\uC90D\uB2C8\uB2E4."
   itemIcon: {fileID: -1009451675, guid: 5e6b88126203a2d48bdebb9d688b4708, type: 3}
-  bIsCanStack: 1
   amount: 1
   maxStackSize: 50
-  playerSellPrice: 15
   consumableType: 0
   itemCooltime: 5
   dropChance: 0
   minDropAmount: 0
   maxDropAmount: 0
   storeSellPrice: 50
-  effect:
-    activationCondition: 0
-    activateChancePer: 0
-    damageType: 0
-    effectInfo:
-      effectType: 0
-      effectDetail: 4

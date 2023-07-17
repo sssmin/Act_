@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,13 +12,28 @@ public class UI_Esc : UI_Popup
     [SerializeField] private Button gameExitButton;
     [SerializeField] private Button closeButton;
     
-    void Start()
+    private void Start()
     {
+        RemoveListener();
         optionButton.onClick.AddListener(OnClickOptionButton);
         saveGameButton.onClick.AddListener(OnClickSaveGameButton);
         goToTitleButton.onClick.AddListener(OnClickGoToTitleButton);
         gameExitButton.onClick.AddListener(OnClickGameExitButton);
         closeButton.onClick.AddListener(OnClickCloseButton);
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListener();
+    }
+
+    private void RemoveListener()
+    {
+        optionButton.onClick.RemoveListener(OnClickOptionButton);
+        saveGameButton.onClick.RemoveListener(OnClickSaveGameButton);
+        goToTitleButton.onClick.RemoveListener(OnClickGoToTitleButton);
+        gameExitButton.onClick.RemoveListener(OnClickGameExitButton);
+        closeButton.onClick.RemoveListener(OnClickCloseButton);
     }
 
     private void OnEnable()
@@ -38,34 +50,39 @@ public class UI_Esc : UI_Popup
         }
     }
 
-    public void OnClickOptionButton()
+    private void OnClickOptionButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
-        GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound);
+        GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound, false);
     }
     
-    public void OnClickSaveGameButton()
+    private void OnClickSaveGameButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
         GI.Inst.SaveGameData();
     }
     
-    public void OnClickGoToTitleButton()
+    private void OnClickGoToTitleButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
         GI.Inst.UIManager.InvisibleEsc(false);
         GI.Inst.SceneLoadManager.GoToTitle();
     }
     
-    public void OnClickGameExitButton()
+    private void OnClickGameExitButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
         Application.Quit();
     }
     
-    public void OnClickCloseButton()
+    private void OnClickCloseButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
         GI.Inst.UIManager.InvisibleEsc(true);
+    }
+
+    public override void Close()
+    {
+        gameObject.SetActive(false);
     }
 }

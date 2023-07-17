@@ -21,16 +21,7 @@ public class NormalAttackCollider : MonoBehaviour
     {
         EnemyStatManagers.Clear();
     }
-
-    // private void OnTriggerEnter2D(Collider2D col)
-    // {
-    //     
-    //         GameObject enemyGo = col.gameObject;
-    //         StatManager enemyStatManager = enemyGo.GetComponent<StatManager>();
-    //         if (enemyStatManager)
-    //             CombatManager.NormalAttackSuccessful(enemyStatManager);
-    //     
-    // }
+    
 
    private void OnTriggerStay2D(Collider2D col)
    {

@@ -11,31 +11,33 @@ public class UI_Inven_Popup : UI_Popup
     public void Init(EInventoryPopupType type, Item item, Vector3 pos)
     {
         buttonParent.transform.position = pos;
-        popupBg.onClick.AddListener(() =>
-        {
-            GI.Inst.UIManager.ClosePopup();
-        });
+        popupBg.onClick.RemoveListener(() => { GI.Inst.UIManager.ClosePopup(); });
+        popupBg.onClick.AddListener(() => { GI.Inst.UIManager.ClosePopup(); });
         switch (type)
         {
              case EInventoryPopupType.EquippedEquipment:
+                 CreateButton(item, "장착 해제", (i) =>
                  {
-                     CreateButton(item, "장착 해제", (i) =>
-                     {
-                         GI.Inst.ListenerManager.Unequip(i);
-                     });
-                 }
+                     GI.Inst.ListenerManager.Unequip(i);
+                 });
+                 
                  break;
-            case EInventoryPopupType.Equipment: //장착, 버리기
+            case EInventoryPopupType.Equipment: //장착, 버리기, 강화
+                CreateButton(item, "장착", (i) =>
                 {
-                    CreateButton(item, "장착", (i) =>
+                    GI.Inst.ListenerManager.UseItem(i);
+                });
+                
+                CreateButton(item, "버리기", (i) =>
+                {
+                    GI.Inst.UIManager.VisibleTBPopup(EThrowawayBuyPopupType.ThrowAwayConfirm, i);
+                });
+                BaseWeapon weapon = item as BaseWeapon;
+                if (weapon && (weapon.EnhanceLevel < 10))
+                {
+                    CreateButton(item, "강화", (i) =>
                     {
-                        GI.Inst.ListenerManager.UseItem(i);
-                    });
-                    
-                    CreateButton(item, "버리기", (i) =>
-                    {
-                        GI.Inst.UIManager.VisibleTBPopup(EThrowawayBuyPopupType.ThrowAwayConfirm, i);
-                        //GI.Inst.ListenerManager.ThrowAwayItem(i);
+                        GI.Inst.UIManager.VisibleEnhancePopup(i);
                     });
                 }
                 break;
@@ -78,6 +80,11 @@ public class UI_Inven_Popup : UI_Popup
         }
     }
 
+    private void OnDestroy()
+    {
+        popupBg.onClick.RemoveListener(() => { GI.Inst.UIManager.ClosePopup(); });
+    }
+
     private void CreateButton(Item item, string buttonLabel, Action<Item> callback)
     {
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_PopupButton", buttonParent.transform);
@@ -85,11 +92,8 @@ public class UI_Inven_Popup : UI_Popup
         button.Init(buttonLabel, item, callback);
     }
     
-    // public void OnDestroy()
-    // {
-    //     foreach (UI_InventoryPopupButton popupButton in popupButtons)
-    //     {
-    //         GI.Inst.ResourceManager.Destroy(popupButton.gameObject);
-    //     }
-    // }
+    public override void Close()
+    {
+        GI.Inst.ResourceManager.Destroy(gameObject);
+    }
 }

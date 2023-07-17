@@ -3,9 +3,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
@@ -19,7 +17,8 @@ public class ResourceManager : MonoBehaviour
         PlayerBaseStat,
         AudioClip,
         AudioMixer,
-        StatusSprites
+        StatusSprites,
+        WeaponEnhanceValueByLevel
     }
    
     private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
@@ -29,6 +28,7 @@ public class ResourceManager : MonoBehaviour
     private Dictionary<string, Sprite> StatusSprites { get; } = new Dictionary<string, Sprite>();
     public AudioMixer AudioMixer { get; set; }
     public PlayerBaseStats PlayerBaseStats { get; private set; }
+    public WeaponEnhanceValueByLevel WeaponEnhanceValueByLevel { get; private set; }
 
     public void InitData(List<Define.ELabel> labels)
     {
@@ -92,6 +92,7 @@ public class ResourceManager : MonoBehaviour
                     SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.Skills);
                     SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat, SaveType.PlayerBaseStat);
                     SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
+                    SaveData<ScriptableObject>(Define.ELabel.WeaponEnhanceValueByLevel, SaveType.WeaponEnhanceValueByLevel);
                     SaveData<AudioClip>(Define.ELabel.AudioClip, SaveType.AudioClip);
                     SaveData<AudioMixer>(Define.ELabel.AudioMixer, SaveType.AudioMixer);
                     SaveData<Sprite>(Define.ELabel.StatusSprite, SaveType.StatusSprites);
@@ -244,9 +245,18 @@ public class ResourceManager : MonoBehaviour
                 };
             }
                 break;
-
-        
-    }
+            case SaveType.WeaponEnhanceValueByLevel:
+            {
+                var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                asyncOperation.Completed += (op) =>
+                {
+                    WeaponEnhanceValueByLevel original = op.Result as WeaponEnhanceValueByLevel;
+                    WeaponEnhanceValueByLevel copy = ScriptableObject.Instantiate(original);
+                    WeaponEnhanceValueByLevel = copy;
+                };
+            }
+                break;
+        }
     }
     
     public GameObject Instantiate(string prefabName, Transform parent = null)

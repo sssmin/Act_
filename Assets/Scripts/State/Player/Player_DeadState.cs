@@ -12,12 +12,6 @@ public class Player_DeadState : PlayerState
         Player.SetZeroVelocity();
     }
     
-    public override void Update()
-    {
-        base.Update();
-
-        
-    }
     
     public override void EndState()
     {
