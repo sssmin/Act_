@@ -7,9 +7,9 @@ public class UI_Merchant_ItemLine : MonoBehaviour
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemName;
     [SerializeField] private Button buyButton;
-    private Item tempItem;
+    private SO_Item tempItem;
     
-    public void Init(Item item)
+    public void Init(SO_Item item)
     {
         tempItem = item;
         itemIcon.sprite = item.itemIcon;

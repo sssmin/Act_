@@ -11,6 +11,7 @@ public class WindHashashin_DefendState : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isDefend, true);
         Monster.SetZeroVelocity();
     }

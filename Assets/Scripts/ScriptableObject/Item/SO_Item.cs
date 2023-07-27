@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [Serializable]
-public class Item : ScriptableObject, IComparable<Item>
+public class SO_Item : ScriptableObject, IComparable<SO_Item>
 {
     [Header("Info")] 
     [SerializeField] public string itemId;
@@ -92,7 +92,7 @@ public class Item : ScriptableObject, IComparable<Item>
     }
     
 
-    public int CompareTo(Item other)
+    public int CompareTo(SO_Item other)
     {
         if (ReferenceEquals(this, other)) return 0;
         if (ReferenceEquals(null, other)) return 1;

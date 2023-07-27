@@ -8,7 +8,7 @@ public class UI_Inven_Popup : UI_Popup
     [SerializeField] Button popupBg;
     [SerializeField] private RectTransform buttonParent;
 
-    public void Init(EInventoryPopupType type, Item item, Vector3 pos)
+    public void Init(EInventoryPopupType type, SO_Item item, Vector3 pos)
     {
         buttonParent.transform.position = pos;
         popupBg.onClick.RemoveListener(() => { GI.Inst.UIManager.ClosePopup(); });
@@ -32,7 +32,7 @@ public class UI_Inven_Popup : UI_Popup
                 {
                     GI.Inst.UIManager.VisibleTBPopup(EThrowawayBuyPopupType.ThrowAwayConfirm, i);
                 });
-                BaseWeapon weapon = item as BaseWeapon;
+                SO_BaseWeapon weapon = item as SO_BaseWeapon;
                 if (weapon && (weapon.EnhanceLevel < 10))
                 {
                     CreateButton(item, "강화", (i) =>
@@ -48,23 +48,23 @@ public class UI_Inven_Popup : UI_Popup
                 });
                 CreateButton(item, "퀵 슬롯 1 등록", (i) =>
                 {
-                    GI.Inst.ListenerManager.RegisterItemHotkey(Item.EItemHotkeyOrder.First, i);
+                    GI.Inst.ListenerManager.RegisterItemHotkey(SO_Item.EItemHotkeyOrder.First, i);
                 });
                 CreateButton(item, "퀵 슬롯 2 등록", (i) =>
                 {
-                    GI.Inst.ListenerManager.RegisterItemHotkey(Item.EItemHotkeyOrder.Second, i);
+                    GI.Inst.ListenerManager.RegisterItemHotkey(SO_Item.EItemHotkeyOrder.Second, i);
                 });
                 CreateButton(item, "퀵 슬롯 3 등록", (i) =>
                 {
-                    GI.Inst.ListenerManager.RegisterItemHotkey(Item.EItemHotkeyOrder.Third, i);
+                    GI.Inst.ListenerManager.RegisterItemHotkey(SO_Item.EItemHotkeyOrder.Third, i);
                 });
                 CreateButton(item, "퀵 슬롯 4 등록", (i) =>
                 {
-                    GI.Inst.ListenerManager.RegisterItemHotkey(Item.EItemHotkeyOrder.Fourth, i);
+                    GI.Inst.ListenerManager.RegisterItemHotkey(SO_Item.EItemHotkeyOrder.Fourth, i);
                 });
                 CreateButton(item, "퀵 슬롯 5 등록", (i) =>
                 {
-                    GI.Inst.ListenerManager.RegisterItemHotkey(Item.EItemHotkeyOrder.Fifth, i);
+                    GI.Inst.ListenerManager.RegisterItemHotkey(SO_Item.EItemHotkeyOrder.Fifth, i);
                 });
                 CreateButton(item, "버리기", (i) =>
                 {
@@ -85,7 +85,7 @@ public class UI_Inven_Popup : UI_Popup
         popupBg.onClick.RemoveListener(() => { GI.Inst.UIManager.ClosePopup(); });
     }
 
-    private void CreateButton(Item item, string buttonLabel, Action<Item> callback)
+    private void CreateButton(SO_Item item, string buttonLabel, Action<SO_Item> callback)
     {
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_PopupButton", buttonParent.transform);
         UI_Inven_PopupButton button = go.GetComponent<UI_Inven_PopupButton>();

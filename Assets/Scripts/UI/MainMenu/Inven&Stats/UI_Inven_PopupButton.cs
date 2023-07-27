@@ -9,7 +9,7 @@ public class UI_Inven_PopupButton : MonoBehaviour
     [SerializeField] Button button;
     [SerializeField] private TextMeshProUGUI buttonLabelText;
     private UnityAction call;
-    public void Init(string buttonLabel, Item item, Action<Item> callback)
+    public void Init(string buttonLabel, SO_Item item, Action<SO_Item> callback)
     {
         buttonLabelText.text = buttonLabel;
         if (call != null)
@@ -23,7 +23,7 @@ public class UI_Inven_PopupButton : MonoBehaviour
         button.onClick.RemoveListener(call);
     }
 
-    void CallbackInvoke(Item item, Action<Item> callback)
+    void CallbackInvoke(SO_Item item, Action<SO_Item> callback)
     {
         GI.Inst.UIManager.ClosePopup();
         GI.Inst.SoundManager.SFXPlay("ButtonClick");

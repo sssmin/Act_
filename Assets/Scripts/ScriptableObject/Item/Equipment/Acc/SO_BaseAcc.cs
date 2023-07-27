@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Acc_", menuName ="Data/Item/Acc")]
-public class BaseAcc : Equipment
+public class SO_BaseAcc : SO_Equipment
 {
-    public BaseAcc()
+    public SO_BaseAcc()
     {
     }
     

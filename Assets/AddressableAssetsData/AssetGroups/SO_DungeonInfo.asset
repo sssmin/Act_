@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SO_DungeonInfo
+  m_EditorClassIdentifier: 
+  m_GroupName: SO_DungeonInfo
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 48e7e338c87a72940a400740d071e240
+  m_SerializeEntries:
+  - m_GUID: 96ccc5887a630bf47b4b3eb5a82d3941
+    m_Address: TempestTomb
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DungeonInfo
+  - m_GUID: 4a9d14163ff01674fb350326f1ff3eb2
+    m_Address: WhirlwindCatacomb
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - DungeonInfo
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 433f6c8fc678e694d9f8e7629e910488, type: 2}
+    - {fileID: 11400000, guid: 9551ac0fae6501748bf02fd9e57a133a, type: 2}

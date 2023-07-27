@@ -9,18 +9,18 @@ public class UI_Popup_Enhance : UI_Popup
     [SerializeField] private UI_Popup_EnhanceLine enhanceLineUI;
     [SerializeField] private TextMeshProUGUI levelDesc; // +0 >> +1
 
-    private BaseWeapon Original { get; set; }
-    private Item WeaponMat { get; set; }
+    private SO_BaseWeapon Original { get; set; }
+    private SO_Item WeaponMat { get; set; }
     
 
-    public void InitOnce(BaseWeapon originalWeapon)
+    public void InitOnce(SO_BaseWeapon originalWeapon)
     {
         Original = originalWeapon;
         
-        enhanceButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(enhanceButton);
         enhanceButtonText.color = new Color(170f / 255f, 170f / 255f, 170f / 255f, 1f);
         
-        enhanceButton.enabled = false;
+        enhanceButton.interactable = false;
         
         levelDesc.text = $"+{originalWeapon.EnhanceLevel} >> +{originalWeapon.EnhanceLevel + 1}";
         enhanceLineUI.InitOnce(originalWeapon);
@@ -30,7 +30,7 @@ public class UI_Popup_Enhance : UI_Popup
         
         GI.Inst.UIManager.MainMenuUI.InventoryStatus = EInventoryStatus.Enhance;
         //무기 카테고리만 활성화
-        GI.Inst.UIManager.DisableCategoryButtonCantEnhance();
+        GI.Inst.UIManager.DisableInvenCategoryBtnCantEnhance();
         //강화 가능한 무기 재료만 활성화
         GI.Inst.UIManager.EnableCanWeaponMat(originalWeapon);
     }
@@ -47,14 +47,13 @@ public class UI_Popup_Enhance : UI_Popup
         GI.Inst.UIManager.RefreshInventoryUI();
     }
     
-    private void SetSameEquipment(Item sameWeapon)
+    private void SetSameEquipment(SO_Item sameWeapon)
     {
         WeaponMat = sameWeapon;
         
-        enhanceButton.enabled = true;
-        enhanceButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+        enhanceButton.interactable = true;
         enhanceButtonText.color = Color.white;
-        enhanceLineUI.SetSameEquipment(sameWeapon as BaseWeapon);
+        enhanceLineUI.SetSameEquipment(sameWeapon as SO_BaseWeapon);
     }
     
     private void OnClickEnhanceButton()
@@ -63,7 +62,6 @@ public class UI_Popup_Enhance : UI_Popup
         GI.Inst.UIManager.ClosePopup();
     }
     
-
     public override void Close()
     {
         GI.Inst.ResourceManager.Destroy(gameObject);

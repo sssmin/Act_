@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Merchant_CraftLineParent : MonoBehaviour
 {
@@ -15,15 +16,15 @@ public class UI_Merchant_CraftLineParent : MonoBehaviour
         
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLine", transform);
         WeaponCraftLine = go.GetComponent<UI_Merchant_CraftLine>();
-        WeaponCraftLine.InitOnce(Item.EItemCategory.Weapon);
+        WeaponCraftLine.InitOnce(SO_Item.EItemCategory.Weapon);
         
         go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLine", transform);
         ArmorCraftLine = go.GetComponent<UI_Merchant_CraftLine>();
-        ArmorCraftLine.InitOnce(Item.EItemCategory.Armor);
+        ArmorCraftLine.InitOnce(SO_Item.EItemCategory.Armor);
         
         go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLine", transform);
         AccCraftLine = go.GetComponent<UI_Merchant_CraftLine>();
-        AccCraftLine.InitOnce(Item.EItemCategory.Acc);
+        AccCraftLine.InitOnce(SO_Item.EItemCategory.Acc);
         
         go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_Result", transform);
         resultLine = go.GetComponent<UI_Merchant_Result>();
@@ -56,7 +57,10 @@ public class UI_Merchant_CraftLineParent : MonoBehaviour
         AccCraftLine.Close();
     }
     
-    
+    public Button GetWeaponCraftButton()
+    {
+        return WeaponCraftLine.GetWeaponCraftButton();
+    }
     
     
     

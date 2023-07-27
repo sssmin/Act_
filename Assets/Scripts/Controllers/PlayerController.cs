@@ -144,6 +144,18 @@ public class PlayerController : BaseController
     {
         PlayerControl.Enable();
         MoveInputValue = PlayerControl.Player.Move;
+        RemoveAction();
+        AddAction();
+    }
+    
+    private void OnDisable()
+    {
+        MoveInputValue.Disable();
+        RemoveAction();
+    }
+
+    private void AddAction()
+    {
         PlayerControl.Player.Jump.performed += JumpAction;
         PlayerControl.Player.Dash.performed += DashAction;
         PlayerControl.Player.NormalAttack.performed += NormalAttackAction;
@@ -163,11 +175,13 @@ public class PlayerController : BaseController
         PlayerControl.UI.Cancel.performed += CloseToUIAction;
         
         GI.Inst.ListenerManager.switchActionMap += SwitchActionMap;
+        GI.Inst.ListenerManager.enablePlayerControl += EnablePlayerControl;
+        GI.Inst.ListenerManager.disablePlayerControl += DisablePlayerControl;
+        GI.Inst.ListenerManager.isEnablePlayerControl += IsEnablePlayerControl;
     }
     
-    private void OnDisable()
+    private void RemoveAction()
     {
-        MoveInputValue.Disable();
         PlayerControl.Player.Jump.performed -= JumpAction;
         PlayerControl.Player.Dash.performed -= DashAction;
         PlayerControl.Player.NormalAttack.performed -= NormalAttackAction;
@@ -185,7 +199,11 @@ public class PlayerController : BaseController
         PlayerControl.Player.Interaction.performed -= InteractionAction;
         PlayerControl.Player.Esc.performed -= EscAction;
         PlayerControl.UI.Cancel.performed -= CloseToUIAction;
+        
         GI.Inst.ListenerManager.switchActionMap -= SwitchActionMap;
+        GI.Inst.ListenerManager.enablePlayerControl -= EnablePlayerControl;
+        GI.Inst.ListenerManager.disablePlayerControl -= DisablePlayerControl;
+        GI.Inst.ListenerManager.isEnablePlayerControl -= IsEnablePlayerControl;
     }
 
     void Update()
@@ -222,7 +240,7 @@ public class PlayerController : BaseController
         }
         if (Input.GetKey(KeyCode.N))
         {
-            GI.Inst.SaveGameData();
+            GI.Inst.SaveGame();
         }
         if (Input.GetKey(KeyCode.M))
         {
@@ -264,7 +282,7 @@ public class PlayerController : BaseController
         }
     }
     
-    protected void TransitionState(Define.EPlayerState playerState)
+    private void TransitionState(Define.EPlayerState playerState)
     {
         ControlledPlayer.TransitionState(playerState);
     }
@@ -279,8 +297,23 @@ public class PlayerController : BaseController
         IsCharging = false;
         ChargeCompleted = false;
     }
+
+    private void EnablePlayerControl()
+    {
+        PlayerControl.Enable();
+        PlayerControl.UI.Disable();
+    }
     
-    private static KeyCode KeyToKeyCode(string key, KeyCode unknownKey = KeyCode.None)
+    private void DisablePlayerControl()
+    {
+        PlayerControl.Disable();
+    }
+
+    private bool IsEnablePlayerControl() => PlayerControl.Player.enabled;
+
+    #region Wrapper
+
+    public static KeyCode KeyToKeyCode(string key, KeyCode unknownKey = KeyCode.None)
     {
         switch (key)
         {
@@ -438,7 +471,9 @@ public class PlayerController : BaseController
         
         return "";
     }
-    
+
+    #endregion //wrapper
+
     #region Rebind
 
     private string ConvertInputKey(string path)
@@ -475,7 +510,7 @@ public class PlayerController : BaseController
     private void StartInteractiveRebind(InputAction actionToRebind)
     {
         actionToRebind.Disable();
-        Debug.Log("1");
+        
         rebindingOperation = actionToRebind.PerformInteractiveRebinding()
             .WithControlsExcluding("<Mouse>/position")
             .WithControlsExcluding("<Mouse>/delta")
@@ -583,7 +618,7 @@ public class PlayerController : BaseController
 
     #region Action
 
-    void JumpAction(InputAction.CallbackContext context)
+    private void JumpAction(InputAction.CallbackContext context)
     {
         if (CheckStateCanJump())
         {
@@ -591,16 +626,16 @@ public class PlayerController : BaseController
         }
     }
     
-    void NormalAttackAction(InputAction.CallbackContext context)
+    private void NormalAttackAction(InputAction.CallbackContext context)
     {
         if (CheckStateCanNormalAttack())
         {
             AttackDir = CurrentDir;
-            if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Dagger)
+            if (GI.Inst.ListenerManager.GetEquippedWeaponType() == SO_Item.EWeaponType.Dagger)
                 TransitionState(Define.EPlayerState.DaggerNormalAttack);
-            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Axe)
+            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == SO_Item.EWeaponType.Axe)
                 TransitionState(Define.EPlayerState.AxeNormalAttack);
-            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == Item.EWeaponType.Bow)
+            else if (GI.Inst.ListenerManager.GetEquippedWeaponType() == SO_Item.EWeaponType.Bow)
                 TransitionState(Define.EPlayerState.BowNormalAttack);
         }
         else if (ControlledPlayer.StateMachine.CurrentState.IsAttacking)
@@ -681,7 +716,7 @@ public class PlayerController : BaseController
         TransitionState(skill.skillState);
     }
     
-    void DashAction(InputAction.CallbackContext context)
+    private void DashAction(InputAction.CallbackContext context)
     {
         if (!CanDash(EActiveSkillOrder.Fifth)) return;
 
@@ -695,49 +730,47 @@ public class PlayerController : BaseController
         }
     }
 
-    void FirstItemHotkeyAction(InputAction.CallbackContext context)
+    private void FirstItemHotkeyAction(InputAction.CallbackContext context)
     {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.First);
+        GI.Inst.ListenerManager.OnPressedItemHotkey(SO_Item.EItemHotkeyOrder.First);
     }
     
-    void SecondItemHotkeyAction(InputAction.CallbackContext context)
+    private void SecondItemHotkeyAction(InputAction.CallbackContext context)
     {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Second);
+        GI.Inst.ListenerManager.OnPressedItemHotkey(SO_Item.EItemHotkeyOrder.Second);
     }
     
     void ThirdItemHotkeyAction(InputAction.CallbackContext context)
     {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Third);
+        GI.Inst.ListenerManager.OnPressedItemHotkey(SO_Item.EItemHotkeyOrder.Third);
     }
     
-    void FourthItemHotkeyAction(InputAction.CallbackContext context)
+    private void FourthItemHotkeyAction(InputAction.CallbackContext context)
     {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fourth);
+        GI.Inst.ListenerManager.OnPressedItemHotkey(SO_Item.EItemHotkeyOrder.Fourth);
     }
     
-    void FifthItemHotkeyAction(InputAction.CallbackContext context)
+    private void FifthItemHotkeyAction(InputAction.CallbackContext context)
     {
-        GI.Inst.ListenerManager.OnPressedItemHotkey(Item.EItemHotkeyOrder.Fifth);
-        
+        GI.Inst.ListenerManager.OnPressedItemHotkey(SO_Item.EItemHotkeyOrder.Fifth);
     }
     
-    void EscAction(InputAction.CallbackContext context)
+    private void EscAction(InputAction.CallbackContext context)
     {
         GI.Inst.UIManager.ToggleEsc();
     }
     
-    public void ToggleInventoryWindowAction(InputAction.CallbackContext context)
+    private void ToggleInventoryWindowAction(InputAction.CallbackContext context)
     {
-           
         GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Inventory);
     }
     
-    public void ToggleSkillWindowAction(InputAction.CallbackContext context)
+    private void ToggleSkillWindowAction(InputAction.CallbackContext context)
     {
         GI.Inst.UIManager.ToggleMainMenu(Define.EMainMenuType.Skill);
     }
     
-    public void InteractionAction(InputAction.CallbackContext context)
+    private void InteractionAction(InputAction.CallbackContext context)
     {
         Collider2D col = Physics2D.OverlapCircle(transform.position, 3f, LayerMask.GetMask("Merchant"));
         if (col)
@@ -759,7 +792,7 @@ public class PlayerController : BaseController
 
     #region CheckState
 
-    bool IsJumpingState()
+    private bool IsJumpingState()
     {
         bool condition  = CheckCurrentState(Define.EPlayerState.InAir) ||
                           CheckCurrentState(Define.EPlayerState.Falling) ||
@@ -767,7 +800,7 @@ public class PlayerController : BaseController
         return condition;
     }
 
-    bool CheckStateCanJump()
+    private bool CheckStateCanJump()
     {
         if (IsDead()) return false;
         bool condition = CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move);
@@ -781,7 +814,7 @@ public class PlayerController : BaseController
         return condition;
     }
 
-    bool CheckStateCanGroundSlide()
+    private bool CheckStateCanGroundSlide()
     {
         if (IsDead()) return false;
         bool condition = CheckCurrentState(Define.EPlayerState.Move);
@@ -796,7 +829,7 @@ public class PlayerController : BaseController
         return condition;
     }
 
-    bool CheckStateCanNormalAttack()
+    private bool CheckStateCanNormalAttack()
     {
         if (IsDead()) return false;
         bool condition = CheckCurrentState(Define.EPlayerState.Idle) ||
@@ -820,7 +853,7 @@ public class PlayerController : BaseController
         return false;
     }
 
-    bool CanDash(EActiveSkillOrder skillOrder)
+    private bool CanDash(EActiveSkillOrder skillOrder)
     {
         if (IsDead()) return false;
         bool condition = (CheckCurrentState(Define.EPlayerState.Idle) || CheckCurrentState(Define.EPlayerState.Move) || IsJumpingState())
@@ -842,7 +875,7 @@ public class PlayerController : BaseController
         return ControlledPlayer.GetState(playerState) == ControlledPlayer.StateMachine.CurrentState;
     }
 
-    bool IsDead()
+    private bool IsDead()
     {
         return CheckCurrentState(Define.EPlayerState.Dead);
     }

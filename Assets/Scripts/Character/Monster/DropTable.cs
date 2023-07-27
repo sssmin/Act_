@@ -7,13 +7,15 @@ using Random = UnityEngine.Random;
 public class DropInfo
 {
     [SerializeField] public string itemId;
+    [SerializeField] public SO_Item.EItemCategory itemCategory;
     [SerializeField] public int maxDropAmount;
     [SerializeField] public float dropChance;
 }
 
 public class GiveToPlayerItemInfo
 {
-    public Item item;
+    public string itemId;
+    public SO_Item.EItemCategory itemCategory;
     public int amount;
 }
 
@@ -21,29 +23,36 @@ public class GiveToPlayerItemInfo
 public class DropTable
 {
     [SerializeField] public List<DropInfo> itemInfos = new List<DropInfo>();
-
+    [SerializeField] public int gold;
+    
     public void DropItem()
     {
-        int playerInstId = GI.Inst.ListenerManager.GetPlayerInstId();
         List<GiveToPlayerItemInfo> giveToPlayerItemInfos = new List<GiveToPlayerItemInfo>();
-        foreach (DropInfo itemInfo in itemInfos)
+        foreach (DropInfo dropInfo in itemInfos)
         {
             float rand = Random.Range(0f, 100f);
-            if (rand <= itemInfo.dropChance)
+            if (rand <= dropInfo.dropChance)
             {
-                int randAmount = Random.Range(1, itemInfo.maxDropAmount);
+                int randAmount = Random.Range(1, dropInfo.maxDropAmount);
 
-                Item dropItem = GI.Inst.ResourceManager.GetItemData(itemInfo.itemId);
                 GiveToPlayerItemInfo giveToPlayerItemInfo = new GiveToPlayerItemInfo()
                 {
-                    item = dropItem, amount = randAmount
+                    itemId = dropInfo.itemId, amount = randAmount, itemCategory = dropInfo.itemCategory
                 };
                 
                 giveToPlayerItemInfos.Add(giveToPlayerItemInfo);
-               
             }
         }
-        GI.Inst.ListenerManager.GiveItemsToPlayer(playerInstId, giveToPlayerItemInfos);
+
+        float goldRand = Random.Range(0f, 100f);
+        if (goldRand <= 40f)
+        {
+            int goldWeight = Mathf.FloorToInt(gold * 0.1f);
+            goldWeight = Random.Range(-goldWeight, goldWeight + 1);
+            GI.Inst.ListenerManager.GiveGoldToPlayer(gold + goldWeight);
+            GI.Inst.ListenerManager.GiveItemsToPlayer(giveToPlayerItemInfos);
+        }
+        
     }
 
 }

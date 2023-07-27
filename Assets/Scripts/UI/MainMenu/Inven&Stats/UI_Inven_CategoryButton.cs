@@ -6,14 +6,14 @@ using UnityEngine.UI;
 [Serializable]
 public struct InventoryIcon
 {
-    public Item.EItemCategory itemCategory;
+    public SO_Item.EItemCategory itemCategory;
     public Sprite icon;
 }
 
 public class UI_Inven_CategoryButton : MonoBehaviour
 {
     [SerializeField] List<InventoryIcon> iconInfos = new List<InventoryIcon>();
-    public Item.EItemCategory itemCategory;
+    public SO_Item.EItemCategory itemCategory;
     private Button button;
     private Sprite iconSprite;
     [SerializeField] Image image;
@@ -29,7 +29,7 @@ public class UI_Inven_CategoryButton : MonoBehaviour
         button.onClick.RemoveListener(OnClickCategoryButton);
     }
     
-    public void Init(Item.EItemCategory category)
+    public void InitOnce(SO_Item.EItemCategory category)
     {
         button = GetComponent<Button>();
         itemCategory = category;
@@ -45,6 +45,8 @@ public class UI_Inven_CategoryButton : MonoBehaviour
             }
         }
         iconInfos.Clear();
+        
+        GI.Inst.UIManager.SetNormalButtonColorPreset(button);
     }
 
     private void OnClickCategoryButton()

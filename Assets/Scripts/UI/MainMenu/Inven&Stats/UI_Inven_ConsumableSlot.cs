@@ -13,7 +13,7 @@ public class UI_Inven_ConsumableSlot : UI_Inven_ItemSlot
         
     }
     
-    public override void SetStackableItem(Item inItem, int amount)
+    public override void SetStackableItem(SO_Item inItem, int amount)
     {
         Item = inItem;
         itemIconSprite = Item.itemIcon;
@@ -43,7 +43,7 @@ public class UI_Inven_ConsumableSlot : UI_Inven_ItemSlot
             Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
             switch (Item.ItemCategory)
             {
-                case Item.EItemCategory.Consumable:
+                case SO_Item.EItemCategory.Consumable:
                     GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Consumable, Item, pos);
                     break;
             }

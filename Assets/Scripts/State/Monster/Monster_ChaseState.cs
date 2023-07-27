@@ -24,6 +24,8 @@ public class Monster_ChaseState : MonsterState
         base.Update();
         
         idleTimer -= Time.deltaTime;
+
+        if (Monster.StatManager.IsDead) return;
        
         if (AIController.Target.transform.position.x > Monster.transform.position.x) 
         {

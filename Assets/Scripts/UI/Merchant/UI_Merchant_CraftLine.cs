@@ -10,30 +10,32 @@ public class UI_Merchant_CraftLine : MonoBehaviour
     [SerializeField] private TextMeshProUGUI craftText;
     [SerializeField] private TextMeshProUGUI requireSharedMatText;
     
-    private Item.EItemCategory ItemCategory { get; set; }
+    private SO_Item.EItemCategory ItemCategory { get; set; }
 
     private ItemCraft ItemCraft { get; set; }
     private RequireMatAmount requireMatAmount;
     
-    public void InitOnce(Item.EItemCategory category)
+    public void InitOnce(SO_Item.EItemCategory category)
     {
         ItemCategory = category;
         craftButton.onClick.RemoveListener(OnClickCraftButton);
         craftButton.onClick.AddListener(OnClickCraftButton);
         
+        GI.Inst.UIManager.SetNormalButtonColorPreset(craftButton);
+        
         GI.Inst.ResourceManager.CreateItemCraft(Define.ELabel.ItemCraft, craft =>
         {
             switch (ItemCategory)
             {
-                case Item.EItemCategory.Weapon:
+                case SO_Item.EItemCategory.Weapon:
                     weaponArmorAccMatIcon.sprite = craft.weaponMatIcon;
                     craftText.text = "무기 제작";
                     break;
-                case Item.EItemCategory.Armor: 
+                case SO_Item.EItemCategory.Armor: 
                     weaponArmorAccMatIcon.sprite = craft.armorMatIcon;
                     craftText.text = "방어구 제작";
                     break;
-                case Item.EItemCategory.Acc: 
+                case SO_Item.EItemCategory.Acc: 
                     weaponArmorAccMatIcon.sprite = craft.accMatIcon;
                     craftText.text = "장신구 제작";
                     break;
@@ -61,13 +63,11 @@ public class UI_Merchant_CraftLine : MonoBehaviour
 
         if (GI.Inst.ListenerManager.HasEnoughCraftMat(ItemCategory, requireEquipmentMatAmount, requireSharedMatAmount))
         {
-            craftButton.enabled = true;
-            craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+            craftButton.interactable = true;
         }
         else
         {
-            craftButton.enabled = false;
-            craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+            craftButton.interactable = false;
         }
     }
 
@@ -82,6 +82,11 @@ public class UI_Merchant_CraftLine : MonoBehaviour
     {
         Destroy(ItemCraft);
         ItemCraft = null;
+    }
+    
+    public Button GetWeaponCraftButton()
+    {
+        return craftButton;
     }
     
 }

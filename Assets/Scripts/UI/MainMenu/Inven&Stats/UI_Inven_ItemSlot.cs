@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     protected Sprite itemIconSprite;
-    protected Item Item { get; set; }
+    protected SO_Item Item { get; set; }
     [SerializeField] protected TextMeshProUGUI itemAmount;
     [SerializeField] protected TextMeshProUGUI enhanceLevel;
     [SerializeField] protected Image itemIconImage;
@@ -22,7 +22,7 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
     private bool isEnable;
     
 
-    public void SetItem(Item inItem) //장비
+    public void SetItem(SO_Item inItem) //장비
     {
         disableImage.gameObject.SetActive(false);
         isEnable = true;
@@ -33,12 +33,12 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         borderImage.color = Color.white;
         
         itemAmount.text = "";
-        Equipment equipment = Item as Equipment;
+        SO_Equipment equipment = Item as SO_Equipment;
         if (equipment)
         {
             if (equipment.bIsEquipped)
                 equippedTransform.gameObject.SetActive(true);
-            BaseWeapon weapon = equipment as BaseWeapon;
+            SO_BaseWeapon weapon = equipment as SO_BaseWeapon;
             if (weapon)
             {
                 if (weapon.EnhanceLevel != 0)
@@ -54,7 +54,7 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         }
     }
 
-    public virtual void SetStackableItem(Item inItem, int amount) //소모품, 기타
+    public virtual void SetStackableItem(SO_Item inItem, int amount) //소모품, 기타
     {
         disableImage.gameObject.SetActive(false);
         isEnable = true;
@@ -67,9 +67,9 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
         itemAmount.text =  $"x{amount:#,0}";
     }
 
-    public void CheckDisableSlot(BaseWeapon original)
+    public void CheckDisableSlot(SO_BaseWeapon original)
     {
-        BaseWeapon slotItem = Item as BaseWeapon;
+        SO_BaseWeapon slotItem = Item as SO_BaseWeapon;
         if (slotItem)
         {
             if (slotItem.bIsEquipped || 
@@ -111,19 +111,19 @@ public class UI_Inven_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEn
                     Vector3 pos = new Vector3(goPos.x - slotTransform.rect.width, goPos.y);
                     switch (Item.ItemCategory)
                     {
-                        case Item.EItemCategory.Weapon:
-                        case Item.EItemCategory.Armor:
-                        case Item.EItemCategory.Acc:
-                            Equipment equipment = (Equipment)Item;
+                        case SO_Item.EItemCategory.Weapon:
+                        case SO_Item.EItemCategory.Armor:
+                        case SO_Item.EItemCategory.Acc:
+                            SO_Equipment equipment = (SO_Equipment)Item;
                             if (equipment.bIsEquipped)
                                 GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.EquippedEquipment, Item, pos);
                             else
                                 GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Equipment, Item, pos);
                             break;
-                        case Item.EItemCategory.Consumable:
+                        case SO_Item.EItemCategory.Consumable:
                             GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Consumable, Item, pos);
                             break;
-                        case Item.EItemCategory.Etc:
+                        case SO_Item.EItemCategory.Etc:
                             GI.Inst.UIManager.VisibleInventoryPopup(EInventoryPopupType.Etc, Item, pos);
                             break;
                     }

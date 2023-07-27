@@ -10,6 +10,7 @@ public class WindHashashin_NormalAttack1State : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isNormalAttack1, true);
         Monster.SetZeroVelocity();
     }

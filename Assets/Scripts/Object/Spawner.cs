@@ -5,51 +5,34 @@ using Random = UnityEngine.Random;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] int maxMonsterAmount;
-    [SerializeField] int monsterLevel;
-    [SerializeField] List<string> monsterPrefabIds;
+    private int maxMonsterAmount = 6;
+    int monsterLevel;
+    List<string> monsterPrefabIds;
+    
 
-    private BoxCollider2D boxCollder;
-
-    private bool IsActivated { get; set; }
-
-    private void Awake()
+    public void SetMonsterInfo(List<string> monsterIds, int level, EDungeonCategory category)
     {
-        boxCollder = GetComponent<BoxCollider2D>();
+        if (category == EDungeonCategory.Normal)
+            maxMonsterAmount = 6;
+        else
+            maxMonsterAmount = 1;
+        
+        monsterPrefabIds = monsterIds;
+        monsterLevel = level;
+        SpawnStart();
     }
 
-    private void Start()
-    {
-        if (!boxCollder)
-        {
-            //바로 스폰
-            SpawnMonster();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.CompareTag("Player"))
-        {
-            if (!IsActivated)
-            {
-                StartCoroutine(CoSpawn());
-                IsActivated = true;
-            }
-        }
-    }
-
-    IEnumerator CoSpawn()
+    public void SpawnStart()
     {
         for (int i = 0; i < maxMonsterAmount; i++)
         {
             SpawnMonster();
-            yield return new WaitForSeconds(Random.Range(1f, 2.5f));
         }
+        GI.Inst.DungeonManager.AddObjectiveCount(maxMonsterAmount);
         GI.Inst.ResourceManager.Destroy(gameObject);
     }
-
-    void SpawnMonster()
+    
+    private void SpawnMonster()
     {
         if (monsterPrefabIds.Count <= 0) return;
         int rand = Random.Range(0, monsterPrefabIds.Count);
@@ -57,8 +40,8 @@ public class Spawner : MonoBehaviour
         GI.Inst.ResourceManager.GetMonsterInfoDataCopy(monsterPrefabIds[rand], Define.ELabel.MonsterInfo,
             monsterInfo =>
             {
-                StatManager monsterStatManager = go.GetComponent<StatManager>();
-                monsterStatManager.InitStat(monsterInfo.stats);
+                MonsterStatManager monsterStatManager = go.GetComponent<MonsterStatManager>();
+                monsterStatManager.InitStat(monsterInfo.stats, monsterLevel);
                 Monster monster = go.GetComponent<Monster>();
                 monster.DropTable = monsterInfo.dropTable;
                 monster.MonsterPrefabId = monsterPrefabIds[rand];

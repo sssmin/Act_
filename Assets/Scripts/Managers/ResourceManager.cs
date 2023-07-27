@@ -18,52 +18,23 @@ public class ResourceManager : MonoBehaviour
         AudioClip,
         AudioMixer,
         StatusSprites,
-        WeaponEnhanceValueByLevel
+        WeaponEnhanceValueByLevel,
+        DungeonInfo,
+        ItemSprites
     }
    
     private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
-    private Dictionary<string, Item> ItemData { get; } = new Dictionary<string, Item>();
+    private Dictionary<string, SO_Item> ItemData { get; } = new Dictionary<string, SO_Item>();
     private Dictionary<string, GameObject> Prefabs { get; } = new Dictionary<string, GameObject>();
     private Dictionary<string, AudioClip> AudioClips { get; } = new Dictionary<string, AudioClip>();
     private Dictionary<string, Sprite> StatusSprites { get; } = new Dictionary<string, Sprite>();
+    private Dictionary<string, Sprite> ItemSprites { get; } = new Dictionary<string, Sprite>();
     public AudioMixer AudioMixer { get; set; }
-    public PlayerBaseStats PlayerBaseStats { get; private set; }
-    public WeaponEnhanceValueByLevel WeaponEnhanceValueByLevel { get; private set; }
-
-    public void InitData(List<Define.ELabel> labels)
-    {
-        SkillData.Clear();
-        ItemData.Clear();
-        
-        int completedCount = 0;
-        int totalCount = labels.Count;
-        
-        string label;
-        
-        for (int i = 0; i < totalCount; i++)
-        {
-            label = Enum.GetName(typeof(Define.ELabel), labels[i]);
-            Addressables.DownloadDependenciesAsync(label).Completed += (handle) =>
-            {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    //Debug.Log("download completed");
-                    completedCount++;
-                }
-                else
-                {
-                    Debug.Log("download failed.");
-                }
-
-                if (completedCount == totalCount)
-                {
-                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.Skills);
-                    SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
-                }
-                //Addressables.Release(handle);
-            };
-        }
-    }
+    public SO_PlayerBaseStats PlayerBaseStats { get; private set; }
+    public SO_WeaponEnhanceValueByLevel WeaponEnhanceValueByLevel { get; private set; }
+    public Dictionary<string, SO_DungeonInfo> DungeonInfos { get; private set; } = new Dictionary<string, SO_DungeonInfo>();
+    
+    private int PrefabLoadCount { get; set; }
     
     public void DownloadAdvance(List<Define.ELabel> labels, Action callback = null)
     {
@@ -93,39 +64,37 @@ public class ResourceManager : MonoBehaviour
                     SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat, SaveType.PlayerBaseStat);
                     SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
                     SaveData<ScriptableObject>(Define.ELabel.WeaponEnhanceValueByLevel, SaveType.WeaponEnhanceValueByLevel);
+                    SaveData<ScriptableObject>(Define.ELabel.DungeonInfo, SaveType.DungeonInfo);
                     SaveData<AudioClip>(Define.ELabel.AudioClip, SaveType.AudioClip);
                     SaveData<AudioMixer>(Define.ELabel.AudioMixer, SaveType.AudioMixer);
                     SaveData<Sprite>(Define.ELabel.StatusSprite, SaveType.StatusSprites);
+                    SaveData<Sprite>(Define.ELabel.ItemSprite, SaveType.ItemSprites);
                     SaveData<GameObject>(Define.ELabel.Prefab, SaveType.Prefab, callback);
                 }
-                //Addressables.Release(handle);
             };
         }
     }
 
-    public void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
+    private void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
     {
         string label = Enum.GetName(typeof(Define.ELabel), inLabel);
         var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));
         opHandle.Completed += (op) =>
         {
             int maxNum = op.Result.Count;
-            prefabLoadNum = 0;
+            PrefabLoadCount = 0;
             foreach (var result in op.Result)
             {
-                LoadAsync<T>(result.PrimaryKey, saveType, maxNum, callback);
+                LoadAsync<T>(result.PrimaryKey, inLabel, maxNum, callback);
             }
-            //Addressables.Release(op);
         };
     }
 
-    private int prefabLoadNum = 0;
-    
-    private void LoadAsync<T>(string key, SaveType saveType, int maxNum, Action callback = null) where T : Object
+    private void LoadAsync<T>(string key,Define.ELabel label, int maxNum, Action callback = null) where T : Object
     {
-        switch (saveType)
+        switch (label)
         {
-            case SaveType.Skills:
+            case Define.ELabel.Skill:
                 {
                     if (SkillData.ContainsKey(key))
                     {
@@ -138,11 +107,10 @@ public class ResourceManager : MonoBehaviour
                         SO_Skill original = op.Result as SO_Skill;
                         SO_Skill skillCopy = ScriptableObject.Instantiate(original);
                         SkillData.Add(key, skillCopy);
-                        //Addressables.Release(op);
                     };
                 }
                 break;
-            case SaveType.Items:
+            case Define.ELabel.Item:
                 {
                     if (ItemData.ContainsKey(key))
                     {
@@ -152,14 +120,13 @@ public class ResourceManager : MonoBehaviour
                     var asyncOperation = Addressables.LoadAssetAsync<T>(key);
                     asyncOperation.Completed += (op) =>
                     {
-                        Item original = op.Result as Item;
-                        Item itemCopy = ScriptableObject.Instantiate(original);
+                        SO_Item original = op.Result as SO_Item;
+                        SO_Item itemCopy = ScriptableObject.Instantiate(original);
                         ItemData.Add(key, itemCopy);
-                        //Addressables.Release(op);
                     };
                 }
                 break;
-            case SaveType.Prefab:
+            case Define.ELabel.Prefab:
                 {
                     if (Prefabs.ContainsKey(key))
                     {
@@ -173,8 +140,8 @@ public class ResourceManager : MonoBehaviour
                         if (poolable)
                         {
                             GI.Inst.PoolManager.CreatePoolAdvanced(poolable ,key);
-                            prefabLoadNum++;
-                            if (prefabLoadNum == maxNum)
+                            PrefabLoadCount++;
+                            if (PrefabLoadCount == maxNum)
                             {
                                 callback?.Invoke();
                             }
@@ -182,29 +149,43 @@ public class ResourceManager : MonoBehaviour
                         else
                         {
                             Prefabs.Add(key, op.Result as GameObject);
-                            prefabLoadNum++;
-                            if (prefabLoadNum == maxNum)
+                            PrefabLoadCount++;
+                            if (PrefabLoadCount == maxNum)
                             {
                                 callback?.Invoke();
                             }
                         }
-                        //Addressables.Release(op);
                     };
                 }
                 break;
-            case SaveType.PlayerBaseStat:
+            case Define.ELabel.DungeonInfo:
+            {
+                if (DungeonInfos.ContainsKey(key))
+                {
+                    Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                    return;
+                }
+                var asyncOperation = Addressables.LoadAssetAsync<T>(key);
+                asyncOperation.Completed += (op) =>
+                {
+                    SO_DungeonInfo original = op.Result as SO_DungeonInfo;
+                    SO_DungeonInfo dungeonInfoCopy = ScriptableObject.Instantiate(original);
+                    DungeonInfos.Add(key, dungeonInfoCopy);
+                };
+            }
+                break;
+            case Define.ELabel.PlayerBaseStat:
             {
                 var asyncOperation = Addressables.LoadAssetAsync<T>(key);
                 asyncOperation.Completed += (op) =>
                 {
-                    PlayerBaseStats original = op.Result as PlayerBaseStats;
-                    PlayerBaseStats baseStatsCopy = ScriptableObject.Instantiate(original);
+                    SO_PlayerBaseStats original = op.Result as SO_PlayerBaseStats;
+                    SO_PlayerBaseStats baseStatsCopy = ScriptableObject.Instantiate(original);
                     PlayerBaseStats = baseStatsCopy;
-                    //Addressables.Release(op);
                 };
             }
                 break;
-            case SaveType.AudioClip:
+            case Define.ELabel.AudioClip:
             {
                 if (AudioClips.ContainsKey(key))
                 {
@@ -218,7 +199,7 @@ public class ResourceManager : MonoBehaviour
                 };
             }
                 break;
-            case SaveType.AudioMixer:
+            case Define.ELabel.AudioMixer:
             {
                 var asyncOperation = Addressables.LoadAssetAsync<T>(key);
                 asyncOperation.Completed += (op) =>
@@ -227,7 +208,7 @@ public class ResourceManager : MonoBehaviour
                 };
             }
                 break;
-            case SaveType.StatusSprites:
+            case Define.ELabel.StatusSprite:
             {
                 if (StatusSprites.ContainsKey(key))
                 {
@@ -245,13 +226,31 @@ public class ResourceManager : MonoBehaviour
                 };
             }
                 break;
-            case SaveType.WeaponEnhanceValueByLevel:
+            case Define.ELabel.ItemSprite:
+            {
+                if (ItemSprites.ContainsKey(key))
+                {
+                    Debug.Log($"Failed to load. Has same key already. key : {key} ");
+                    return;
+                }
+                
+                var asyncOperation = Addressables.LoadAssetAsync<IList<Sprite>>(key);
+                asyncOperation.Completed += (aop) =>
+                {
+                    foreach (Sprite spriteValue in aop.Result)
+                    {
+                        ItemSprites.Add(spriteValue.name, spriteValue);
+                    }
+                };
+            }
+                break;
+            case Define.ELabel.WeaponEnhanceValueByLevel:
             {
                 var asyncOperation = Addressables.LoadAssetAsync<T>(key);
                 asyncOperation.Completed += (op) =>
                 {
-                    WeaponEnhanceValueByLevel original = op.Result as WeaponEnhanceValueByLevel;
-                    WeaponEnhanceValueByLevel copy = ScriptableObject.Instantiate(original);
+                    SO_WeaponEnhanceValueByLevel original = op.Result as SO_WeaponEnhanceValueByLevel;
+                    SO_WeaponEnhanceValueByLevel copy = ScriptableObject.Instantiate(original);
                     WeaponEnhanceValueByLevel = copy;
                 };
             }
@@ -333,9 +332,8 @@ public class ResourceManager : MonoBehaviour
     {
         string key = Enum.GetName(typeof(Define.ESkillId), skillId);
         if (SkillData.ContainsKey(key))
-        {
             return (SO_ActiveSkill)SkillData[key];
-        }
+        
         return null;
     }
     
@@ -343,31 +341,36 @@ public class ResourceManager : MonoBehaviour
     {
         string key = Enum.GetName(typeof(Define.ESkillId), skillId);
         if (SkillData.ContainsKey(key))
-        {
             return (SO_PassiveSkill)SkillData[key];
-        }
+        
         return null;
     }
     
-    public Item GetItemDataCopy(string itemId)
+    public SO_Item GetItemDataCopy(string itemId)
     {
         if (ItemData.ContainsKey(itemId))
-        {
             return ScriptableObject.Instantiate(ItemData[itemId]);
-        }
+        
         return null;
     }
 
-    public Item GetItemData(string itemId)
+    public SO_Item GetItemData(string itemId)
     {
         if (ItemData.ContainsKey(itemId))
-        {
             return ItemData[itemId];
-        }
+        
+        return null;
+    }
+
+    public SO_DungeonInfo GetDungeonInfo(EDungeonType dungeonType)
+    {
+        string key = Enum.GetName(typeof(EDungeonType), dungeonType);
+        if (DungeonInfos.ContainsKey(key))
+            return DungeonInfos[key];
         return null;
     }
     
-    public void GetMonsterInfoDataCopy(string monsterPrefabName, Define.ELabel label ,Action<MonsterInfo> callback)
+    public void GetMonsterInfoDataCopy(string monsterPrefabName, Define.ELabel label ,Action<SO_MonsterInfo> callback)
     {
         string key = Enum.GetName(typeof(Define.ELabel), label);
         var opHandle = Addressables.LoadResourceLocationsAsync(key, typeof(ScriptableObject));
@@ -381,17 +384,15 @@ public class ResourceManager : MonoBehaviour
                     var asyncOperation = Addressables.LoadAssetAsync<ScriptableObject>(result.PrimaryKey);
                     asyncOperation.Completed += (operationHandle) =>
                     {
-                        MonsterInfo monsterInfoCopy = ScriptableObject.Instantiate(operationHandle.Result as MonsterInfo);
+                        SO_MonsterInfo monsterInfoCopy = ScriptableObject.Instantiate(operationHandle.Result as SO_MonsterInfo);
                    
                         if (monsterInfoCopy.monsterPrefabName == monsterPrefabName)
                         {
                             callback?.Invoke(monsterInfoCopy);
-                            //Addressables.Release(operationHandle);
                         }
                     };
                 }
             }
-            //Addressables.Release(op);
         };
     }
 
@@ -406,6 +407,13 @@ public class ResourceManager : MonoBehaviour
     {
         if (StatusSprites.ContainsKey(name))
             return StatusSprites[name];
+        return null;
+    }
+
+    public Sprite GetItemSprite(string name)
+    {
+        if (ItemSprites.ContainsKey(name))
+            return ItemSprites[name];
         return null;
     }
     
@@ -434,6 +442,47 @@ public class ResourceManager : MonoBehaviour
         };
     }
     
+    public void SetDungeonInfo(EDungeonType type, Serializable.DungeonInfo_Lite dungeonInfoLite)
+    {
+        string key = Enum.GetName(typeof(EDungeonType), type);
+        if (DungeonInfos.ContainsKey(key))
+        {
+            DungeonInfos[key].CopyFromLite(dungeonInfoLite);
+        }
+    }
 
-    
+    public bool IsPrevDungeonCompleted(EDungeonType type)
+    {
+        if ((int)type == 0) return true;
+        EDungeonType prevDungeonType = (EDungeonType)((int)type - 1);
+        string key = Enum.GetName(typeof(EDungeonType), prevDungeonType);
+        if (DungeonInfos.ContainsKey(key))
+        {
+            return DungeonInfos[key].isDungeonCompleted;
+        }
+
+        return false;
+    }
+
+    public void DungeonLevelComplete(string key, EDungeonCategory category, int dungeonLevel)
+    {
+        if (DungeonInfos.ContainsKey(key))
+        {
+            if (category == EDungeonCategory.Normal)
+            {
+                DungeonInfoDetail detail = DungeonInfos[key].dungeonInfoDetails.Find(detail =>
+                    (detail.dungeonCategory == category) && (detail.dungeonLevel == dungeonLevel));
+                detail.isLevelCompleted = true;
+            }
+            else if (category == EDungeonCategory.Boss)
+            {
+                DungeonInfoDetail detail = DungeonInfos[key].dungeonInfoDetails.Find(detail =>
+                    (detail.dungeonCategory == category) && (detail.dungeonLevel == dungeonLevel));
+                detail.isLevelCompleted = true;
+                DungeonInfos[key].isDungeonCompleted = true;
+            }
+        }
+    }
+
+
 }

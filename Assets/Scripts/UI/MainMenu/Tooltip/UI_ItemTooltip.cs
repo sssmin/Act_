@@ -18,7 +18,7 @@ public class UI_ItemTooltip : MonoBehaviour
         GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
     }
 
-    public void Init(Item item, Vector3 slotPos, int pivot)
+    public void Init(SO_Item item, Vector3 slotPos, int pivot)
     {
         AllClear();
         InitSize(slotPos, pivot);
@@ -26,7 +26,7 @@ public class UI_ItemTooltip : MonoBehaviour
         typeText.text = Util.ConvertItemCategoryString(item.ItemCategory);
         itemNameText.text = item.itemName;
         
-        Equipment equipment = item as Equipment;
+        SO_Equipment equipment = item as SO_Equipment;
         if (equipment)
         {
             rarityText.text = Util.ConvertRarityString(equipment.rarity);
@@ -58,7 +58,7 @@ public class UI_ItemTooltip : MonoBehaviour
         IncreaseWrapperSize();
     }
 
-    private void InitEffectDescs(Equipment equipment)
+    private void InitEffectDescs(SO_Equipment equipment)
     {
         foreach (string effectDesc in equipment.effectDescs)
         {
@@ -66,7 +66,7 @@ public class UI_ItemTooltip : MonoBehaviour
         }
     }
 
-    private void InitItemStats(Equipment equipment)
+    private void InitItemStats(SO_Equipment equipment)
     {
         foreach (Stat itemStat in equipment.itemStats)
         {

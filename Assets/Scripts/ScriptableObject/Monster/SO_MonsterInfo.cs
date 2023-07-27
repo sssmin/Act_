@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MonsterInfo_", menuName ="Data/MonsterInfo")]
-public class MonsterInfo : ScriptableObject
+public class SO_MonsterInfo : ScriptableObject
 {
     public string monsterPrefabName;
     public string monsterName;

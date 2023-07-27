@@ -56,4 +56,17 @@ public class UI_Main_SkillHotkeySlot : UI_Main_SkillHotkeySlotBase
     {
         animator.SetBool(AnimHash.temporal, false);
     }
+    
+    public override void VisibleUI()
+    {
+        base.VisibleUI();
+        animator.enabled = true;
+    }
+
+    public override void InvisibleUI()
+    {
+        animator.enabled = false;
+        base.InvisibleUI();
+        
+    }
 }

@@ -298,7 +298,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8545449237324599562}
-  - component: {fileID: 3943460780062945825}
   - component: {fileID: 7591240397304840012}
   - component: {fileID: 7305108217722244068}
   m_Layer: 18
@@ -329,26 +328,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!95 &3943460780062945825
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8806761350928547800}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e1f1ff7943315a0498a6434bd428c233, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
 --- !u!114 &7591240397304840012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,6 +355,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillIconImage: {fileID: 331711297084783585}
   defaultSlotSprite: {fileID: 807706436, guid: e94ac26d5a3749846a85371626955958, type: 3}
-  bindKeyText: {fileID: 0}
   chargeAmountText: {fileID: 3775152377551570718}
   chargeImage: {fileID: 5616082767766534836}

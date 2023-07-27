@@ -15,6 +15,7 @@ public enum EStartGameProgress
 }
 
 
+
 [Serializable]
 class SaveResolution
 {
@@ -35,26 +36,31 @@ public class GI : MonoBehaviour
     public EStartGameProgress StartGameProgress { get; set; }
     
     [SerializeField] private List<Define.ELabel> labels = new List<Define.ELabel>();
-  
-    public Player Player { get; private set; }
-    public SkillManager PlayerSkillManager { get; private set; }
 
-    public CinemachineTarget CinemachineTarget { get; private set; } 
     private PoolManager poolManager;
     private ListenerManager listenerManager;
+    private DungeonManager dungeonManager;
+    
+    public Player Player { get; private set; }
+    public CinemachineTarget CinemachineTarget { get; private set; } 
+    
     public PoolManager PoolManager { get => Inst.poolManager; private set => poolManager = value; }
     public ListenerManager ListenerManager { get => Inst.listenerManager; private set => listenerManager = value; }
+    public DungeonManager DungeonManager { get => Inst.dungeonManager; private set => dungeonManager = value; }
 
+    public SkillManager PlayerSkillManager { get; private set; }
     public ResourceManager ResourceManager { get; private set; }
     public UIManager UIManager { get; private set; }
     public CooltimeManager CooltimeManager { get; private set; }
     public SceneLoadManager SceneLoadManager { get; private set; }
     public SoundManager SoundManager { get; private set; }
-    private bool IsInitialized { get; set; }
+    public TutorialManager TutorialManager { get; private set; }
     
+    private bool IsInitialized { get; set; }
     public int ScreenWidth { get; set; }
     public int ScreenHeight { get; set; }
     public bool IsFullscreen { get; set; }
+    private Vector2 PlayerLoadedSpawnPos { get; set; }
 
     void Awake()
     {
@@ -69,6 +75,7 @@ public class GI : MonoBehaviour
         Inst.PoolManager = new PoolManager();
         Inst.PoolManager.Init();
         Inst.ListenerManager = new ListenerManager();
+        Inst.DungeonManager = new DungeonManager();
 
         SceneManager.sceneLoaded -= SceneLoaded;
         SceneManager.sceneLoaded += SceneLoaded;
@@ -90,6 +97,9 @@ public class GI : MonoBehaviour
 
         Inst.SoundManager = Generate<SoundManager>("SoundManager");
         Inst.SoundManager.transform.SetParent(transform);
+
+        Inst.TutorialManager = Generate<TutorialManager>("TutorialManager");
+        Inst.TutorialManager.transform.SetParent(transform);
 
         //화면 크기 초기화
         LoadDisplayData();
@@ -183,14 +193,7 @@ public class GI : MonoBehaviour
     {
         //타이틀 화면 생성
         Inst.ResourceManager.Instantiate("UI_TitleMainMenu");
-        
-        //리소스 저장정보 새로 초기화
-        // List<Define.ELabel> labels = new List<Define.ELabel>()
-        // {
-        //     Define.ELabel.Skill, Define.ELabel.Item 
-        // };
-        // Inst.ResourceManager.InitData(labels);
-        
+
         //쿨타임 매니저도 새로
         Inst.CooltimeManager.InitCooltime();
         //플레이어 새로.
@@ -216,7 +219,9 @@ public class GI : MonoBehaviour
                     GameObject playerStartPoint = GameObject.Find("PlayerStartPoint");
                     Player.transform.position = playerStartPoint.transform.position;
                     StartGameProgress = EStartGameProgress.PlayingGame;
+                    
                     CameraInitialize();
+                    Inst.TutorialManager.ExecuteNewGameTutorial();
                 }
                     break;
                 case EStartGameProgress.PlayingGame:
@@ -226,17 +231,45 @@ public class GI : MonoBehaviour
                     StartGameProgress = EStartGameProgress.PlayingGame;
                     
                     CameraInitialize();
-                    if (SceneManager.GetActiveScene().name == "town")
-                        Inst.ListenerManager.InitUltSkillChargeAmount();
+                    Inst.UIManager.VisibleAllMainUIComponent();
+
+                    if (SceneManager.GetActiveScene().name == "Dungeon")
+                    {
+                        GameObject[] objects = GameObject.FindGameObjectsWithTag("SpawnLocation");
+                        foreach (GameObject go in objects)
+                        {
+                            GameObject spawnerGo = Inst.ResourceManager.Instantiate("Spawner");
+                            spawnerGo.transform.position = go.transform.position;
+                            Spawner spawner = spawnerGo.GetComponent<Spawner>();
+                            DungeonInfoDetail detail = DungeonManager.CurrentSelectDungeonInfoDetail;
+                            spawner.SetMonsterInfo(detail.spawnMonsterIds, DungeonManager.CurrentSelectDungeonInfoDetail.monsterLevel, detail.dungeonCategory);
+                        }
+                    }
+                    else if (SceneManager.GetActiveScene().name == "Boss")
+                    {
+                        GameObject[] objects = GameObject.FindGameObjectsWithTag("SpawnLocation");
+                        foreach (GameObject go in objects)
+                        {
+                            GameObject spawnerGo = Inst.ResourceManager.Instantiate("Spawner");
+                            spawnerGo.transform.position = go.transform.position;
+                            Spawner spawner = spawnerGo.GetComponent<Spawner>();
+                            DungeonInfoDetail detail = DungeonManager.CurrentSelectDungeonInfoDetail;
+                            spawner.SetMonsterInfo(detail.spawnMonsterIds, DungeonManager.CurrentSelectDungeonInfoDetail.monsterLevel, detail.dungeonCategory);
+                        }
+
+                        GameObject bossWallGo = GameObject.FindGameObjectWithTag("BossWall");
+                        bossWallGo.SetActive(false);
+                        Inst.DungeonManager.BossMapWall = bossWallGo;
+                    }
                 }
                     break;
                 case EStartGameProgress.LoadGame:
                 {
-                    PlayerInfo playerInfo = LoadPlayerData();
-                
-                    Player.transform.position = playerInfo.pos;
+                    Player.transform.position = PlayerLoadedSpawnPos;
                     StartGameProgress = EStartGameProgress.PlayingGame;
+                    
                     CameraInitialize();
+                    Inst.UIManager.VisibleAllMainUIComponent();
                 }
                     break;
                 case EStartGameProgress.GoToTitle:
@@ -254,9 +287,18 @@ public class GI : MonoBehaviour
         Player.gameObject.SetActive(true);
         StartGameProgress = startGameProgress;
         Player.SetBaseStat();
-        InventoryManager inventory = Player.GetComponent<InventoryManager>();
-        inventory.SetStartItem();
         PlayerSkillManager.SetStartPassiveSkills();
+        Inst.UIManager.RefreshInventoryUI();
+        Inst.UIManager.RefreshGoldInvenCapacityUI();
+        Inst.UIManager.InitTutorialUI();
+    }
+    
+    public void SaveGame()
+    {
+        SaveInventoryData();
+        SavePlayerData();
+        SaveTutorialStatus();
+        SaveDungeonInfo();
     }
     
     public string LoadGame(EStartGameProgress startGameProgress)
@@ -264,58 +306,58 @@ public class GI : MonoBehaviour
         Player.gameObject.SetActive(true);
         StartGameProgress = startGameProgress;
         Player.SetBaseStat();
-        PlayerInfo playerInfo = LoadPlayerData();
-        PlayerStatManager playerStatManager = (PlayerStatManager)Player.StatManager;
-        playerStatManager.InitCurrentHp(playerInfo.currentHp);
         
+        string sceneName = LoadPlayerData();
         LoadInventoryData();
-        PlayerSkillManager.SetDeserializeSkillInfo(playerInfo);
+        LoadTutorialStatus();
+        LoadDungeonInfo();
         
-        return playerInfo.sceneName;
+        return sceneName;
     }
 
-    public void SaveGameData()
+    #region Save
+
+    private void SaveInventoryData()
     {
-        InventoryInfo inventoryInfo = Player.InventoryManager.GetSerializeInventoryInfo();
+        Serializable.S_InventoryInfo inventoryInfo = Player.InventoryManager.GetSerializeInventoryInfo();
         
         string path = Path.Combine(Application.persistentDataPath, "InventorySaveData.json");
         string jsonData = JsonUtility.ToJson(inventoryInfo);
         File.WriteAllText(path, jsonData);
-        
-        PlayerInfo playerInfo = new PlayerInfo(
+    }
+
+    private void SavePlayerData()
+    {
+        Serializable.S_PlayerInfo playerInfo = new Serializable.S_PlayerInfo(
             SceneManager.GetActiveScene().name, 
             Player.transform.position, 
             Player.StatManager.characterStats.currentHp.Value, 
             PlayerSkillManager.PassiveSkills,
             PlayerSkillManager.ActiveSkillLevels);
-        path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
-        jsonData = JsonUtility.ToJson(playerInfo);
+        
+        string path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
+        string jsonData = JsonUtility.ToJson(playerInfo);
         File.WriteAllText(path, jsonData);
     }
     
-    public void LoadInventoryData()
+    private void SaveTutorialStatus()
     {
-        string path = Path.Combine(Application.persistentDataPath, "InventorySaveData.json");
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            InventoryInfo inventoryInfo = JsonUtility.FromJson<InventoryInfo>(json);
-            
-            Player.InventoryManager.SetDeserializeInventoryInfo(inventoryInfo);
-        }
-    }
-    
-    private PlayerInfo LoadPlayerData()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            return JsonUtility.FromJson<PlayerInfo>(json);
-        }
-        return null;
+        TutorialStatusDictionary dict = Inst.TutorialManager.SerializeTutorialStatus();
+        
+        string path = Path.Combine(Application.persistentDataPath, "TutorialStatus.json");
+        string jsonData = JsonUtility.ToJson(dict);
+        File.WriteAllText(path, jsonData);
     }
 
+    private void SaveDungeonInfo()
+    {
+        Serializable.S_DungeonInfo dungeonInfo = new Serializable.S_DungeonInfo(Inst.ResourceManager.DungeonInfos);
+        
+        string path = Path.Combine(Application.persistentDataPath, "DungeonInfoSaveData.json");
+        string jsonData = JsonUtility.ToJson(dungeonInfo);
+        File.WriteAllText(path, jsonData);
+    }
+    
     public void SaveSoundData()
     {
         Inst.SoundManager.GetAudioVolume(ESoundType.Master, out float value);
@@ -328,32 +370,6 @@ public class GI : MonoBehaviour
         PlayerPrefs.SetFloat("AudioEffect", value);
     }
     
-    private void LoadSoundData()
-    {
-        float value = PlayerPrefs.GetFloat("AudioMaster", 0f);
-        Inst.SoundManager.SetAudioVolume(ESoundType.Master, value);
-        
-        value = PlayerPrefs.GetFloat("AudioBackground", 0f);
-        Inst.SoundManager.SetAudioVolume(ESoundType.Background, value);
-        
-        value = PlayerPrefs.GetFloat("AudioEffect", 0f);
-        Inst.SoundManager.SetAudioVolume(ESoundType.Effect, value);
-    }
-
-    public void ApplyResolution(int width, int height)
-    {
-        ScreenWidth = width;
-        ScreenHeight = height;
-        
-        Screen.SetResolution(width, height, IsFullscreen);    
-    }
-
-    public void ApplyScreenMode(bool isFull)
-    {
-        IsFullscreen = isFull;
-        Screen.SetResolution(ScreenWidth, ScreenHeight, isFull);
-    }
-    
     public void SaveDisplayData()
     {
         string path = Path.Combine(Application.persistentDataPath, "DisplaySaveData.json");
@@ -362,20 +378,6 @@ public class GI : MonoBehaviour
         File.WriteAllText(path, resolutionJson);
     }
     
-    private void LoadDisplayData()
-    {
-        string path = Path.Combine(Application.persistentDataPath, "DisplaySaveData.json");
-        if (File.Exists(path))
-        {
-            string json = File.ReadAllText(path);
-            SaveResolution resolution = JsonUtility.FromJson<SaveResolution>(json);
-            ScreenWidth = resolution.width;
-            ScreenHeight = resolution.height;
-            IsFullscreen = resolution.isFullScreen;
-            Screen.SetResolution(ScreenWidth, ScreenHeight, IsFullscreen);
-        }
-    }
-
     public void SaveBindKeyData()
     {
         string path = Path.Combine(Application.persistentDataPath, "BindKeySaveData.json");
@@ -395,6 +397,88 @@ public class GI : MonoBehaviour
         }
         string bindingsJson = Player.PlayerController.PlayerControl.asset.ToJson();
         File.WriteAllText(path, bindingsJson);
+    }
+    
+
+    #endregion //Save
+
+    #region Load
+
+    public void LoadInventoryData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "InventorySaveData.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            Serializable.S_InventoryInfo inventoryInfo = JsonUtility.FromJson<Serializable.S_InventoryInfo>(json);
+            
+            Player.InventoryManager.SetDeserializeInventoryInfo(inventoryInfo);
+        }
+    }
+    
+    private string LoadPlayerData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            Serializable.S_PlayerInfo playerInfo = JsonUtility.FromJson<Serializable.S_PlayerInfo>(json);
+            PlayerLoadedSpawnPos = playerInfo.pos;
+            PlayerStatManager playerStatManager = (PlayerStatManager)Player.StatManager;
+            playerStatManager.InitCurrentHp(playerInfo.currentHp);
+            PlayerSkillManager.SetDeserializeSkillInfo(playerInfo);
+            return playerInfo.sceneName;
+        }
+
+        return "";
+    }
+
+    private void LoadTutorialStatus()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "TutorialStatus.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            TutorialStatusDictionary dict = JsonUtility.FromJson<TutorialStatusDictionary>(json);
+            Inst.TutorialManager.DeserializeTutorialStatus(dict);
+        }
+    }
+    
+    private void LoadDungeonInfo()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "DungeonInfoSaveData.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            Serializable.S_DungeonInfo info = JsonUtility.FromJson<Serializable.S_DungeonInfo>(json);
+            DeserializeDungeonInfo(info);
+        }
+    }
+    
+    private void LoadSoundData()
+    {
+        float value = PlayerPrefs.GetFloat("AudioMaster", 0f);
+        Inst.SoundManager.SetAudioVolume(ESoundType.Master, value);
+        
+        value = PlayerPrefs.GetFloat("AudioBackground", 0f);
+        Inst.SoundManager.SetAudioVolume(ESoundType.Background, value);
+        
+        value = PlayerPrefs.GetFloat("AudioEffect", 0f);
+        Inst.SoundManager.SetAudioVolume(ESoundType.Effect, value);
+    }
+    
+    private void LoadDisplayData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "DisplaySaveData.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveResolution resolution = JsonUtility.FromJson<SaveResolution>(json);
+            ScreenWidth = resolution.width;
+            ScreenHeight = resolution.height;
+            IsFullscreen = resolution.isFullScreen;
+            Screen.SetResolution(ScreenWidth, ScreenHeight, IsFullscreen);
+        }
     }
 
     public void LoadBindKeyData()
@@ -417,80 +501,39 @@ public class GI : MonoBehaviour
                         existingAction.AddBinding(newBinding);
                     }
                 }
-                
             }
         }
     }
-}
 
-[Serializable]
-public class PlayerInfo
-{
-    public PlayerInfo(string inSceneName, Vector2 inPos, float inCurrentHp, 
-        Dictionary<Define.ESkillId, SO_PassiveSkill> inPassiveSkills,
-        int[] inActiveSkillLevels)
+    #endregion //Load
+    
+    public void ApplyResolution(int width, int height)
     {
-        sceneName = inSceneName;
-        pos = inPos;
-        currentHp = inCurrentHp;
-        activeSkillLevels = inActiveSkillLevels;
-        Convert(inPassiveSkills);
-    }
-    [SerializeField] public string sceneName;
-    [SerializeField] public Vector2 pos;
-    [SerializeField] public float currentHp;
-    [SerializeField] public PassiveSkillDictionary passiveSkills;
-    [SerializeField] public int[] activeSkillLevels;
-
-    private void Convert(Dictionary<Define.ESkillId, SO_PassiveSkill> inPassiveSkills)//, Dictionary<Define.ESkillId, SO_PassiveSkill> inEquippedPassiveSkills)
-    {
-        passiveSkills = new PassiveSkillDictionary();
-        foreach (KeyValuePair<Define.ESkillId, SO_PassiveSkill> pair in inPassiveSkills)
-        {
-            PassiveSaveInfo passiveSaveInfo = new PassiveSaveInfo()
-            {
-                skillId = pair.Key, level = pair.Value.skillLevel, bCanLevelUp = pair.Value.bCanLevelUp, equipIndex = pair.Value.equipIndex
-            };
-            passiveSkills.Add(pair.Key, passiveSaveInfo);
-        }
-        passiveSkills.Serialize();
-    }
-
-    public void Deserialize()
-    {
-        passiveSkills.Deserialize();
-    }
-}
-
-
-[Serializable]
-public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
-{
-    [SerializeField] private List<TKey> keys = new List<TKey>();
-    [SerializeField] private List<TValue> values = new List<TValue>();
-
-    public void Serialize()
-    {
-        keys.Clear();
-        values.Clear();
+        ScreenWidth = width;
+        ScreenHeight = height;
         
-        foreach (KeyValuePair<TKey,TValue> pair in this)
-        {
-            keys.Add(pair.Key);
-            values.Add(pair.Value);
-        }
+        Screen.SetResolution(width, height, IsFullscreen);    
     }
 
-    public void Deserialize()
+    public void ApplyScreenMode(bool isFull)
     {
-        Clear();
-        
-        if (keys.Count != values.Count)
-            Debug.Log("error");
+        IsFullscreen = isFull;
+        Screen.SetResolution(ScreenWidth, ScreenHeight, isFull);
+    }
+    
+    
+    #region Serialize
+    
+    private void DeserializeDungeonInfo(Serializable.S_DungeonInfo info)
+    {
+        info.Deserialize();
 
-        for (int i = 0; i < keys.Count; i++)
+        DungeonInfoDictionary dict = info.dungeonInfoDictionary;
+        foreach (KeyValuePair<EDungeonType, Serializable.DungeonInfo_Lite> pair in dict)
         {
-            Add(keys[i], values[i]);
+            Inst.ResourceManager.SetDungeonInfo(pair.Key, pair.Value);
         }
     }
+
+    #endregion
 }

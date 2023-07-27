@@ -5045,7 +5045,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillIconImage: {fileID: 331711297084783585}
   defaultSlotSprite: {fileID: 807706436, guid: e94ac26d5a3749846a85371626955958, type: 3}
-  bindKeyText: {fileID: 0}
   cooltimeImage: {fileID: 5616082767766534836}
   temporalDistortionParticle: {fileID: 6884458291333426120}
   animator: {fileID: 3943460780062945825}

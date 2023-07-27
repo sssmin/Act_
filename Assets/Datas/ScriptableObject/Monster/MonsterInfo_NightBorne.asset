@@ -17,19 +17,19 @@ MonoBehaviour:
   stats:
     attack:
       statType: 1
-      statValue: 28
-    attackIncPer:
+      statValue: 17
+    attackIncValue:
       statType: 2
       statValue: 0
     defence:
       statType: 3
       statValue: 40
-    defenceIncPer:
+    defenceIncValue:
       statType: 4
       statValue: 0
     maxHp:
       statType: 5
-      statValue: 10000000
+      statValue: 200
     currentHp:
       statType: 6
       statValue: 0
@@ -60,8 +60,11 @@ MonoBehaviour:
   dropTable:
     itemInfos:
     - itemId: SharedMat
+      itemCategory: 4
       maxDropAmount: 1
-      dropChance: 5
+      dropChance: 15
     - itemId: NightBorneBoneMeal
-      maxDropAmount: 2
-      dropChance: 10
+      itemCategory: 4
+      maxDropAmount: 3
+      dropChance: 15
+    gold: 25

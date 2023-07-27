@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Consumable_", menuName ="Data/Item/Consumable")]
-public class Consumable : Item
+public class SO_Consumable : SO_Item
 {
-    public Consumable()
+    public SO_Consumable()
     {
         ItemCategory = EItemCategory.Consumable;
         amount = 1;
@@ -21,7 +21,7 @@ public class Consumable : Item
     public int storeSellPrice; //상점에서의 가격
 
     
-    public void ItemCopy(Consumable item)
+    public void ItemCopy(SO_Consumable item)
     {
         itemId = item.itemId;
         ItemCategory = item.ItemCategory;

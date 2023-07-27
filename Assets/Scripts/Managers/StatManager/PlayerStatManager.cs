@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -130,9 +131,8 @@ public class PlayerStatManager : StatManager
     protected override void AddCurrentHp(float value)
     {
         base.AddCurrentHp(value);
-        
-        float ratio = Mathf.Round((characterStats.currentHp.Value / characterStats.maxHp.Value * 100f) * 10) * 0.1f; 
-        GI.Inst.UIManager.SetHpBar(ratio);
+
+        RefreshCurrentHpUI();
     }
 
     public void HealMaxHpPer(float per)
@@ -144,6 +144,13 @@ public class PlayerStatManager : StatManager
     public void InitCurrentHp(float currentHp)
     {
         characterStats.currentHp.Value = currentHp;
+        RefreshCurrentHpUI();
+    }
+
+    private void RefreshCurrentHpUI()
+    {
+        float ratio = Mathf.Round((characterStats.currentHp.Value / characterStats.maxHp.Value * 100f) * 10) * 0.1f; 
+        GI.Inst.UIManager.SetHpBar(ratio);
     }
     
     public override void ExecDurationEffect(Effect effect, Sprite icon)
@@ -208,5 +215,53 @@ public class PlayerStatManager : StatManager
             return IconFillAmount[effectId];
         return 0f;
     }
+
+    public void OutOfBoundDead()
+    {
+        AddCurrentHp(-characterStats.currentHp.Value);
+        Dead();
+    }
     
+    protected override void Dead()
+    {
+        if (IsDead) return;
+        
+        IsDead = true;
+        
+        Player player = GetComponent<Player>();
+        if (player)
+        {
+            player.TransitionState(Define.EPlayerState.Dead);
+            StartCoroutine(InitPlayerIfDead(2f, player));
+            GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Town", 2f);
+        }
+    }
+
+    IEnumerator InitPlayerIfDead(float second, Player player)
+    {
+        yield return new WaitForSeconds(second);
+        AddCurrentHp(characterStats.maxHp.Value * 0.5f);
+        IsDead = false;
+        player.TransitionState(Define.EPlayerState.Idle);
+    }
+
+    public override void TakeTrapDamage()
+    {
+        if (IsDead) return;
+        
+        
+        float subToHp = characterStats.maxHp.Value * 0.2f;
+        
+        Character.HitEffect();
+        AddCurrentHp(-subToHp);
+        SpawnDamageText(Define.EDamageTextType.DamagedByTrap, subToHp);
+        
+        if (characterStats.currentHp.Value <= 0f)
+        {
+            Dead();
+            return;
+        }
+        
+        GI.Inst.ListenerManager.ExecTakeDamageEffect(Define.EDamageType.Both, null);
+    }
 }

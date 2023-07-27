@@ -26,26 +26,29 @@ public class UI_MainMenu : UI_Popup
         go = GI.Inst.ResourceManager.Instantiate("UI_Skill_SkillContent", contentUIParent);
         SkillContentUI = go.GetComponent<UI_SkillContent>();
         SkillContentUI.InitOnce();
+        
+        GI.Inst.UIManager.SetNormalButtonColorPreset(inventoryButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(skillButton);
     }
 
     public void OnVisible(Define.EMainMenuType type)
     {
         InvenStatsContentUI.transform.SetParent(null);
         SkillContentUI.transform.SetParent(null);
-        
-        inventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-        skillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+
+        inventoryButton.interactable = true;
+        skillButton.interactable = true;
 
         switch (type)
         {
             case Define.EMainMenuType.Inventory:
                 InvenStatsContentUI.transform.SetParent(contentUIParent);
                 InvenStatsContentUI.AttachToInventory();
-                inventoryButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                inventoryButton.interactable = false;
                 break;
             case Define.EMainMenuType.Skill:
                 SkillContentUI.transform.SetParent(contentUIParent);
-                skillButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                skillButton.interactable = false;
                 break;
         }
     }

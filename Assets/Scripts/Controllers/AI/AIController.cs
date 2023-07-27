@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class AIController : BaseController
 {
@@ -13,7 +14,23 @@ public class AIController : BaseController
     public bool IsFrontGround { get; private set; }
     public float NormalAttackRange { get; set; }
     public float NormalAttackCooltime { get; private set; }
-    public bool CanNormalAttack { get; private set; }
+
+    private bool bCanNormalAttack;
+    public bool CanNormalAttack
+    {
+        get
+        {
+            if (ControlledMonster.StatManager.IsDead) return false;
+            return bCanNormalAttack;
+            ;
+        }
+        
+        private set
+        {
+            bCanNormalAttack = value;
+        }
+    }
+
     private float RandDistModifier { get; set; }
     private Transform NormalAttackCollider { get; set; }
     

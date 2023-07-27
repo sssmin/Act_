@@ -29,6 +29,9 @@ public class UI_Merchant_Menu : UI_Popup
         go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_CraftLineParent", transform);
         craftLineParentUI = go.GetComponent<UI_Merchant_CraftLineParent>();
         craftLineParentUI.InitOnce();
+        
+        GI.Inst.UIManager.SetNormalButtonColorPreset(buyButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(craftButton);
     }
     
     public void Open(EMerchantType type, Merchant merchant)
@@ -36,9 +39,16 @@ public class UI_Merchant_Menu : UI_Popup
         currentType = type;
         Merchant = merchant;
         
+        craftLineParentUI.gameObject.SetActive(false);
+        itemLineParentUI.gameObject.SetActive(false);
+        
+        buyButton.interactable = true;
+        craftButton.interactable = true;
+        
         GI.Inst.ResourceManager.CreateItemCraft(Define.ELabel.ItemCraft, craft =>
         {
             TempItemCraft = craft;
+            
             craftLineParentUI.transform.SetParent(null);
             itemLineParentUI.transform.SetParent(null);
             
@@ -46,6 +56,7 @@ public class UI_Merchant_Menu : UI_Popup
             {
                 case EMerchantType.Buy:
                 {
+                    itemLineParentUI.gameObject.SetActive(true);
                     itemLineParentUI.transform.SetParent(contentParentTransform);
                     itemLineParentUI.rectTransform.localPosition = Vector3.zero;
                     
@@ -53,12 +64,12 @@ public class UI_Merchant_Menu : UI_Popup
 
                     inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
                     inventoryWrapper.transform.SetParent(inventoryParentTransform);
-                    buyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
-                    craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+                    buyButton.interactable = false;
                 }
                     break;
                 case EMerchantType.Craft:
                 {
+                    craftLineParentUI.gameObject.SetActive(true);
                     craftLineParentUI.transform.SetParent(contentParentTransform);
                     craftLineParentUI.transform.localPosition = Vector3.zero;
                     
@@ -66,51 +77,11 @@ public class UI_Merchant_Menu : UI_Popup
                     
                     inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
                     inventoryWrapper.transform.SetParent(inventoryParentTransform);
-                    craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
-                    buyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+                    craftButton.interactable = false;
                 }
                     break;
             }
         });
-    }
-
-    private void Init(EMerchantType type, Merchant merchant)
-    {
-        currentType = type;
-        Merchant = merchant;
-        
-        switch (type)
-        {
-            case EMerchantType.Buy:
-                {
-                    craftLineParentUI.transform.SetParent(null);
-                    itemLineParentUI.transform.SetParent(contentParentTransform);
-                    itemLineParentUI.rectTransform.localPosition = Vector3.zero;
-                    
-                    itemLineParentUI.Init(Merchant.GetItemIds());
-
-                    inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
-                    inventoryWrapper.transform.SetParent(inventoryParentTransform);
-                    buyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
-                    craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-                }
-                break;
-            case EMerchantType.Craft:
-                {
-                    itemLineParentUI.transform.SetParent(null);
-                    craftLineParentUI.transform.SetParent(contentParentTransform);
-                    craftLineParentUI.transform.localPosition = Vector3.zero;
-                    
-                    craftLineParentUI.Init(TempItemCraft);
-                    
-                    
-                    inventoryWrapper = GI.Inst.UIManager.GetInventoryWrapper().gameObject;
-                    inventoryWrapper.transform.SetParent(inventoryParentTransform);
-                    craftButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
-                    buyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-                }
-                break;
-        }
     }
 
     private void CloseMerchant()
@@ -119,7 +90,6 @@ public class UI_Merchant_Menu : UI_Popup
         itemLineParentUI.transform.SetParent(null);
         craftLineParentUI.transform.SetParent(null);
         
-        GI.Inst.UIManager.ClosePopup();
         craftLineParentUI.Close();
         Destroy(TempItemCraft);
         TempItemCraft = null;
@@ -129,20 +99,57 @@ public class UI_Merchant_Menu : UI_Popup
     {
         if (currentType == EMerchantType.Buy)
             return;
-        Init(EMerchantType.Buy, Merchant);
+        Open(EMerchantType.Buy, Merchant);
     }
     
     public void OnClickCraftCategoryButton()
     {
         if (currentType == EMerchantType.Craft)
             return;
+        if (!GI.Inst.TutorialManager.ExecuteTutorialIfNotCompleted(ETutorial.ItemCraft))
+        {
+           //튜토 완료         
+        }
         GI.Inst.UIManager.ClearCraftResult();
-        Init(EMerchantType.Craft, Merchant);
+        Open(EMerchantType.Craft, Merchant);
     }
 
     public override void Close()
     {
         CloseMerchant();
         gameObject.SetActive(false);
+    }
+    
+    //튜토리얼에서 사용됨
+    public void EnableButton(EMerchantType type)
+    {
+        
+        switch (type)
+        {
+            case EMerchantType.Buy:
+                buyButton.interactable = true;
+                break;
+            case EMerchantType.Craft:
+                craftButton.interactable = true;
+                break;
+        }
+    }
+
+    public void DisableButton(EMerchantType type)
+    {
+        switch (type)
+        {
+            case EMerchantType.Buy:
+                buyButton.interactable = false;
+                break;
+            case EMerchantType.Craft:
+                craftButton.interactable = false;
+                break;
+        }
+    }
+
+    public Button GetWeaponCraftButton()
+    {
+        return craftLineParentUI.GetWeaponCraftButton();
     }
 }

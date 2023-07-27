@@ -36,16 +36,19 @@ public class SceneLoadManager : MonoBehaviour
         StartCoroutine(LoadSceneAsync("Title"));
     }
 
-    public void RequestLoadSceneAsync(string sceneName)
+    public void RequestLoadSceneAsync(string sceneName, float second)
     {
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_LoadingScreen");
         loadingBar = go.GetComponentInChildren<UI_LoadingBar>();
+        loadingBar.transform.parent.gameObject.SetActive(false);
         
-        StartCoroutine(LoadSceneAsync(sceneName));
+        StartCoroutine(LoadSceneAsync(sceneName, second));
     }
     
-    IEnumerator LoadSceneAsync(string sceneName)
+    IEnumerator LoadSceneAsync(string sceneName, float second = 0f)
     {
+        yield return new WaitForSeconds(second);
+        loadingBar.transform.parent.gameObject.SetActive(true);
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName);
         
         loadOperation.allowSceneActivation = false;
@@ -59,11 +62,12 @@ public class SceneLoadManager : MonoBehaviour
             if (progress >= 0.9f)
             {
                 loadingBar.SetBar(1f);
-                GI.Inst.ResourceManager.Destroy( loadingBar.transform.root.gameObject);
                 loadOperation.allowSceneActivation = true;
             }
             yield return null;
         }
     }
+    
+    
     
 }

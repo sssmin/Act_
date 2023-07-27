@@ -13,6 +13,7 @@ public class WindHashashin_SpecialAttackState : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isSpecialAttack1, true);
         Monster.SetZeroVelocity();
         aiControllerWindHashashin.SetAttackTimer(Define.EBossAttackType.SpecialAttack1);

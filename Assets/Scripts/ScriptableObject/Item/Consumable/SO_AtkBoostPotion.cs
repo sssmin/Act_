@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Consumable_", menuName ="Data/Item/Consumable/AtkBoostPotion")]
-public class AtkBoostPotion : Consumable
+public class SO_AtkBoostPotion : SO_Consumable
 {
     [HideInInspector] public DurationEffect effect;
     

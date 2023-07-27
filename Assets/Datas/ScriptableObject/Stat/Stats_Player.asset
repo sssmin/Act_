@@ -16,42 +16,42 @@ MonoBehaviour:
     attack:
       statType: 1
       statValue: 108
-    attackIncPer:
+    attackIncValue:
       statType: 2
       statValue: 0
     defence:
       statType: 3
-      statValue: 32
-    defenceIncPer:
+      statValue: 76
+    defenceIncValue:
       statType: 4
       statValue: 0
     maxHp:
       statType: 6
-      statValue: 200
+      statValue: 500
     currentHp:
-      statType: 7
+      statType: 6
       statValue: 0
     criticalChancePer:
-      statType: 8
+      statType: 7
       statValue: 5
     criticalResistPer:
-      statType: 9
+      statType: 8
       statValue: 5
     criticalDamageIncPer:
-      statType: 10
+      statType: 9
       statValue: 0
     normalAttackDamageIncPer:
-      statType: 11
+      statType: 10
       statValue: 0
     skillAttackDamageIncPer:
-      statType: 12
+      statType: 11
       statValue: 0
     evasionChancePer:
-      statType: 13
+      statType: 12
       statValue: 5
     skillCooltimeDecRate:
-      statType: 14
+      statType: 13
       statValue: 0
     moveSpeed:
-      statType: 15
+      statType: 14
       statValue: 5

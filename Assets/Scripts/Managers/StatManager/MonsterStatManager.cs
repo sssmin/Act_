@@ -112,6 +112,25 @@ public class MonsterStatManager : StatManager
         }
     }
 
+    protected override void Dead()
+    {
+        if (IsDead) return;
+        
+        IsDead = true;
+        
+        Monster monster = GetComponent<Monster>();
+        if (monster)
+        {
+            monster.TransitionState(Define.EMonsterState.Dead);
+            if (monster.DropTable != null)
+                monster.DropTable.DropItem();
+            else
+                Debug.Log("드랍 테이블 없음");
+        }
+
+        GI.Inst.DungeonManager.IncreaseKillCount();
+    }
+
     public override void ExecDurationEffect(Effect effect, Sprite icon)
     {
         DurationEffect newDurationEffect = effect as DurationEffect;
@@ -159,5 +178,14 @@ public class MonsterStatManager : StatManager
             }
             MonsterInfoUI.SetStatusImage(icon, newDurationEffect.durationEndTime);
         }
+    }
+    
+    public void InitStat(Stats inStat, int level)
+    {
+        characterStats.InitMonsterStat(inStat, level);
+    }
+    
+    public override void TakeTrapDamage()
+    {
     }
 }

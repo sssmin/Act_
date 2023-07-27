@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +9,16 @@ public class UI_MonsterInfo : MonoBehaviour
     [SerializeField] private RectTransform HpBar;
     [SerializeField] private Image statusImage;
     [SerializeField] private Animator animator;
+    private Canvas canvas;
     
     private Coroutine iconEndCoroutine;
-    
+
+    private void Awake()
+    {
+        canvas = GetComponent<Canvas>();
+        canvas.sortingLayerName = "Instance";
+        canvas.sortingOrder = 1;
+    }
 
     public void SetBar(float ratio)
     {

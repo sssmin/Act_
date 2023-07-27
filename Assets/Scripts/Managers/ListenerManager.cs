@@ -7,17 +7,19 @@ public class ListenerManager
     public Action<int> onTriggerAnim;
     public Action<int, StatManager, DamageInfo> onExecPlayerClone;
     public Action<int, StatManager, DamageInfo> onExecEarthquake;
-    public Action<int,  List<GiveToPlayerItemInfo>> giveItemsToPlayer;
     public Action<int, List<Stat>> onStatAddModifier;
     public Action<int, List<Stat>> onStatSubModifier;
-    public Action<Item> useItem;
-    public Action<Item.EWeaponType> setActiveSkillCuzEquip;
-    public Action<Item> unequip;
-    public Action<Item, bool, int> subItem;
-    public Action<Item.EItemHotkeyOrder> onPressedItemHotkey;
-    public Action<Item.EItemHotkeyOrder, Item> registerItemHotkey;
-    public Action<Item, int> buyItem;
-    public Action<BaseWeapon, Item> enhance;
+    public Action<int> giveGoldToPlayer;
+    public Action<List<GiveToPlayerItemInfo>> giveItemsToPlayer;
+    public Action<GiveToPlayerItemInfo> giveItemToPlayer;
+    public Action<SO_Item> useItem;
+    public Action<SO_Item.EWeaponType> setActiveSkillCuzEquip;
+    public Action<SO_Item> unequip;
+    public Action<SO_Item, bool, int> subItem;
+    public Action<SO_Item.EItemHotkeyOrder> onPressedItemHotkey;
+    public Action<SO_Item.EItemHotkeyOrder, SO_Item> registerItemHotkey;
+    public Action<SO_Item, int> buyItem;
+    public Action<SO_BaseWeapon, SO_Item> enhance;
     public Action<ActiveSkill_ShortVer, int> requestActiveSkillLevelUp;
     public Action<PassiveSkill_ShortVer> requestPassiveSkillLevelUp;
     public Action<ESkillMatId, EActiveSkillOrder> useActiveSkillMat;
@@ -28,28 +30,30 @@ public class ListenerManager
     public Action<Define.EDamageType, StatManager> execTakeDamageEffect;
     public Action<bool> switchActionMap;
     public Action initCombo;
-    public Action initUltSkillChargeAmount;
     public Action increaseCurrentInventoryNum;
     public Action decreaseCurrentInventoryNum;
     public Action playersNormalAttack;
+    public Action enablePlayerControl;
+    public Action disablePlayerControl;
     public Func<int, Stats> getStats;
     public Func<int> getPlayerInstId;
-    public Func<Item.EItemCategory, List<Item>> getItems;
-    public Func<Item.EItemCategory, List<StackableItem>> getStackableItems;
-    public Func<List<Item>> getEquippedItems;
-    public Func<BaseWeapon> getEquippedWeapon;
+    public Func<SO_Item.EItemCategory, List<SO_Item>> getItems;
+    public Func<SO_Item.EItemCategory, List<StackableItem>> getStackableItems;
+    public Func<List<SO_Item>> getEquippedItems;
+    public Func<SO_BaseWeapon> getEquippedWeapon;
     public Func<GoldInvenCapacity> getGoldInvenCapacity;
-    public Func<Item, bool, int, bool> addItem;
+    public Func<SO_Item, bool, int, bool> addItem;
     public Func<EActiveSkillOrder, SO_Skill> getSkill;
     public Func<EActiveSkillOrder, bool> isSkillReady;
     public Func<List<SO_ActiveSkill>> getCurrentActiveSkills;
     public Func<List<SO_PassiveSkill>> getAllPassiveSkills;
-    public Func<Item.EWeaponType> getEquippedWeaponType;
+    public Func<SO_Item.EWeaponType> getEquippedWeaponType;
     public Func<EActiveSkillOrder, int> getActiveSkillLevel;
-    public Func<float> getUltSkillChargeAmount;
-    public Func<Item.EItemCategory, int, int, bool> hasEnoughCraftMat;
+    public Func<SO_Item.EItemCategory, int, int, bool> hasEnoughCraftMat;
     public Func<bool> isEquippedWeapon;
     public Func<bool> playersAttack;
+    public Func<bool> isAnyEquippedPassiveSkill;
+    public Func<bool> isEnablePlayerControl;
 
     public void OnExecuteActiveSkill(int instanceId, Define.ESkillId skillId)
     {
@@ -76,32 +80,42 @@ public class ListenerManager
         onExecEarthquake?.Invoke(instanceId, castStatManager, damageInfo);
     }
 
-    public void GiveItemsToPlayer(int instanceId, List<GiveToPlayerItemInfo> giveToPlayerItemInfos)
+    public void GiveItemsToPlayer(List<GiveToPlayerItemInfo> giveToPlayerItemInfos)
     {
-        giveItemsToPlayer?.Invoke(instanceId, giveToPlayerItemInfos);
+        giveItemsToPlayer?.Invoke(giveToPlayerItemInfos);
     }
 
-    public List<Item> GetItems(Item.EItemCategory itemCategory)
+    public void GiveGoldToPlayer(int gold)
+    {
+        giveGoldToPlayer?.Invoke(gold);
+    }
+    
+    public void GiveItemToPlayer(GiveToPlayerItemInfo giveToPlayerItemInfos)
+    {
+        giveItemToPlayer?.Invoke(giveToPlayerItemInfos);
+    }
+
+    public List<SO_Item> GetItems(SO_Item.EItemCategory itemCategory)
     {
         return getItems?.Invoke(itemCategory);
     }
 
-    public List<StackableItem> GetStackableItems(Item.EItemCategory itemCategory)
+    public List<StackableItem> GetStackableItems(SO_Item.EItemCategory itemCategory)
     {
         return getStackableItems?.Invoke(itemCategory);
     }
 
-    public void UseItem(Item item)
+    public void UseItem(SO_Item item)
     {
         useItem?.Invoke(item);
     }
 
-    public List<Item> GetEquippedItems()
+    public List<SO_Item> GetEquippedItems()
     {
         return getEquippedItems?.Invoke();
     }
 
-    public BaseWeapon GetEquippedWeapon()
+    public SO_BaseWeapon GetEquippedWeapon()
     {
         return getEquippedWeapon?.Invoke();
     }
@@ -126,15 +140,10 @@ public class ListenerManager
         onStatSubModifier?.Invoke(instanceId, stats);
     }
 
-    public void SetActiveSkillCuzEquip(Item.EWeaponType type)
+    public void SetActiveSkillCuzEquip(SO_Item.EWeaponType type)
     {
         setActiveSkillCuzEquip?.Invoke(type);
         initCombo?.Invoke();
-    }
-
-    public void InitUltSkillChargeAmount()
-    {
-        initUltSkillChargeAmount?.Invoke();
     }
 
     public bool IsSkillReady(EActiveSkillOrder skillOrder)
@@ -152,17 +161,17 @@ public class ListenerManager
         return getAllPassiveSkills?.Invoke();
     }
 
-    public Item.EWeaponType GetEquippedWeaponType()
+    public SO_Item.EWeaponType GetEquippedWeaponType()
     {
         return getEquippedWeaponType.Invoke();
     }
 
-    public void Unequip(Item item)
+    public void Unequip(SO_Item item)
     {
         unequip?.Invoke(item);
     }
 
-    public void SubItem(Item item, bool shouldRefreshUI, int amount = 0)
+    public void SubItem(SO_Item item, bool shouldRefreshUI, int amount = 0)
     {
         subItem?.Invoke(item, shouldRefreshUI, amount);
     }
@@ -172,12 +181,12 @@ public class ListenerManager
         return getGoldInvenCapacity?.Invoke();
     }
 
-    public void OnPressedItemHotkey(Item.EItemHotkeyOrder order)
+    public void OnPressedItemHotkey(SO_Item.EItemHotkeyOrder order)
     {
         onPressedItemHotkey?.Invoke(order);
     }
 
-    public void RegisterItemHotkey(Item.EItemHotkeyOrder order, Item item)
+    public void RegisterItemHotkey(SO_Item.EItemHotkeyOrder order, SO_Item item)
     {
         registerItemHotkey?.Invoke(order, item);
     }
@@ -227,27 +236,22 @@ public class ListenerManager
         execTakeDamageEffect?.Invoke(causeDamageType, instigatorStatManager);
     }
 
-    public float GetUltSkillChargeAmount()
-    {
-        return getUltSkillChargeAmount.Invoke();
-    }
-
-    public void BuyItem(Item item, int amount)
+    public void BuyItem(SO_Item item, int amount)
     {
         buyItem?.Invoke(item, amount);
     }
 
-    public void Enhance(BaseWeapon original, Item weaponMat)
+    public void Enhance(SO_BaseWeapon original, SO_Item weaponMat)
     {
         enhance?.Invoke(original, weaponMat);
     }
 
-    public bool AddItem(Item item, bool shouldRefreshUI, int amount)
+    public bool AddItem(SO_Item item, bool shouldRefreshUI, int amount)
     {
         return addItem.Invoke(item, shouldRefreshUI, amount);
     }
 
-    public bool HasEnoughCraftMat(Item.EItemCategory itemCategory, int equipmentMatAmount, int sharedMatAmount)
+    public bool HasEnoughCraftMat(SO_Item.EItemCategory itemCategory, int equipmentMatAmount, int sharedMatAmount)
     {
         return hasEnoughCraftMat.Invoke(itemCategory, equipmentMatAmount, sharedMatAmount);
     }
@@ -272,9 +276,30 @@ public class ListenerManager
         playersNormalAttack?.Invoke();
     }
 
+    public void EnablePlayerControl()
+    {
+        enablePlayerControl?.Invoke();
+    }
+
+    public void DisablePlayerControl()
+    {
+        disablePlayerControl?.Invoke();
+        
+    }
+
     public bool PlayersAttack()
     {
         return playersAttack.Invoke();
+    }
+
+    public bool IsAnyEquippedPassiveSkill()
+    {
+        return isAnyEquippedPassiveSkill.Invoke();
+    }
+
+    public bool IsEnablePlayerControl()
+    {
+        return isEnablePlayerControl.Invoke();
     }
 
     public void SwitchActionMap(bool isUI)

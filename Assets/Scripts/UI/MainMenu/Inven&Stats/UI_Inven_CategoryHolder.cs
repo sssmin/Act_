@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +27,7 @@ public class UI_Inven_CategoryHolder : MonoBehaviour
             int index = i;
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_CategoryButton", transform);
             UI_Inven_CategoryButton invenCategoryButton = go.GetComponent<UI_Inven_CategoryButton>();
-            invenCategoryButton.Init((Item.EItemCategory)index); 
+            invenCategoryButton.InitOnce((SO_Item.EItemCategory)index); 
             if (index == 0)
                 invenCategoryButton.DeactivateButton();
             invenCategoryButtons.Add(invenCategoryButton);
@@ -52,7 +51,7 @@ public class UI_Inven_CategoryHolder : MonoBehaviour
         }
     }
 
-    private void OnClickCategoryButton(Item.EItemCategory itemCategory)
+    private void OnClickCategoryButton(SO_Item.EItemCategory itemCategory)
     {
         invenItemSlotParent.Init(itemCategory);
     }
@@ -66,7 +65,7 @@ public class UI_Inven_CategoryHolder : MonoBehaviour
     {
         foreach (UI_Inven_CategoryButton invenCategoryButton in invenCategoryButtons)
         {
-            if (invenCategoryButton.itemCategory == Item.EItemCategory.Weapon)
+            if (invenCategoryButton.itemCategory == SO_Item.EItemCategory.Weapon)
                 continue;
             invenCategoryButton.DeactivateButton();
         }
@@ -76,14 +75,14 @@ public class UI_Inven_CategoryHolder : MonoBehaviour
     {
         foreach (UI_Inven_CategoryButton invenCategoryButton in invenCategoryButtons)
         {
-            if (invenCategoryButton.itemCategory == Item.EItemCategory.Weapon)
+            if (invenCategoryButton.itemCategory == SO_Item.EItemCategory.Weapon)
                 invenCategoryButton.DeactivateButton();
             else
                 invenCategoryButton.ActivateButton();
         }
     }
 
-    private void EnableCanWeaponMat(BaseWeapon weapon) //재료로 가능한 장비만 활성화
+    private void EnableCanWeaponMat(SO_BaseWeapon weapon) //재료로 가능한 장비만 활성화
     {
         invenItemSlotParent.EnableCanWeaponMat(weapon);
     }

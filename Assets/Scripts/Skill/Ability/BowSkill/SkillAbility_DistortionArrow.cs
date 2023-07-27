@@ -17,6 +17,7 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
     public float attractionForce = 30f;
     public float attractionRange = 5f;
     private bool bIsActive;
+    private bool bIsFirstActive = true;
     private List<Transform> Monsters { get; set; } = new List<Transform>();
     private float damageTimer;
 
@@ -47,16 +48,21 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
         CoStop = StartCoroutine(CoStopMove());
         bIsActive = false;
         damageTimer = 0f;
+        bIsFirstActive = true;
     }
     
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (!bIsActive)
+        if (bIsFirstActive)
         {
-            Rb.velocity = new Vector2(0f, 0f);
-            Active();
+            if (!bIsActive)
+            {
+                Rb.velocity = new Vector2(0f, 0f);
+                Active();
+            }
         }
+        
         
         if (col.CompareTag("Monster"))
         {
@@ -106,6 +112,7 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
 
     void Active()
     {
+        bIsFirstActive = false;
         bIsActive = true;
         ParticleSystem.Play();
         Animator.SetBool(AnimHash.activeDistortionArrow, true);
@@ -116,7 +123,12 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
     
     IEnumerator CoDestroyMyself()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(2f);
+        bIsActive = false;
+        AttractionCollider.enabled = false;
+        Sr.enabled = false;
+        ParticleSystem.Stop();
+        Animator.SetBool(AnimHash.activeDistortionArrow, false);
         
         foreach (Transform monster in Monsters)
         {
@@ -124,11 +136,9 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
             aiController.RevertState();
         }
         Monsters.Clear();
-        bIsActive = false;
-        AttractionCollider.enabled = false;
-        Sr.enabled = false;
-        ParticleSystem.Stop();
-        Animator.SetBool(AnimHash.activeDistortionArrow, false);
+       
+        
+        
         yield return new WaitForSeconds(5f);
         GI.Inst.ResourceManager.Destroy(gameObject);
     }

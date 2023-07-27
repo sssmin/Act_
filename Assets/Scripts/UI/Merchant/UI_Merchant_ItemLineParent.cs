@@ -4,7 +4,7 @@ using UnityEngine;
 public class UI_Merchant_ItemLineParent : MonoBehaviour
 {
     private List<UI_Merchant_ItemLine> itemLines = new List<UI_Merchant_ItemLine>();
-    private List<Item> items = new List<Item>();
+    private List<SO_Item> items = new List<SO_Item>();
     [SerializeField] public RectTransform rectTransform;
 
     public void Init(List<string> inItems)
@@ -12,7 +12,7 @@ public class UI_Merchant_ItemLineParent : MonoBehaviour
         Clear();
         foreach (string itemId in inItems)
         {
-            Item item = GI.Inst.ResourceManager.GetItemData(itemId);
+            SO_Item item = GI.Inst.ResourceManager.GetItemData(itemId);
             items.Add(item);
         }
 
@@ -22,7 +22,7 @@ public class UI_Merchant_ItemLineParent : MonoBehaviour
     private void InitItemLines()
     {
         items.Sort();
-        foreach (Item item in items)
+        foreach (SO_Item item in items)
         {
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Merchant_ItemLine", transform);
             UI_Merchant_ItemLine itemLine = go.GetComponent<UI_Merchant_ItemLine>();

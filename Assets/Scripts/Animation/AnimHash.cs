@@ -63,7 +63,8 @@
         public static readonly int activeFireStrike = Animator.StringToHash("activeFireStrike");
         public static readonly int activeEarthquake = Animator.StringToHash("activeEarthquake");
         public static readonly int activeDistortionArrow = Animator.StringToHash("activeDistortionArrow");
-        
+
+
         /*
          * ui
          */

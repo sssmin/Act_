@@ -11,6 +11,7 @@ public class WandererMagician_PatrolState : Monster_PatrolState
 
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isWalk, true);
         ThinkTimer = Random.Range(1f, 2f);
     }
@@ -18,7 +19,7 @@ public class WandererMagician_PatrolState : Monster_PatrolState
     public override void Update()
     {
         ThinkTimer -= Time.deltaTime;
-        
+        if (Monster.StatManager.IsDead) return;
         if (AIController.Target != null)
         {
             TransitionState(Define.EMonsterState.Chase);

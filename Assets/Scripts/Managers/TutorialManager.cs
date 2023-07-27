@@ -1,67 +1,118 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tutorial : MonoBehaviour
+
+public enum ETutorial
 {
-    public virtual void BeginTutorial()
-    {
-        
-    }
-
-    public virtual void Execute(TutorialManager tutorialManager)
-    {
-        
-    }
-
-    public virtual void EndTutorial()
-    {
-        
-    }
+    ItemCraft,
+    
+    Max
 }
+
 
 public class TutorialManager : MonoBehaviour
 {
+    //NewGame을 제외한 나머지 완료했는지 여부 true면 완료.
+    private Dictionary<ETutorial, bool> TutorialStatusCompleted { get; set; }= new Dictionary<ETutorial, bool>();
     [SerializeField] private SceneLoadManager sceneLoadManager;
-    [SerializeField] private List<Tutorial> tutorials;
     [SerializeField] private string nextSceneName;
-    private Tutorial currentTutorial;
-    private int currentIndex;
+    public Tutorial CurrentTutorial { get; private set; }
 
     private void Start()
     {
-        currentIndex = -1;
-        SetNextTutorial();
+        Init();
     }
 
     private void Update()
     {
-        if (currentTutorial)
+        if (CurrentTutorial != null)
         {
-            currentTutorial.Execute(this);
+            CurrentTutorial.Execute();
         }
     }
 
-    public void SetNextTutorial()
+    private void Init()
     {
-        if (currentTutorial)
+        for (int i = 0; i < (int)ETutorial.Max; i++)
         {
-            currentTutorial.EndTutorial();
+            TutorialStatusCompleted.Add((ETutorial)i, false);
         }
-
-        if (++currentIndex >= tutorials.Count)
-        {
-            ClearAllTutorials();
-            return;
-        }
-
-        currentTutorial = tutorials[currentIndex];
-        currentTutorial.BeginTutorial();
     }
 
-    public void ClearAllTutorials()
+    public void ExecuteNewGameTutorial()
     {
-        currentTutorial = null;
+        CurrentTutorial = new Tutorial_NewGame();
+        CurrentTutorial.StartTutorial();
+    }
+    
+    //반환형 false == 튜토리얼 완료 상태
+    public bool ExecuteTutorialIfNotCompleted(ETutorial tutorialType)
+    {
+        if (TutorialStatusCompleted.ContainsKey(tutorialType))
+        {
+            if (TutorialStatusCompleted[tutorialType])
+                return false;
+            
+            switch (tutorialType)
+            {
+                case ETutorial.ItemCraft:
+                    CurrentTutorial = new Tutorial_ItemCraft();
+                    CurrentTutorial.StartTutorial();
+                    break;
+            }
+        }
+        return true;
+    }
+
+    public void SkipCurrentTutorial()
+    {
+        if (CurrentTutorial != null)
+        {
+            CurrentTutorial.SkipTutorial();
+        }
+    }
+
+    public void SetTutorialCompleted(ETutorial tutorialType)
+    {
+        CurrentTutorial = null;
         
-        sceneLoadManager.RequestLoadSceneAsync(nextSceneName);
+        switch (tutorialType)
+        {
+            case ETutorial.ItemCraft:
+                if (TutorialStatusCompleted.ContainsKey(tutorialType))
+                {
+                    TutorialStatusCompleted[tutorialType] = true;
+                }
+                break;
+        }
     }
+    
+    #region Serialize
+    
+    public TutorialStatusDictionary SerializeTutorialStatus()
+    {
+        TutorialStatusDictionary tutorialStatusDictionary = new TutorialStatusDictionary();
+        foreach (KeyValuePair<ETutorial,bool> pair in TutorialStatusCompleted)
+        {
+            tutorialStatusDictionary.Add(pair.Key, pair.Value);
+        }
+        tutorialStatusDictionary.Serialize();
+
+        return tutorialStatusDictionary;
+    }
+
+    public void DeserializeTutorialStatus(TutorialStatusDictionary dict)
+    {
+        dict.Deserialize();
+        
+        foreach (KeyValuePair<ETutorial,bool> pair in dict)
+        {
+            if (TutorialStatusCompleted.ContainsKey(pair.Key))
+                TutorialStatusCompleted[pair.Key] =  pair.Value;
+        }
+    }
+    
+    #endregion
+    
+   
 }

@@ -49,7 +49,7 @@ public class Player : BaseCharacter
 
     public void SetBaseStat()
     {
-        PlayerBaseStats playerBaseStats =  GI.Inst.ResourceManager.PlayerBaseStats;
+        SO_PlayerBaseStats playerBaseStats =  GI.Inst.ResourceManager.PlayerBaseStats;
         StatManager.InitStat(playerBaseStats.stats);
     }
     

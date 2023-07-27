@@ -1,10 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
 {
-    Dictionary<Item.EItemHotkeyOrder, UI_Main_ItemHotkeySlot> ItemHotkeySlots = new Dictionary<Item.EItemHotkeyOrder, UI_Main_ItemHotkeySlot>();
+    Dictionary<SO_Item.EItemHotkeyOrder, UI_Main_ItemHotkeySlot> ItemHotkeySlots = new Dictionary<SO_Item.EItemHotkeyOrder, UI_Main_ItemHotkeySlot>();
+    [SerializeField] private Image borderImage;
     
     public void InitOnce()
     {
@@ -13,11 +15,11 @@ public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.clearItemHotkeyUI -= ClearItemHotkeySlot;
         GI.Inst.UIManager.clearItemHotkeyUI += ClearItemHotkeySlot;
 
-        for (int i = 0; i < (int)Item.EItemHotkeyOrder.Max; i++)
+        for (int i = 0; i < (int)SO_Item.EItemHotkeyOrder.Max; i++)
         {
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Main_ItemHotkeySlot", transform);
             UI_Main_ItemHotkeySlot mainItemHotkeySlot = go.GetComponent<UI_Main_ItemHotkeySlot>();
-            ItemHotkeySlots.Add((Item.EItemHotkeyOrder)i, mainItemHotkeySlot);
+            ItemHotkeySlots.Add((SO_Item.EItemHotkeyOrder)i, mainItemHotkeySlot);
         }
     }
 
@@ -27,7 +29,7 @@ public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.clearItemHotkeyUI -= ClearItemHotkeySlot;
     }
 
-    private void InitItemHotkeySlot(Item.EItemHotkeyOrder order, Item item)
+    private void InitItemHotkeySlot(SO_Item.EItemHotkeyOrder order, SO_Item item)
     {
         if (ItemHotkeySlots.ContainsKey(order))
         {
@@ -35,11 +37,29 @@ public class UI_Main_ItemHotkeySlotParent : MonoBehaviour
         }
     }
     
-    private void ClearItemHotkeySlot(Item.EItemHotkeyOrder order)
+    private void ClearItemHotkeySlot(SO_Item.EItemHotkeyOrder order)
     {
         if (ItemHotkeySlots.ContainsKey(order))
         {
             ItemHotkeySlots[order].Clear();
+        }
+    }
+
+    public void VisibleUI()
+    {
+        borderImage.color = new Color(0f, 0f, 0f, 130 / 255f);
+        foreach (KeyValuePair<SO_Item.EItemHotkeyOrder,UI_Main_ItemHotkeySlot> pair in ItemHotkeySlots.ToList())
+        {
+            pair.Value.VisibleUI();
+        }
+    }
+
+    public void InvisibleUI()
+    {
+        borderImage.color = new Color(0f, 0f, 0f, 0f);
+        foreach (KeyValuePair<SO_Item.EItemHotkeyOrder,UI_Main_ItemHotkeySlot> pair in ItemHotkeySlots.ToList())
+        {
+            pair.Value.InvisibleUI();
         }
     }
 }

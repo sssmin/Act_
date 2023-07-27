@@ -10,6 +10,7 @@ public class Necromancer_NormalAttackState : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         IsAnimTrigger = false;
         Animator.SetBool(AnimHash.isNormalAttack1, true);
         Monster.SetZeroVelocity();

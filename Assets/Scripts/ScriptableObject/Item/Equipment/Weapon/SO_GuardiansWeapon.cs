@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Guardians", menuName ="Data/Item/GuardiansWeapon")]
-public class GuardiansWeapon : SO_BaseWeapon
+public class SO_GuardiansWeapon : SO_BaseWeapon
 {
     public override void Init(StatManager ownerStatManager)
     {
@@ -12,7 +12,7 @@ public class GuardiansWeapon : SO_BaseWeapon
         
         if (EnhanceLevel <= 0)
         {
-            desc = $"부가 효과 개방 - +1 강화";
+            desc = $"Y부가 효과 개방 - +1 강화";
             effectDescs.Add(desc);
             return;
         }

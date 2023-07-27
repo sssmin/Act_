@@ -13,6 +13,7 @@ public class WindHashashin_Tornado : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isNormalAttack3, true);
         Monster.SetZeroVelocity();
         aiControllerWindHashashin.SetAttackTimer(Define.EBossAttackType.NormalAttack3);

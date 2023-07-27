@@ -10,7 +10,7 @@ public class UI_TB_ConfirmButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI buttonText;
     private UnityAction action;
     
-    public void Init(Item item, Action<Item> callback, string inButtonText)
+    public void Init(SO_Item item, Action<SO_Item> callback, string inButtonText)
     {
         buttonText.text = inButtonText;
         action = () => CallbackInvoke(item, callback);
@@ -23,7 +23,7 @@ public class UI_TB_ConfirmButton : MonoBehaviour
         button.onClick.RemoveListener(action);
     }
 
-    void CallbackInvoke(Item item, Action<Item> callback)
+    void CallbackInvoke(SO_Item item, Action<SO_Item> callback)
     {
         GI.Inst.UIManager.ClosePopup();
         callback?.Invoke(item);

@@ -16,7 +16,7 @@ public class ProbabilityInfo
 [Serializable]
 public class RequireMatAmount
 {
-    public Item.EItemCategory itemCategory;
+    public SO_Item.EItemCategory itemCategory;
     public int requireEquipmentMatAmount;
     public int requireSharedMatAmount;
 }
@@ -33,23 +33,23 @@ public class ItemCraft : ScriptableObject
     public List<RequireMatAmount> requireMatAmounts = new List<RequireMatAmount>();
     
 
-    public void CreateRandomItem(Item.EItemCategory itemCategory)
+    public void CreateRandomItem(SO_Item.EItemCategory itemCategory)
     {
         switch (itemCategory)
         {
-            case Item.EItemCategory.Weapon:
+            case SO_Item.EItemCategory.Weapon:
                 CalcProbability(itemCategory,"WeaponMat", weaponProbabilityInfos);
                 break;
-            case Item.EItemCategory.Armor:
+            case SO_Item.EItemCategory.Armor:
                 CalcProbability(itemCategory,"ArmorMat", armorProbabilityInfos);
                 break;
-            case Item.EItemCategory.Acc:
+            case SO_Item.EItemCategory.Acc:
                 CalcProbability(itemCategory,"AccMat", accProbabilityInfos);
                 break;
         }
     }
 
-    private void CalcProbability(Item.EItemCategory itemCategory, string equipmentMatId, List<ProbabilityInfo> probabilityInfos)
+    private void CalcProbability(SO_Item.EItemCategory itemCategory, string equipmentMatId, List<ProbabilityInfo> probabilityInfos)
     {
         for (int i = 0; i < probabilityInfos.Count + 1; ++i)
         {
@@ -67,14 +67,14 @@ public class ItemCraft : ScriptableObject
         }
     }
     
-    private void Exchange(string createdItemId, string equipmentMatId, Item.EItemCategory itemCategory)
+    private void Exchange(string createdItemId, string equipmentMatId, SO_Item.EItemCategory itemCategory)
     {
-        Item createdItem = null;
+        SO_Item createdItem = null;
         
-        if (itemCategory == Item.EItemCategory.Weapon)
+        if (itemCategory == SO_Item.EItemCategory.Weapon)
         {
             createdItem  = GI.Inst.ResourceManager.GetItemDataCopy(createdItemId);
-            ((BaseWeapon)createdItem).Element = (EWeaponElement)Random.Range(0, 4);
+            ((SO_BaseWeapon)createdItem).Element = (EWeaponElement)Random.Range(0, 4);
         }
         else
         {
@@ -83,10 +83,10 @@ public class ItemCraft : ScriptableObject
         
         RequireMatAmount requireMatAmount = requireMatAmounts.FirstOrDefault(r => r.itemCategory == itemCategory);
         
-        Item equipmentMat = GI.Inst.ResourceManager.GetItemData(equipmentMatId);
+        SO_Item equipmentMat = GI.Inst.ResourceManager.GetItemData(equipmentMatId);
         GI.Inst.ListenerManager.SubItem(equipmentMat, false, requireMatAmount.requireEquipmentMatAmount);
         
-        Item sharedMat = GI.Inst.ResourceManager.GetItemData("SharedMat");
+        SO_Item sharedMat = GI.Inst.ResourceManager.GetItemData("SharedMat");
         GI.Inst.ListenerManager.SubItem(sharedMat, false, requireMatAmount.requireSharedMatAmount);
         
         GI.Inst.ListenerManager.AddItem(createdItem, true, 1);

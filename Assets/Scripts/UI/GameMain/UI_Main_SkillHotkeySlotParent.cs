@@ -1,10 +1,11 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
 {
     private List<UI_Main_SkillHotkeySlotBase> SkillHotkeySlots = new List<UI_Main_SkillHotkeySlotBase>();
+    [SerializeField] private Image borderImage;
     
     public void InitOnce()
     {
@@ -16,24 +17,11 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.resetCooltimeUI += ResetCooltimeUI;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots -= ClearSkillHotkeySlots;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots += ClearSkillHotkeySlots;
-        GI.Inst.UIManager.updateFillAmount -= UpdateUltFillAmount;
-        GI.Inst.UIManager.updateFillAmount += UpdateUltFillAmount;
-        
+
         for (int i = 0; i < (int)EActiveSkillOrder.Max; i++)
         {
-            UI_Main_SkillHotkeySlotBase mainSkillHotkeySlot = null;
-            
-            if (i == (int)EActiveSkillOrder.Fourth)
-            {
-                GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Main_UltHotkeySlot", transform);
-                mainSkillHotkeySlot = go.GetComponent<UI_Main_UltHotkeySlot>();
-                mainSkillHotkeySlot.InitOnce();
-            }
-            else
-            {
-                GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Main_SkillHotkeySlot", transform);
-                mainSkillHotkeySlot = go.GetComponent<UI_Main_SkillHotkeySlot>();
-            }
+            GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Main_SkillHotkeySlot", transform);
+            UI_Main_SkillHotkeySlotBase mainSkillHotkeySlot = go.GetComponent<UI_Main_SkillHotkeySlot>();
             
             SkillHotkeySlots.Add(mainSkillHotkeySlot);
         }
@@ -46,7 +34,6 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         GI.Inst.UIManager.setSkillCooltimeUI -= SetSkillCooltimeUI;
         GI.Inst.UIManager.resetCooltimeUI -= ResetCooltimeUI;
         GI.Inst.UIManager.clearActiveSkillHotkeySlots -= ClearSkillHotkeySlots;
-        GI.Inst.UIManager.updateFillAmount -= UpdateUltFillAmount;
     }
 
     private void Init(List<Sprite> icons)
@@ -81,15 +68,22 @@ public class UI_Main_SkillHotkeySlotParent : MonoBehaviour
         skillHotkeySlot.ResetCooltimeUI();
     }
     
-    private void UpdateUltFillAmount(float chargeAmount)
+    
+    public void VisibleUI()
     {
-        foreach (UI_Main_SkillHotkeySlotBase skillHotkeySlot in SkillHotkeySlots)
+        borderImage.color = new Color(0f, 0f, 0f, 130 / 255f);
+        foreach (UI_Main_SkillHotkeySlotBase hotkeySlot in SkillHotkeySlots)
         {
-            UI_Main_UltHotkeySlot ultHotkeySlot = skillHotkeySlot as UI_Main_UltHotkeySlot;
-            if (ultHotkeySlot)
-            {
-                ultHotkeySlot.UpdateFillAmount(chargeAmount);
-            }
-        }  
+            hotkeySlot.VisibleUI();
+        }
+    }
+
+    public void InvisibleUI()
+    {
+        borderImage.color = new Color(0f, 0f, 0f, 0f);
+        foreach (UI_Main_SkillHotkeySlotBase hotkeySlot in SkillHotkeySlots)
+        {
+            hotkeySlot.InvisibleUI();
+        }
     }
 }

@@ -36,7 +36,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
 
 //GI
 [Serializable]
-public class DungeonInfoDictionary : SerializableDictionary<EDungeonType, DungeonInfo> { }
+public class DungeonInfoDictionary : SerializableDictionary<EDungeonType, Serializable.DungeonInfo_Lite> { }
 
 //TutorialManager
 [Serializable]
@@ -44,16 +44,16 @@ public class TutorialStatusDictionary : SerializableDictionary<ETutorial, bool> 
 
 //SkillManager
 [Serializable]
-public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, PassiveSaveInfo> { }
+public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, Serializable.PassiveSaveInfo_Lite> { }
 
 //InventoryManager
 [Serializable]
-public class ConsumableDictionary : SerializableDictionary<Item.EConsumableType, StackableItemSaveInfo> { }
+public class ConsumableDictionary : SerializableDictionary<SO_Item.EConsumableType, Serializable.StackableItemSaveInfo_Lite> { }
 
 //InventoryManager
 [Serializable]
-public class EtcDictionary : SerializableDictionary<string, StackableItemSaveInfo> { }
+public class EtcDictionary : SerializableDictionary<string, Serializable.StackableItemSaveInfo_Lite> { }
 
 //InventoryManager
 [Serializable]
-public class RegisteredHotkeyItemDictionary : SerializableDictionary<Item.EItemHotkeyOrder, ItemSaveInfo> { }
+public class RegisteredHotkeyItemDictionary : SerializableDictionary<SO_Item.EItemHotkeyOrder, Serializable.ItemSaveInfo_Lite> { }

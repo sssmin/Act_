@@ -10,7 +10,7 @@ public class EnhanceValueByRarity
 }
 
 [CreateAssetMenu(fileName = "WeaponEnhanceValueByLevel", menuName ="Data/WeaponEnhanceValueByLevel")]
-public class WeaponEnhanceValueByLevel : ScriptableObject
+public class SO_WeaponEnhanceValueByLevel : ScriptableObject
 {
     [SerializeField] public List<EnhanceValueByRarity> enhanceValueByRarities = new List<EnhanceValueByRarity>();
     

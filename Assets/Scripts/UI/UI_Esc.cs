@@ -20,6 +20,12 @@ public class UI_Esc : UI_Popup
         goToTitleButton.onClick.AddListener(OnClickGoToTitleButton);
         gameExitButton.onClick.AddListener(OnClickGameExitButton);
         closeButton.onClick.AddListener(OnClickCloseButton);
+        
+        GI.Inst.UIManager.SetNormalButtonColorPreset(optionButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(saveGameButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(goToTitleButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(gameExitButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(closeButton);
     }
 
     private void OnDestroy()
@@ -59,7 +65,7 @@ public class UI_Esc : UI_Popup
     private void OnClickSaveGameButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
-        GI.Inst.SaveGameData();
+        GI.Inst.SaveGame();
     }
     
     private void OnClickGoToTitleButton()

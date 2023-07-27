@@ -11,6 +11,7 @@ public class CooltimeManager : MonoBehaviour
     public float FirstSkillTimer { get; set; }
     public float SecondSkillTimer { get; set; }
     public float ThirdSkillTimer { get; set; }
+    public float FourthSkillTimer { get; set; }
     public float FifthSkillTimer { get; set; }
 
     #endregion
@@ -149,6 +150,8 @@ public class CooltimeManager : MonoBehaviour
             runningCooltimeSkillOrder.Add(2);
         if (ThirdSkillTimer > Time.time)
             runningCooltimeSkillOrder.Add(3);
+        if (FourthSkillTimer > Time.time)
+            runningCooltimeSkillOrder.Add(4);
 
         if (runningCooltimeSkillOrder.Count > 1)
         {
@@ -164,10 +167,15 @@ public class CooltimeManager : MonoBehaviour
                 SecondSkillTimer = 0;
                 GI.Inst.UIManager.ResetCooltimeUI(EActiveSkillOrder.Second);
             }
-            else
+            else if (runningCooltimeSkillOrder[rand] == 3)
             {
                 ThirdSkillTimer = 0;
                 GI.Inst.UIManager.ResetCooltimeUI(EActiveSkillOrder.Third);
+            }
+            else
+            {
+                FourthSkillTimer = 0;
+                GI.Inst.UIManager.ResetCooltimeUI(EActiveSkillOrder.Fourth);
             }
         }
     }
@@ -177,6 +185,7 @@ public class CooltimeManager : MonoBehaviour
         FirstSkillTimer = 0f;
         SecondSkillTimer = 0f;
         ThirdSkillTimer = 0f;
+        FourthSkillTimer = 0f;
         FifthSkillTimer = 0f;
         
         ItemCooltimeDict.Clear();

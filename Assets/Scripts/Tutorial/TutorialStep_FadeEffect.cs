@@ -1,12 +1,12 @@
 using UnityEngine;
 
-public class TutorialStepFadeEffect : TutorialStep
+public class TutorialStep_FadeEffect : TutorialStep
 {
     [SerializeField] private FadeEffect fadeEffect;
     [SerializeField] private bool isFadeIn;
     private bool isCompleted;
     
-   public override void BeginTutorial()
+   public override void BeginStep()
    {
        if (isFadeIn)
            fadeEffect.FadeIn(OnAfterFadeEffect);
@@ -23,8 +23,12 @@ public class TutorialStepFadeEffect : TutorialStep
     {
         if (isCompleted)
         {
-            tutorial.SetNextTutorial();
+            tutorial.SetNextTutorialStep();
         }
+    }
+
+    public override void EndStep()
+    {
     }
     
 }

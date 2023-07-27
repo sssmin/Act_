@@ -9,7 +9,7 @@ public class UI_Inven_EquippedSlotParent : MonoBehaviour
     private void Init()
     {
         ClearItemSlots();
-        List<Item> items = GI.Inst.ListenerManager.GetEquippedItems();
+        List<SO_Item> items = GI.Inst.ListenerManager.GetEquippedItems();
         foreach (UI_Inven_EquippedSlot equippedSlot in equippedSlots)
         {
             equippedSlot.SetItem(items);

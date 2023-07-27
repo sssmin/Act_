@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UI_EquipPassiveSkillSlotParent : MonoBehaviour
 {
     private List<UI_Skill_EquipPassiveSkillSlot> equipPassiveSkillSlots = new List<UI_Skill_EquipPassiveSkillSlot>();
-
-    private bool InitCompleted { get; set; }
+    
 
     public void InitOnce()
     {

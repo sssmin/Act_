@@ -5,7 +5,8 @@ public class CinemachineTarget : MonoBehaviour
 {
     private CinemachineTargetGroup CinemachineTargetGroup { get; set; }
     private Transform cursorTransform;
-    private Transform CameraFoucs { get; set; }
+    private Transform CameraFocus { get; set; }
+    private Transform OnlyFocus { get; set; }
 
     private void Awake()
     {
@@ -15,7 +16,7 @@ public class CinemachineTarget : MonoBehaviour
 
     public void Init()
     {
-        CameraFoucs = GI.Inst.Player.transform.Find("CameraFocus");
+        CameraFocus = GI.Inst.Player.transform.Find("CameraFocus");
         ActivateCamera();
     }
 
@@ -26,13 +27,25 @@ public class CinemachineTarget : MonoBehaviour
 
     public void ActivateCamera()
     {
-        CinemachineTargetGroup.AddMember(CameraFoucs, 1f, 2.5f);
+        CinemachineTargetGroup.AddMember(CameraFocus, 1f, 2.5f);
         CinemachineTargetGroup.AddMember(cursorTransform, 0.5f, 1f);
     }
 
     public void DeactivateCamera()
     {
-        CinemachineTargetGroup.RemoveMember(CameraFoucs);
+        CinemachineTargetGroup.RemoveMember(CameraFocus);
         CinemachineTargetGroup.RemoveMember(cursorTransform);
+    }
+
+    public void FocusOnlyThisObj(Transform objTransform)
+    {
+        DeactivateCamera();
+        OnlyFocus = objTransform;
+        CinemachineTargetGroup.AddMember(OnlyFocus, 1f, 2.5f);
+    }
+
+    public void RemoveOneFocus()
+    {
+        CinemachineTargetGroup.RemoveMember(OnlyFocus);
     }
 }

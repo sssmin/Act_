@@ -10,6 +10,7 @@ public class WandererMagician_SphereAttackState : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         IsAnimTrigger = false;
         Animator.SetBool(AnimHash.isNormalAttack2, true);
         Monster.SetZeroVelocity();

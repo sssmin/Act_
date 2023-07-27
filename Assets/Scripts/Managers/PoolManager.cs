@@ -89,6 +89,7 @@ public class PoolManager
     public void Restore(Poolable poolable)
     {
         string prefabId = poolable.GetComponent<PrefabName>()?.Value; 
+        
         if (pools.ContainsKey(prefabId) == false)
         {
             GameObject.Destroy(poolable.gameObject);

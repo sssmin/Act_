@@ -23,7 +23,9 @@ public class WindHashashin_ChaseState : Monster_ChaseState
     public override void Update()
     {
         idleTimer -= Time.deltaTime;
-       
+        
+        if (Monster.StatManager.IsDead) return;
+        
         if (AIController.Target.transform.position.x > Monster.transform.position.x) 
         {
             if (AIController.CurrentDir.x < 0) 

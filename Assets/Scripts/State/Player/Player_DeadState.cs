@@ -15,7 +15,7 @@ public class Player_DeadState : PlayerState
     
     public override void EndState()
     {
-        
+        Animator.SetBool(AnimHash.isDead, false);
     }
     
     

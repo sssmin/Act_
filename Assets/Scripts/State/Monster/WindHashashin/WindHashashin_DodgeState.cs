@@ -12,6 +12,7 @@ public class WindHashashin_DodgeState : MonsterState
     
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isDodge, true);
         DodgeDir = AIController.CurrentDir.x;
         Monster.SetZeroVelocity();

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3156946323383386295}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: GroundDetectObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 6760489984763521164}
   - component: {fileID: -8257800717997235357}
   - component: {fileID: 4926366760186289670}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: PlayerClone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -230,7 +230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5080211003140932386}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: WallDetectObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 426748877380815657}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: NormalAttackOverlap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -292,7 +292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2714132234948712436}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: ArrowSpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

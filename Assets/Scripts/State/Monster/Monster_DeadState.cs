@@ -8,10 +8,18 @@ public class Monster_DeadState : MonsterState
     
     public override void BeginState()
     {
-        Animator.SetBool(AnimHash.isDead, true);
+        AnimatorControllerParameter[] parameters = Animator.parameters;
+
+        foreach (AnimatorControllerParameter parameter in parameters)
+        {
+            if (parameter.type == AnimatorControllerParameterType.Bool)
+            {
+                Animator.SetBool(parameter.name, false);
+            }
+        }
         Monster.SetZeroVelocity();
+        Animator.SetBool(AnimHash.isDead, true);
     }
-    
     
     public override void EndState()
     {

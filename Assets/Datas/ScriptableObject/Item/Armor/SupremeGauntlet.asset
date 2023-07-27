@@ -17,12 +17,13 @@ MonoBehaviour:
   itemName: "\uC288\uD504\uB9BC \uAC74\uD2C0\uB9BF"
   itemDesc: 
   itemIcon: {fileID: -155025725, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
-  bIsCanStack: 0
   amount: 0
   maxStackSize: 1
   bIsEquipped: 0
   rarity: 4
   itemStats:
-  - statType: 2
+  - statType: 3
     statValue: 100
+  - statType: 8
+    statValue: 5
   armorType: 3

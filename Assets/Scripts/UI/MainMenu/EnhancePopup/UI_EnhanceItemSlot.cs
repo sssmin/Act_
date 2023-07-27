@@ -9,7 +9,7 @@ public class UI_EnhanceItemSlot : MonoBehaviour
     [SerializeField] private Image elementIcon;
     [SerializeField] private TextMeshProUGUI enhanceLevelText;
 
-    public void InitOnce(BaseWeapon weapon)
+    public void InitOnce(SO_BaseWeapon weapon)
     {
         Clear();
         if (weapon == null) return;

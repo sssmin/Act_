@@ -1,28 +1,28 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-
-
 public class UIManager : MonoBehaviour
 {
     #region delegate
+    public Func<UI_InventoryWrapper> getInventoryWrapper;
+    public Func<UI_DungeonTooltip> getDungeonTooltipUI;
     public Action<EActiveSkillOrder, float> setSkillCooltimeUI;
     public Action<EActiveSkillOrder> resetCooltimeUI;
     public Action refreshInventoryUI;
-    public Func<UI_InventoryWrapper> getInventoryWrapper;
     public Action refreshGoldInvenCapacityUI;
     public Action refreshHotKeyMainUI;
     public Action refreshBindKeyUI;
     public Action disableCategoryButtonCantEnhance;
     public Action enableCategoryButton;
-    public Action<BaseWeapon> enableCanWeaponMat;
+    public Action<SO_BaseWeapon> enableCanWeaponMat;
     public Action<List<Sprite>> refreshSkillHotkeyMainUI;
-    public Action<Item.EItemHotkeyOrder, Item> refreshItemHotkeyUI;
-    public Action<Item.EItemHotkeyOrder> clearItemHotkeyUI;
-    public Action<Item.EItemCategory> onClickCategoryButton;
+    public Action<SO_Item.EItemHotkeyOrder, SO_Item> refreshItemHotkeyUI;
+    public Action<SO_Item.EItemHotkeyOrder> clearItemHotkeyUI;
+    public Action<SO_Item.EItemCategory> onClickCategoryButton;
     public Action activeAllInvenCategoryBtn;
     public Action<List<SO_ActiveSkill>> refreshActiveSkillSlots;
     public Action clearActiveSkillSlots;
@@ -34,7 +34,10 @@ public class UIManager : MonoBehaviour
     public Action refreshCraftLines;
     public Action<string> setCraftResult;
     public Action clearCraftResult;
-    public Action<Item> setSameEquipment;
+    public Action<SO_Item> setSameEquipment;
+    public Action<Sprite, string, string> createGetAnItemSlot;
+    public Action<Sprite, string> createGetAnGoldSlot;
+    public Action<EDungeonType> onClickDungeonButton;
     #endregion
     
     private UI_Main MainUI { get; set; }
@@ -49,6 +52,9 @@ public class UIManager : MonoBehaviour
     private Stack<UI_Popup> Popups { get; set; } = new Stack<UI_Popup>();
 
     private Define.EMainMenuType CurrentActiveMainMenu { get; set; }
+    
+    private UI_TutorialSkipButton TempTutorialSkipButtonUI { get; set; }
+    private UI_DungeonSelect TempDungeonSelectUI { get; set; }
     
     public void Init()
     {
@@ -117,6 +123,7 @@ public class UIManager : MonoBehaviour
 
     public void VisibleEsc()
     {
+        Debug.Log("exec visibleEcs Func");
         GI.Inst.CinemachineTarget.DeactivateCamera();
         Popups.Push(EscUI); 
         EscUI.gameObject.SetActive(true);
@@ -124,7 +131,7 @@ public class UIManager : MonoBehaviour
     }
 
     //장착, 장착해제, 버리기 등
-    public void VisibleInventoryPopup(EInventoryPopupType type, Item item, Vector3 pos)
+    public void VisibleInventoryPopup(EInventoryPopupType type, SO_Item item, Vector3 pos)
     {
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_Popup", transform);
         UI_Inven_Popup invenPopupUI = go.GetComponent<UI_Inven_Popup>();
@@ -133,7 +140,7 @@ public class UIManager : MonoBehaviour
         GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
-    public void VisibleTBPopup(EThrowawayBuyPopupType type, Item item)
+    public void VisibleTBPopup(EThrowawayBuyPopupType type, SO_Item item)
     {
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_TB_Popup", transform);
         UI_ThrowawayBuyPopup throwawayBuyPopupUI = go.GetComponent<UI_ThrowawayBuyPopup>();
@@ -142,9 +149,9 @@ public class UIManager : MonoBehaviour
         GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
-    public void VisibleEnhancePopup(Item item)
+    public void VisibleEnhancePopup(SO_Item item)
     {
-        BaseWeapon weapon = item as BaseWeapon;
+        SO_BaseWeapon weapon = item as SO_BaseWeapon;
         if (weapon)
         {
             GameObject go = GI.Inst.ResourceManager.Instantiate("UI_EnhancePopup", transform);
@@ -181,8 +188,7 @@ public class UIManager : MonoBehaviour
             GI.Inst.CinemachineTarget.DeactivateCamera();
         OptionUI.OnVisible(optionType);
     }
-    
-    
+
     public void InvisibleEsc(bool isInGame)
     {
         GI.Inst.CinemachineTarget.ActivateCamera();
@@ -202,8 +208,10 @@ public class UIManager : MonoBehaviour
                 GI.Inst.CinemachineTarget.ActivateCamera();
             GI.Inst.ListenerManager.SwitchActionMap(false);
         }
+
+        InvisibleSkillTooltip();
+        InvisibleItemTooltip();
     }
-    
 
     public void PressedCloseButtonMainMenu()
     {
@@ -238,8 +246,15 @@ public class UIManager : MonoBehaviour
             highlightedColor = new Color(176f/255f, 176f/255f, 176f/255f, 1f),
             pressedColor = new Color(176f/255f, 176f/255f, 176f/255f, 1f),
             selectedColor = new Color(normalColor/255f, normalColor/255f, normalColor/255f, 1f),
-            colorMultiplier = 1f
+            disabledColor = new Color(176f/255f, 176f/255f, 176f/255f, 1f),
+            colorMultiplier = 1f,
+            fadeDuration = 0.1f,
         };
+    }
+    
+    public void SetNormalButtonColorPreset(Button btn)
+    {
+        btn.colors = GetPressedButtonPreset(255f);
     }
 
     public void SpawnDamageText(Define.EDamageTextType damageTextType, Vector3 spawnLocation, float damage)
@@ -253,9 +268,106 @@ public class UIManager : MonoBehaviour
     {
         return MainUI.rectTransform;
     }
+
+    public void InitTutorialUI()
+    {
+        MainUI.InvisibleAllMainUIComponent();
+    }
+
+    public UI_TutorialDialog CreateTutorialDialog()
+    {
+        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_TutorialDialog", MainUI.transform);
+        return go.GetComponent<UI_TutorialDialog>();
+    }
+
+    public UI_TutorialTitle CreateTutorialTitle()
+    {
+        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_TutorialTitle", MainUI.transform);
+        return go.GetComponent<UI_TutorialTitle>();
+    }
+
+    public void CreateTutorialSkipButton(float second)
+    {
+        StartCoroutine(CoCreateTutorialSkipButton(second));
+    }
+
+    IEnumerator CoCreateTutorialSkipButton(float second)
+    {
+        yield return new WaitForSeconds(second);
+        if (TempTutorialSkipButtonUI)
+            Destroy(TempTutorialSkipButtonUI.gameObject);
+        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_TutorialSkipButton", MainUI.transform);
+        TempTutorialSkipButtonUI = go.GetComponent<UI_TutorialSkipButton>();
+    }
+
+    public void CreateDungeonInfoUI()
+    {
+        GameObject go = GI.Inst.ResourceManager.Instantiate("UI_DungeonSelect", transform);
+        TempDungeonSelectUI = go.GetComponent<UI_DungeonSelect>();
+        TempDungeonSelectUI.InitOnce();
+    }
+
+    public void DestroyDungeonSelectUI()
+    {
+        if (TempDungeonSelectUI)
+        {
+            GI.Inst.ResourceManager.Destroy(TempDungeonSelectUI.gameObject);
+            TempDungeonSelectUI = null;
+        }
+    }
+
+    public void EnableMerchantCategoryBtn(EMerchantType type)
+    {
+        MerchantMenuUI.EnableButton(type);
+    }
+    
+    public void DisableMerchantCategoryBtn(EMerchantType type)
+    {
+        MerchantMenuUI.DisableButton(type);
+    }
+    
+    public Button GetCraftButton()
+    {
+        return MerchantMenuUI.GetWeaponCraftButton();
+    }
+
+    public void DestroyTutorialSkipButton()
+    {
+        if (TempTutorialSkipButtonUI)
+        {
+            Destroy(TempTutorialSkipButtonUI.gameObject);
+            TempTutorialSkipButtonUI = null;
+        }
+    }
+    
+    //Main UI 부품별 컨트롤
+    #region MainUIComponentControl 
+
+    public void VisibleMainUIComponent(EMainUIComponent mainUIComponent)
+    {
+        MainUI.VisibleMainUIComponent(mainUIComponent);
+    }
+    
+    public void InvisibleMainUIComponent(EMainUIComponent mainUIComponent)
+    {
+        MainUI.InvisibleMainUIComponent(mainUIComponent);
+    }
+    
+    public void VisibleAllMainUIComponent()
+    {
+        MainUI.VisibleAllMainUIComponent();
+    }
+
+    public void InvisibleAllMainUIComponent()
+    {
+        MainUI.InvisibleAllMainUIComponent();
+    }
+
+    #endregion
+    
     #region Tooltip
 
-    public void VisibleItemTooltip(Item item, Vector3 slotPos, int pivot)
+    public void VisibleItemTooltip(SO_Item item, Vector3 slotPos, int pivot)
     {
         ItemTooltipUI.gameObject.SetActive(true);
         ItemTooltipUI.Init(item, slotPos, pivot);
@@ -306,7 +418,12 @@ public class UIManager : MonoBehaviour
 
     public UI_InventoryWrapper GetInventoryWrapper()
     {
-        return getInventoryWrapper.Invoke();
+        return getInventoryWrapper?.Invoke();
+    }
+
+    public UI_DungeonTooltip GetDungeonTooltipUI()
+    {
+        return getDungeonTooltipUI?.Invoke();
     }
 
     public void RefreshGoldInvenCapacityUI()
@@ -349,12 +466,12 @@ public class UIManager : MonoBehaviour
         refreshSkillHotkeyMainUI?.Invoke(icons);
     }
     
-    public void RefreshItemHotkeyUI(Item.EItemHotkeyOrder order, Item item)
+    public void RefreshItemHotkeyUI(SO_Item.EItemHotkeyOrder order, SO_Item item)
     {
         refreshItemHotkeyUI?.Invoke(order, item);
     }
 
-    public void ClearItemHotkeyUI(Item.EItemHotkeyOrder order)
+    public void ClearItemHotkeyUI(SO_Item.EItemHotkeyOrder order)
     {
         clearItemHotkeyUI?.Invoke(order);
     }
@@ -364,7 +481,7 @@ public class UIManager : MonoBehaviour
         activeAllInvenCategoryBtn?.Invoke();
     }
 
-    public void OnClickCategoryButton(Item.EItemCategory itemCategory)
+    public void OnClickCategoryButton(SO_Item.EItemCategory itemCategory)
     {
         onClickCategoryButton?.Invoke(itemCategory);
         InvisibleItemTooltip();
@@ -405,12 +522,22 @@ public class UIManager : MonoBehaviour
         clearCraftResult?.Invoke();
     }
 
-    public void SetSameEquipment(Item weapon)
+    public void SetSameEquipment(SO_Item weapon)
     {
         setSameEquipment?.Invoke(weapon);
     }
 
-    public void DisableCategoryButtonCantEnhance()
+    public void CreateGetAnItemSlot(Sprite icon, string itemName, string amount)
+    {
+        createGetAnItemSlot?.Invoke(icon, itemName, amount);
+    }
+
+    public void CreateGetAnGoldSlot(Sprite icon, string gold)
+    {
+        createGetAnGoldSlot?.Invoke(icon, gold);
+    }
+
+    public void DisableInvenCategoryBtnCantEnhance()
     {
         disableCategoryButtonCantEnhance?.Invoke();
     }
@@ -420,9 +547,14 @@ public class UIManager : MonoBehaviour
         enableCategoryButton?.Invoke();
     }
 
-    public void EnableCanWeaponMat(BaseWeapon weapon)
+    public void EnableCanWeaponMat(SO_BaseWeapon weapon)
     {
         enableCanWeaponMat?.Invoke(weapon);
+    }
+
+    public void OnClickDungeonButton(EDungeonType type)
+    {
+        onClickDungeonButton?.Invoke(type);
     }
 
     #endregion

@@ -9,9 +9,9 @@ public enum EWeaponElement
 }
 
 [CreateAssetMenu(fileName = "Weapon_", menuName ="Data/Item/Weapon")]
-public class BaseWeapon : Equipment
+public class SO_BaseWeapon : SO_Equipment
 {
-    public BaseWeapon()
+    public SO_BaseWeapon()
     {
         ItemCategory = EItemCategory.Weapon;
     }

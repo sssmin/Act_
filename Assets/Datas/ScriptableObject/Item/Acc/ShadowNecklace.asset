@@ -17,7 +17,6 @@ MonoBehaviour:
   itemName: "\uC250\uB3C4\uC6B0 \uB124\uD06C\uB9AC\uC2A4"
   itemDesc: 
   itemIcon: {fileID: 199484958, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
-  bIsCanStack: 0
   amount: 0
   maxStackSize: 0
   bIsEquipped: 0
@@ -25,6 +24,4 @@ MonoBehaviour:
   itemStats:
   - statType: 1
     statValue: 80
-  - statType: 2
-    statValue: 30
   accType: 1

@@ -10,4 +10,14 @@ public class UI_BindKey : MonoBehaviour
     {
         keyText.text = GI.Inst.Player.PlayerController.GetBindingKeyString(bindKeyType);
     }
+
+    public void VisibleKeyText()
+    {
+        keyText.color = Color.white;
+    }
+
+    public void InvisibleKeyText()
+    {
+        keyText.color = Color.clear;
+    }
 }

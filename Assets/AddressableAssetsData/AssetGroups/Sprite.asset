@@ -23,6 +23,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Sprite
     - StatusSprite
+  - m_GUID: 5e6b88126203a2d48bdebb9d688b4708
+    m_Address: Item
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ItemSprite
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

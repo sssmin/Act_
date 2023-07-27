@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "Stats_", menuName = "CharacterStats")]
-public class PlayerBaseStats : ScriptableObject
+public class SO_PlayerBaseStats : ScriptableObject
 {
     public Stats stats = new Stats();
 }

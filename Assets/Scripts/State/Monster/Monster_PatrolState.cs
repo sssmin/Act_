@@ -12,6 +12,7 @@ public class Monster_PatrolState : MonsterState
 
     public override void BeginState()
     {
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isMove, true);
         ThinkTimer = Random.Range(1f, 2f);
     }
@@ -21,7 +22,7 @@ public class Monster_PatrolState : MonsterState
         base.Update();
         
         ThinkTimer -= Time.deltaTime;
-        
+        if (Monster.StatManager.IsDead) return;
         if (AIController.Target != null)
         {
             TransitionState(Define.EMonsterState.Chase);

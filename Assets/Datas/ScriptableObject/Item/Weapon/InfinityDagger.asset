@@ -17,7 +17,6 @@ MonoBehaviour:
   itemName: "\uC778\uD53C\uB2C8\uD2F0 \uB300\uAC70"
   itemDesc: 
   itemIcon: {fileID: 959025772, guid: fe0f2fb492b4a3e4da2ba1ec004d5d26, type: 3}
-  bIsCanStack: 0
   amount: 0
   maxStackSize: 1
   bIsEquipped: 0

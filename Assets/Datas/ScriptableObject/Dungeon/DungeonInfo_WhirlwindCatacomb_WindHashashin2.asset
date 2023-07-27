@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2486f67d3ca5f544da124b214757c10f, type: 3}
+  m_Name: DungeonInfo_WhirlwindCatacomb_WindHashashin2
+  m_EditorClassIdentifier: 
+  dungeonType: 1
+  desc: "\uB354\uC6B1 \uAC15\uB825\uD574\uC9C4 \uBC14\uB78C\uC744 \uB2E4\uB8E8\uBA70,
+    \uADF8\uAC00 \uC9C0\uD0A4\uB294 \uC774\uACF3\uC740 \uB354\uC6B1 \uAC15\uD568\uC744
+    \uC694\uAD6C\uD569\uB2C8\uB2E4."
+  dungeonInfoDetails:
+  - dungeonCategory: 0
+    dungeonLevel: 3
+    spawnMonsterIds:
+    - NightBorne
+    - WandererMagician
+    monsterLevel: 2
+    rewardItemIds:
+    - itemId: ShadowRing
+      amount: 1
+      itemCategory: 2
+      dropChance: 10
+    - itemId: SupremeRing
+      amount: 1
+      itemCategory: 2
+      dropChance: 5
+    - itemId: SharedMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    - itemId: WeaponMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    - itemId: ActiveNormalMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    isLevelCompleted: 0
+  - dungeonCategory: 0
+    dungeonLevel: 4
+    spawnMonsterIds:
+    - Necromancer
+    - SkeletonWarrior
+    monsterLevel: 3
+    rewardItemIds:
+    - itemId: ShadowRing
+      amount: 1
+      itemCategory: 2
+      dropChance: 10
+    - itemId: SupremeRing
+      amount: 1
+      itemCategory: 2
+      dropChance: 5
+    - itemId: SharedMat
+      amount: 2
+      itemCategory: 4
+      dropChance: 20
+    - itemId: WeaponMat
+      amount: 2
+      itemCategory: 4
+      dropChance: 10
+    - itemId: AccMat
+      amount: 2
+      itemCategory: 4
+      dropChance: 10
+    - itemId: ActiveNormalMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    - itemId: PassiveMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    isLevelCompleted: 0
+  - dungeonCategory: 1
+    dungeonLevel: 2
+    spawnMonsterIds:
+    - WindHashashin
+    monsterLevel: 2
+    rewardItemIds:
+    - itemId: ShadowNecklace
+      amount: 1
+      itemCategory: 2
+      dropChance: 5
+    - itemId: SupremeNecklace
+      amount: 1
+      itemCategory: 2
+      dropChance: 5
+    - itemId: 'ActiveUltMat '
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    - itemId: SharedMat
+      amount: 2
+      itemCategory: 4
+      dropChance: 20
+    - itemId: WeaponMat
+      amount: 2
+      itemCategory: 4
+      dropChance: 20
+    - itemId: PassiveMat
+      amount: 1
+      itemCategory: 4
+      dropChance: 20
+    isLevelCompleted: 0
+  isDungeonCompleted: 0

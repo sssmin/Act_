@@ -27,7 +27,8 @@ public static class Define
         MonsterDefendDamagedCritical,
         Evasion,
         Dodge,
-        Heal
+        Heal,
+        DamagedByTrap
     }
 
     public enum EActivationCondition //발동 조건
@@ -58,7 +59,9 @@ public static class Define
         AudioClip,
         AudioMixer,
         StatusSprite,
-        WeaponEnhanceValueByLevel
+        WeaponEnhanceValueByLevel,
+        DungeonInfo,
+        ItemSprite
     }
 
     public enum ESkillId

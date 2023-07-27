@@ -1,5 +1,7 @@
 
 
+using UnityEngine;
+
 public class MonsterAnimTrigger : AnimTrigger
 {
     protected Monster Monster { get; set; }

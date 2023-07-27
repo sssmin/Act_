@@ -33,12 +33,14 @@ public class UI_TitleMainMenu : MonoBehaviour
     private void OnClickNewGameButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        Destroy(gameObject);
         GI.Inst.SceneLoadManager.OnClickNewGameButton("Tutorial");
     }
     
     private void OnClickContinueButton()
     {
         GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        Destroy(gameObject);
         GI.Inst.SceneLoadManager.OnClickContinueGameButton();
     }
     

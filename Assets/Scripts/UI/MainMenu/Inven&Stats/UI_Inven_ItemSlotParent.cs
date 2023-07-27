@@ -6,22 +6,22 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
 {
     private List<UI_Inven_ItemSlot> itemSlots = new List<UI_Inven_ItemSlot>();
     private List<UI_Inven_ConsumableSlot> consumableItemSlots = new List<UI_Inven_ConsumableSlot>();
-    private Item.EItemCategory _currentActiveItemCategory = Item.EItemCategory.Weapon;
+    private SO_Item.EItemCategory _currentActiveItemCategory = SO_Item.EItemCategory.Weapon;
 
-    public void Init(Item.EItemCategory itemCategory)
+    public void Init(SO_Item.EItemCategory itemCategory)
     {
         _currentActiveItemCategory = itemCategory;
         ClearItemSlots();
 
         switch (itemCategory)
         {
-            case Item.EItemCategory.Weapon:
-            case Item.EItemCategory.Armor:
-            case Item.EItemCategory.Acc:
-                List<Item> items = GI.Inst.ListenerManager.GetItems(itemCategory);
+            case SO_Item.EItemCategory.Weapon:
+            case SO_Item.EItemCategory.Armor:
+            case SO_Item.EItemCategory.Acc:
+                List<SO_Item> items = GI.Inst.ListenerManager.GetItems(itemCategory);
                 int itemNum = items.Count;
                 if (itemNum == 0) return;
-                foreach (Item item in items)
+                foreach (SO_Item item in items)
                 {
                     GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Inven_ItemSlot", transform);
                     UI_Inven_ItemSlot invenItemSlot = go.GetComponent<UI_Inven_ItemSlot>();
@@ -30,7 +30,7 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
                 }
                 break;
 
-            case Item.EItemCategory.Consumable:
+            case SO_Item.EItemCategory.Consumable:
                 {
                     List<StackableItem> stackableItems = GI.Inst.ListenerManager.GetStackableItems(itemCategory);
                     foreach (StackableItem stackableItem in stackableItems)
@@ -46,7 +46,7 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
                     }
                 }
                 break;
-            case Item.EItemCategory.Etc:
+            case SO_Item.EItemCategory.Etc:
                 {
                     List<StackableItem> stackableItems = GI.Inst.ListenerManager.GetStackableItems(itemCategory);
                     foreach (StackableItem stackableItem in stackableItems)
@@ -91,7 +91,7 @@ public class UI_Inven_ItemSlotParent : MonoBehaviour
         Init(_currentActiveItemCategory);
     }
 
-    public void EnableCanWeaponMat(BaseWeapon weapon)
+    public void EnableCanWeaponMat(SO_BaseWeapon weapon)
     {
         foreach (UI_Inven_ItemSlot itemSlot in itemSlots)
         {

@@ -9,25 +9,25 @@ using UnityEngine.UI;
 public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     private Sprite itemIconSprite;
-    private Item item;
+    private SO_Item item;
     [SerializeField] Image itemIconImage;
     [SerializeField] public Image elementIconImage;
-    [SerializeField] public Item.EItemCategory itemCategory;
-    [SerializeField] public Item.EArmorType armorType;
-    [SerializeField] public Item.EAccType accType;
+    [SerializeField] public SO_Item.EItemCategory itemCategory;
+    [SerializeField] public SO_Item.EArmorType armorType;
+    [SerializeField] public SO_Item.EAccType accType;
     [SerializeField] RectTransform slotTransform;
     [SerializeField] TextMeshProUGUI enhanceLevelText;
 
-    public void SetItem(List<Item> inItem)
+    public void SetItem(List<SO_Item> inItem)
     {
-        Item findItem = inItem.FirstOrDefault(i => i.ItemCategory == itemCategory);
+        SO_Item findItem = inItem.FirstOrDefault(i => i.ItemCategory == itemCategory);
         item = findItem;
         if (item == null)
             return;
         
-        if (item.ItemCategory == Item.EItemCategory.Armor)
+        if (item.ItemCategory == SO_Item.EItemCategory.Armor)
         {
-            BaseArmor baseArmor = (BaseArmor)item;
+            SO_BaseArmor baseArmor = (SO_BaseArmor)item;
             if (baseArmor.armorType == armorType)
             {
                 itemIconSprite = item.itemIcon;
@@ -35,9 +35,9 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
                 itemIconImage.color = Color.white;
             }
         }
-        else if (item.ItemCategory == Item.EItemCategory.Acc)
+        else if (item.ItemCategory == SO_Item.EItemCategory.Acc)
         {
-            BaseAcc baseAcc = (BaseAcc)item;
+            SO_BaseAcc baseAcc = (SO_BaseAcc)item;
             if (baseAcc.accType == accType)
             {
                 itemIconSprite = item.itemIcon;
@@ -47,7 +47,7 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
         }
         else
         {
-            BaseWeapon weapon = findItem as BaseWeapon;
+            SO_BaseWeapon weapon = findItem as SO_BaseWeapon;
             if (weapon)
             {
                 enhanceLevelText.text = 
@@ -79,6 +79,8 @@ public class UI_Inven_EquippedSlot : MonoBehaviour, IPointerEnterHandler, IPoint
         itemIconImage.color = Color.clear;
         if (elementIconImage)
             elementIconImage.color = Color.clear;
+        if (enhanceLevelText)
+            enhanceLevelText.text = "";
     }
 
     

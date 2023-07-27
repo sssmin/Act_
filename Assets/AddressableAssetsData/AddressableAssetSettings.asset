@@ -54,6 +54,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38c37e4e33d0fe648a2036e6ed88ac54, type: 2}
   - {fileID: 11400000, guid: 585db6c3ffd65864db4741bfcffedfd6, type: 2}
   - {fileID: 11400000, guid: 01676ab71b0fbd34783f2ea7a23fb2d4, type: 2}
+  - {fileID: 11400000, guid: ae67346f497d6d849a33c615b738a940, type: 2}
   - {fileID: 11400000, guid: cdd0af184ab296b49a0215e542c733fc, type: 2}
   - {fileID: 11400000, guid: 154daf6d63f125c4084fbe5b40f13011, type: 2}
   - {fileID: 11400000, guid: abff287aa89d63342808fa4dee379590, type: 2}
@@ -110,6 +111,8 @@ MonoBehaviour:
     - AudioMixer
     - StatusSprite
     - WeaponEnhanceValueByLevel
+    - DungeonInfo
+    - ItemSprite
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: f0c1f86168d1d594ba8f691bd78812b2, type: 2}

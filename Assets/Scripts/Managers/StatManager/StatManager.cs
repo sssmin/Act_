@@ -49,7 +49,30 @@ public class Stats
     {
         StatCopy(stats);
         currentHp.StatCopy(stats.maxHp);
-        //ui 갱신 필요
+    }
+    
+    public void InitMonsterStat(Stats stats, int level)
+    {
+        StatCopy(stats);
+        ModifierMonsterLevel(stats, level);
+        currentHp.StatCopy(stats.maxHp);
+        currentHp.AddModifier(stats.currentHp.Value * (level - 1));
+    }
+    
+    public void ModifierMonsterLevel(Stats stats, int level)
+    {
+        attack.AddModifier(stats.attack.Value * (level - 1));
+        attackIncValue.AddModifier(stats.attackIncValue.Value * (level - 1));
+        defence.AddModifier(stats.defence.Value * (level - 1));
+        defenceIncValue.AddModifier(stats.defenceIncValue.Value * (level - 1));
+        maxHp.AddModifier(stats.maxHp.Value * (level - 1));
+        criticalChancePer.AddModifier(stats.criticalChancePer.Value * (level - 1));
+        criticalResistPer.AddModifier(stats.criticalResistPer.Value * (level - 1));
+        criticalDamageIncPer.AddModifier(stats.criticalDamageIncPer.Value * (level - 1));
+        normalAttackDamageIncPer.AddModifier(stats.normalAttackDamageIncPer.Value * (level - 1));
+        skillAttackDamageIncPer.AddModifier(stats.skillAttackDamageIncPer.Value * (level - 1));
+        evasionChancePer.AddModifier(stats.evasionChancePer.Value * (level - 1));
+        skillCooltimeDecRate.AddModifier(stats.skillCooltimeDecRate.Value * (level - 1));
     }
 }
 
@@ -83,9 +106,12 @@ public class Stat
             }
             return finalValue;
         }
-        set => statValue = value;
+        set
+        {
+            statValue = value;
+        }
     }
-    
+
     private List<float> Modifiers = new List<float>();
     
     public void AddModifier(float value)
@@ -133,7 +159,7 @@ public class StatManager : MonoBehaviour
     
     public BaseCharacter Character { get; set; }
     
-    protected bool IsDead { get; private set; }
+    public bool IsDead { get; protected set; }
 
     public virtual void Awake()
     {
@@ -175,20 +201,22 @@ public class StatManager : MonoBehaviour
 
     public virtual void CauseNormalAttack(StatManager enemyStatManager, float normalAttackCoef = 1f)
     {
-        DamageInfo damageInfo = new DamageInfo();
-        damageInfo.damage = CalcDamage();
+        if (enemyStatManager)
+        {
+            DamageInfo damageInfo = new DamageInfo();
+            damageInfo.damage = CalcDamage();
       
-        damageInfo.damage = Mathf.Round((damageInfo.damage * normalAttackCoef) * 10) * 0.1f; //계수 적용
+            damageInfo.damage = Mathf.Round((damageInfo.damage * normalAttackCoef) * 10) * 0.1f; //계수 적용
         
-        //********* 기본공격 피해량 증가분
-        damageInfo.damage += Mathf.Round(damageInfo.damage * (characterStats.normalAttackDamageIncPer.Value / 100f) * 10) * 0.1f;
+            //********* 기본공격 피해량 증가분
+            damageInfo.damage += Mathf.Round(damageInfo.damage * (characterStats.normalAttackDamageIncPer.Value / 100f) * 10) * 0.1f;
         
-        CalcCriticalDamage(ref damageInfo);
+            CalcCriticalDamage(ref damageInfo);
         
-        enemyStatManager.TakeDamage(damageInfo, this, Define.EDamageType.Normal);
+            enemyStatManager.TakeDamage(damageInfo, this, Define.EDamageType.Normal);
+        }
     }
     
-
     //스킬 대미지 계산 전 기본 대미지
     public DamageInfo GetDefaultDamage()
     {
@@ -224,27 +252,12 @@ public class StatManager : MonoBehaviour
     protected virtual void AddCurrentHp(float value)
     {
         characterStats.currentHp.Value = Mathf.Clamp(characterStats.currentHp.Value + value, 0f, characterStats.maxHp.Value);
-        float ratio = characterStats.currentHp.Value / characterStats.maxHp.Value * 100f;
-      
+        
     }
 
-    protected void Dead()
+    protected virtual void Dead()
     {
-        if (IsDead) return;
         
-        IsDead = true;
-        
-        Monster monster = GetComponent<Monster>();
-        if (monster)
-        {
-            monster.TransitionState(Define.EMonsterState.Dead);
-            monster.DropTable.DropItem();
-        }
-        else
-        {
-            Player player = GetComponent<Player>();
-            player.TransitionState(Define.EPlayerState.Dead);
-        }
     }
 
     public virtual void ExecDurationEffect(Effect effect, Sprite icon)
@@ -360,6 +373,11 @@ public class StatManager : MonoBehaviour
     {
         //최대 * 퍼센트 * 0.01 >= 현재
         return characterStats.maxHp.Value * per * 0.01f >= characterStats.currentHp.Value;
+    }
+
+    public virtual void TakeTrapDamage()
+    {
+        
     }
     
 }

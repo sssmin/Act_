@@ -15,6 +15,7 @@ public class Monster_IdleState : MonsterState
     {
         Monster.SetZeroVelocity();
         
+        if (Monster.StatManager.IsDead) return;
         Animator.SetBool(AnimHash.isIdle, true);
         if (AIController.Target != null)
         {

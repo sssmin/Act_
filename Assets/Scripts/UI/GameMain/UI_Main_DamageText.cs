@@ -52,7 +52,9 @@ public class UI_Main_DamageText : MonoBehaviour
                 return;
             case Define.EDamageTextType.Heal:
                 damageText.color = Color.green;
-                damageText.text = assembleDamage;
+                break;
+            case Define.EDamageTextType.DamagedByTrap:
+                damageText.color = new Color(183f/255f, 183f/255f, 183f/255f, 255f/255f);
                 break;
             case Define.EDamageTextType.Dodge:
                 damageText.color = new Color(183f/255f, 183f/255f, 183f/255f, 255f/255f);

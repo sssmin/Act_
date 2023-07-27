@@ -17,14 +17,11 @@ MonoBehaviour:
   itemName: "\uC250\uB3C4\uC6B0 \uB9C1"
   itemDesc: 
   itemIcon: {fileID: 777400313, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
-  bIsCanStack: 0
   amount: 0
   maxStackSize: 0
   bIsEquipped: 0
   rarity: 3
   itemStats:
-  - statType: 1
-    statValue: 80
-  - statType: 2
+  - statType: 3
     statValue: 30
   accType: 2

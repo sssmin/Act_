@@ -9,9 +9,9 @@ public enum ESkillMatId
 }
 
 [CreateAssetMenu(fileName = "Etc_", menuName ="Data/Item/Etc")]
-public class Etc : SO_Item
+public class SO_Etc : SO_Item
 {
-    public Etc()
+    public SO_Etc()
     {
         ItemCategory = EItemCategory.Etc;
         amount = 1;

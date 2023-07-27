@@ -257,6 +257,46 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+  - m_GUID: ca82728ced3165b49a183af5260fffc7
+    m_Address: UI_TutorialDialog
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 7cbdec18f94838c4faaa787f1c113cba
+    m_Address: UI_TutorialTitle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: c317f60530856bb4b8fe87d50c3fa2ab
+    m_Address: UI_TutorialSkipButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 03db9ea0d1da5fc4ebdfbb771f198d14
+    m_Address: UI_GetAnItemSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: c88b458b3c25e394abdd69b6b0e2079a
+    m_Address: UI_DungeonButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 9751cfd1c358f384ead465a336a68699
+    m_Address: UI_DungeonSelect
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 356109faafe45e94f83c48318afcd161
+    m_Address: UI_DungeonDescEnter
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 3800c60f220ac1143aa54d81dc70ba96
+    m_Address: UI_DungeonTooltip
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

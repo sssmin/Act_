@@ -13,6 +13,7 @@ public class WindHashashin_IdleState : MonsterState
     public override void BeginState()
     {
         Monster.SetZeroVelocity();
+        if (Monster.StatManager.IsDead) return;
         
         Animator.SetBool(AnimHash.isIdle, true);
         idleTimer = Random.Range(0.5f, 1f);

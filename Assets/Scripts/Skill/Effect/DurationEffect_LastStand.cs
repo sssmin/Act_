@@ -5,7 +5,6 @@ public class DurationEffect_LastStand : DurationEffect
     public override void CheckConditionAndExecute(Define.EDamageType inDamageType, Define.EActivationCondition inActivationCondition,
         StatManager enemyStatManager, StatManager casterStatManager, Sprite icon)
     {
-        Debug.Log("실행");
         if (((damageType == Define.EDamageType.Both) || (damageType == inDamageType)) && activationCondition == inActivationCondition)
         {
             //체력이 20% 이하면

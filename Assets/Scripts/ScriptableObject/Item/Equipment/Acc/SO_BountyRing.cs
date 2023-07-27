@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Acc_", menuName ="Data/Item/Acc")]
-public class BountyRing : SO_BaseAcc
+public class SO_BountyRing : SO_BaseAcc
 {
    
 }

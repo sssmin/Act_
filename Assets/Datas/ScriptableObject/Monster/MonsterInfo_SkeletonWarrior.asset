@@ -18,18 +18,18 @@ MonoBehaviour:
     attack:
       statType: 1
       statValue: 14
-    attackIncPer:
+    attackIncValue:
       statType: 2
       statValue: 0
     defence:
       statType: 3
       statValue: 42
-    defenceIncPer:
+    defenceIncValue:
       statType: 4
       statValue: 0
     maxHp:
       statType: 5
-      statValue: 200
+      statValue: 250
     currentHp:
       statType: 6
       statValue: 0
@@ -60,5 +60,7 @@ MonoBehaviour:
   dropTable:
     itemInfos:
     - itemId: SharedMat
+      itemCategory: 4
       maxDropAmount: 1
       dropChance: 5
+    gold: 25

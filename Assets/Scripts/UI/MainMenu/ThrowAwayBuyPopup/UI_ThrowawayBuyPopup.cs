@@ -10,7 +10,7 @@ public class UI_ThrowawayBuyPopup : UI_Popup
     [SerializeField] Button closeButton;
     [SerializeField] RectTransform contentParentBackground;
     
-    public void Init(EThrowawayBuyPopupType type, Item item)
+    public void Init(EThrowawayBuyPopupType type, SO_Item item)
     {
         background.onClick.AddListener(() =>
         {

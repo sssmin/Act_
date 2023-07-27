@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6731169370025075871}
   - component: {fileID: 3270432873709614510}
   - component: {fileID: 3270432873709614511}
+  - component: {fileID: -2837318026893768244}
+  - component: {fileID: 1536043181797867440}
   m_Layer: 16
   m_Name: Spawner
   m_TagString: Untagged
@@ -71,6 +73,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61135a9885f852469f37db0d35929e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMonsterAmount: 3
-  monsterLevel: 1
-  monsterPrefabIds: 
+--- !u!114 &-2837318026893768244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917073998401774136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b339bb8481c4ba245ba8da1a382ec1d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolingNum: 5
+--- !u!114 &1536043181797867440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7917073998401774136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1fb9d755d06495d9ee7ff58e37513d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: Spawner

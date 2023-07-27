@@ -7,29 +7,6 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-[Serializable]
-public class PassiveSkillDictionary : SerializableDictionary<Define.ESkillId, PassiveSaveInfo>
-{
-}
-
-
-[Serializable]
-public class PassiveSaveInfo
-{
-    [SerializeField] public Define.ESkillId skillId;
-    [SerializeField] public int level;
-    [SerializeField] public bool bCanLevelUp;
-    [SerializeField] public int equipIndex;
-
-    public void SetInfo(SO_PassiveSkill passiveSkill)
-    {
-        skillId = passiveSkill.skillId;
-        level = passiveSkill.skillLevel;
-        bCanLevelUp = passiveSkill.bCanLevelUp;
-        equipIndex = passiveSkill.equipIndex;
-    }
-}
-
 
 public struct ActiveSkillIdentify : IEquatable<ActiveSkillIdentify>
 {
@@ -58,7 +35,6 @@ public class SkillManager : MonoBehaviour
         new Dictionary<Define.ESkillId, SO_PassiveSkill>();
 
     private Player Player { get; set; }
-    private float UltSkillChargeAmount { get; set; }
     
 
     private void Awake()
@@ -97,10 +73,8 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.unequipPassiveSkill += UnequipPassiveSkill;
         GI.Inst.ListenerManager.execTakeDamageEffect -= ExecTakeDamageEffect;
         GI.Inst.ListenerManager.execTakeDamageEffect += ExecTakeDamageEffect;
-        GI.Inst.ListenerManager.getUltSkillChargeAmount -= GetUltSkillChargeAmount;
-        GI.Inst.ListenerManager.getUltSkillChargeAmount += GetUltSkillChargeAmount;
-        GI.Inst.ListenerManager.initUltSkillChargeAmount -= InitUltSkillChargeAmount;
-        GI.Inst.ListenerManager.initUltSkillChargeAmount += InitUltSkillChargeAmount;
+        GI.Inst.ListenerManager.isAnyEquippedPassiveSkill -= IsAnyEquippedPassiveSkill;
+        GI.Inst.ListenerManager.isAnyEquippedPassiveSkill += IsAnyEquippedPassiveSkill;
     }
 
     private void OnDestroy()
@@ -119,8 +93,7 @@ public class SkillManager : MonoBehaviour
         GI.Inst.ListenerManager.equipPassiveSkill -= EquipPassiveSkill;
         GI.Inst.ListenerManager.unequipPassiveSkill -= UnequipPassiveSkill;
         GI.Inst.ListenerManager.execTakeDamageEffect -= ExecTakeDamageEffect;
-        GI.Inst.ListenerManager.getUltSkillChargeAmount -= GetUltSkillChargeAmount;
-        GI.Inst.ListenerManager.initUltSkillChargeAmount -= InitUltSkillChargeAmount;
+        GI.Inst.ListenerManager.isAnyEquippedPassiveSkill -= IsAnyEquippedPassiveSkill;
     }
 
     public void SetStartPassiveSkills()
@@ -172,7 +145,8 @@ public class SkillManager : MonoBehaviour
                 GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Third, cooltime);
                 break;
             case EActiveSkillOrder.Fourth:
-                UltSkillChargeAmount = 0f;
+                GI.Inst.CooltimeManager.FourthSkillTimer = Time.time + cooltime;
+                GI.Inst.UIManager.SetSkillCooltimeUI(EActiveSkillOrder.Fourth, cooltime);
                 break;
             case EActiveSkillOrder.Fifth:
                 GI.Inst.CooltimeManager.FifthSkillTimer = Time.time + cooltime;
@@ -181,7 +155,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public void SetActiveSkillCuzEquip(Item.EWeaponType type)
+    public void SetActiveSkillCuzEquip(SO_Item.EWeaponType type)
     {
         Define.ESkillId[] skillIds = GetActiveSkillType(type);
         
@@ -239,30 +213,7 @@ public class SkillManager : MonoBehaviour
             Debug.Log("존재하지 않는 패시브.");
         }
     }
-
-    public void ChargeFourthSkill(Define.EDamageType causeDamageType)
-    {
-        float randValue = 0f;
-        if (causeDamageType == Define.EDamageType.Normal)
-        {
-            randValue = Random.Range(1f, 3f);
-        }
-        else if (causeDamageType == Define.EDamageType.Skill)
-        {
-            randValue = Random.Range(0.1f, 0.3f);
-        }
-        
-        UltSkillChargeAmount = Mathf.Clamp(UltSkillChargeAmount + randValue, 0f, 100f);
-        
-        GI.Inst.UIManager.UpdateFillAmount(UltSkillChargeAmount);
-        
-        if (UltSkillChargeAmount >= 100f)
-        {
-            //충전완료
-            //완료된 애니메이션? 알림?
-        }
-    }
-
+    
     public bool IsSkillReady(EActiveSkillOrder skillOrder)
     {
         switch (skillOrder)
@@ -274,7 +225,7 @@ public class SkillManager : MonoBehaviour
             case EActiveSkillOrder.Third:
                 return (GI.Inst.CooltimeManager.ThirdSkillTimer <= Time.time);
             case EActiveSkillOrder.Fourth:
-                return (UltSkillChargeAmount >= 100f);
+                return (GI.Inst.CooltimeManager.FourthSkillTimer <= Time.time);
             case EActiveSkillOrder.Fifth:
                 return (GI.Inst.CooltimeManager.FifthSkillTimer <= Time.time);
         }
@@ -336,7 +287,6 @@ public class SkillManager : MonoBehaviour
         StatManager victimStatManager)
     {
         ExecCauseDamageEffect(causeDamageType, takeDamageResult, victimStatManager);
-        ChargeFourthSkill(causeDamageType);
     }
     
     //플레이어만 염두에 두고 구현하면 됨. 몬스터는 SkillManager가 없음.
@@ -365,7 +315,7 @@ public class SkillManager : MonoBehaviour
     //무기가 가진 부가효과 실행 (ex. 인피니티 무기 피흡)
     private void ExecWeaponEffect(Define.EDamageType causeDamageType, StatManager victimStatManager)
     {
-        BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
+        SO_BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
         if (equippedWeapon == null) return;
         foreach (Effect effect in equippedWeapon.effects)
         {
@@ -377,7 +327,7 @@ public class SkillManager : MonoBehaviour
     //무기가 가진 속성효과 실행 (ex. 불 속성 방감)=>상대방의 현재 스탯에 디버프 효과를 주는 것이기 때문에 다른 효과들과 다르게 피해 입힐때마다 Effect 생성.
     private void ExecWeaponElementEffect(Define.EDamageType causeDamageType, StatManager victimStatManager)
     {
-        BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
+        SO_BaseWeapon equippedWeapon = GI.Inst.ListenerManager.GetEquippedWeapon();
         if (equippedWeapon == null) return;
         if (equippedWeapon.Element == EWeaponElement.None) return;
         
@@ -449,7 +399,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public void ExecTakeDamageEffect(Define.EDamageType causeDamageType, StatManager instigatorStatManager)
+    private void ExecTakeDamageEffect(Define.EDamageType causeDamageType, StatManager instigatorStatManager)
     {
         foreach (var pair in PassiveSkills)
         {
@@ -464,30 +414,29 @@ public class SkillManager : MonoBehaviour
             }
         }
     }
-
-    public void SetDeserializeSkillInfo(PlayerInfo playerInfo)
+    
+    public List<SO_PassiveSkill> GetEquippedPassiveSkills()
     {
-        playerInfo.Deserialize();
-
-        PassiveSkillDictionary skillDictionary = playerInfo.passiveSkills;
-        foreach (KeyValuePair<Define.ESkillId, PassiveSaveInfo> pair in skillDictionary)
+        List<SO_PassiveSkill> equippedPassiveSkills = new List<SO_PassiveSkill>();
+        foreach (var pair in PassiveSkills)
         {
-            SO_PassiveSkill passiveSkill = GI.Inst.ResourceManager.GetPassiveSkillData(pair.Key);
-            passiveSkill.skillLevel = pair.Value.level;
-            passiveSkill.bCanLevelUp = pair.Value.bCanLevelUp;
-            passiveSkill.equipIndex = pair.Value.equipIndex;
-            passiveSkill.Init();
-            passiveSkill.ExecSkill(Player.StatManager, Player.PlayerController);
-            PassiveSkills.Add(pair.Key, passiveSkill);
-            if (passiveSkill.equipIndex != -1)
+            if (pair.Value.equipIndex != -1)
             {
-                GI.Inst.UIManager.SetEquipPassive(passiveSkill);
+                equippedPassiveSkills.Add(pair.Value);
             }
         }
-        
-        ActiveSkillLevels = playerInfo.activeSkillLevels;
-        GI.Inst.UIManager.RefreshActiveSkillUI(GetCurrentActiveSkills());
-        GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
+
+        return equippedPassiveSkills;
+    }
+
+    private bool IsAnyEquippedPassiveSkill()
+    {
+        foreach (var pair in PassiveSkills)
+        {
+            if (pair.Value.equipIndex != -1)
+                return true;
+        }
+        return false;
     }
     
     #region Clone
@@ -502,7 +451,6 @@ public class SkillManager : MonoBehaviour
     {
         foreach (Transform trans in transforms)
         {
-            //todo 적 위치에 정확히 스폰하지말고 왼쪽 오른쪽 분산하여 스폰
             StatManager enemyStatManager = trans.GetComponent<StatManager>();
 
             GameObject go = GI.Inst.ResourceManager.Instantiate("PlayerClone", trans.position, quaternion.identity);
@@ -553,27 +501,27 @@ public class SkillManager : MonoBehaviour
     #endregion
     #region GetFunction
     
-    public Define.ESkillId[] GetActiveSkillType(Item.EWeaponType type)
+    public Define.ESkillId[] GetActiveSkillType(SO_Item.EWeaponType type)
     {
         Define.ESkillId[] skillIds = new Define.ESkillId[5];
         
         switch (type)
         {
-            case Item.EWeaponType.Dagger:
+            case SO_Item.EWeaponType.Dagger:
                 skillIds[0] = Define.ESkillId.ThrowDagger;
                 skillIds[1] = Define.ESkillId.PlayerClone;
                 skillIds[2] = Define.ESkillId.DaggerBall;
                 skillIds[3] = Define.ESkillId.DaggerUlt;
                 skillIds[4] = Define.ESkillId.Dash;
                 break;
-            case Item.EWeaponType.Bow:
+            case SO_Item.EWeaponType.Bow:
                 skillIds[0] = Define.ESkillId.ArrowRain;
                 skillIds[1] = Define.ESkillId.PiercingArrow;
                 skillIds[2] = Define.ESkillId.ArrowBuff;
                 skillIds[3] = Define.ESkillId.DistortionArrow;
                 skillIds[4] = Define.ESkillId.Dash;
                 break;
-            case Item.EWeaponType.Axe:
+            case SO_Item.EWeaponType.Axe:
                 skillIds[0] = Define.ESkillId.FireStrike;
                 skillIds[1] = Define.ESkillId.Earthquake;
                 skillIds[2] = Define.ESkillId.ThrowAxe;
@@ -609,18 +557,35 @@ public class SkillManager : MonoBehaviour
         }
         return null;
     }
-
-    public float GetUltSkillChargeAmount()
-    {
-        return UltSkillChargeAmount;
-    }
-
-    public void InitUltSkillChargeAmount()
-    {
-        UltSkillChargeAmount = 0;
-        GI.Inst.UIManager.UpdateFillAmount(UltSkillChargeAmount);
-    }
+    
     
     #endregion
-    
+    #region Serialize
+
+    public void SetDeserializeSkillInfo(Serializable.S_PlayerInfo playerInfo)
+    {
+        playerInfo.Deserialize();
+
+        PassiveSkillDictionary skillDictionary = playerInfo.passiveSkills;
+        foreach (KeyValuePair<Define.ESkillId, Serializable.PassiveSaveInfo_Lite> pair in skillDictionary)
+        {
+            SO_PassiveSkill passiveSkill = GI.Inst.ResourceManager.GetPassiveSkillData(pair.Key);
+            passiveSkill.skillLevel = pair.Value.level;
+            passiveSkill.bCanLevelUp = pair.Value.bCanLevelUp;
+            passiveSkill.equipIndex = pair.Value.equipIndex;
+            passiveSkill.Init();
+            passiveSkill.ExecSkill(Player.StatManager, Player.PlayerController);
+            PassiveSkills.Add(pair.Key, passiveSkill);
+            if (passiveSkill.equipIndex != -1)
+            {
+                GI.Inst.UIManager.SetEquipPassive(passiveSkill);
+            }
+        }
+        
+        ActiveSkillLevels = playerInfo.activeSkillLevels;
+        GI.Inst.UIManager.RefreshActiveSkillUI(GetCurrentActiveSkills());
+        GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
+    }
+
+    #endregion
 }

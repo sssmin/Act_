@@ -193,72 +193,72 @@ public class Util
         }
     }
 
-    public static string ConvertRarityString(Item.ERarity rarity)
+    public static string ConvertRarityString(SO_Item.ERarity rarity)
     {
         string value = "";
         switch (rarity)
         {
-            case Item.ERarity.Common:
+            case SO_Item.ERarity.Common:
                 value = "최하급";
                 break;
-            case Item.ERarity.Uncommon:
+            case SO_Item.ERarity.Uncommon:
                 value = "하급";
                 break;
-            case Item.ERarity.Rare:
+            case SO_Item.ERarity.Rare:
                 value = "중급";
                 break;
-            case Item.ERarity.Epic:
+            case SO_Item.ERarity.Epic:
                 value = "상급";
                 break;
-            case Item.ERarity.Legendary:
+            case SO_Item.ERarity.Legendary:
                 value = "최상급";
                 break;
         }
         return value;
     }
     
-    public static Color GetRarityColor(Item.ERarity rarity)
+    public static Color GetRarityColor(SO_Item.ERarity rarity)
     {
         Color value = new Color();
         switch (rarity)
         {
-            case Item.ERarity.Common:
+            case SO_Item.ERarity.Common:
                 value = Color.grey;
                 break;
-            case Item.ERarity.Uncommon:
+            case SO_Item.ERarity.Uncommon:
                 value = new Color(0f, 241f/255f, 18f/255f, 255f/255f);
                 break;
-            case Item.ERarity.Rare:
+            case SO_Item.ERarity.Rare:
                 value = new Color(59f/255f, 95f/255f, 255f/255f, 255f/255f);
                 break;
-            case Item.ERarity.Epic:
+            case SO_Item.ERarity.Epic:
                 value = new Color(180f/255f, 59/255f, 255f/255f, 255f/255f);
                 break;
-            case Item.ERarity.Legendary:
+            case SO_Item.ERarity.Legendary:
                 value = new Color(255f/255f, 191f/255f, 0f/255f, 255f/255f);
                 break;
         }
         return value;
     }
 
-    public static string ConvertItemCategoryString(Item.EItemCategory category)
+    public static string ConvertItemCategoryString(SO_Item.EItemCategory category)
     {
         string value = "";
         switch (category)
         {
-            case Item.EItemCategory.Weapon:
+            case SO_Item.EItemCategory.Weapon:
                 value = "무기";
                 break;
-            case Item.EItemCategory.Armor:
+            case SO_Item.EItemCategory.Armor:
                 value = "방어구";
                 break;
-            case Item.EItemCategory.Acc:
+            case SO_Item.EItemCategory.Acc:
                 value = "악세사리";
                 break;
-            case Item.EItemCategory.Consumable:
+            case SO_Item.EItemCategory.Consumable:
                 value = "소모품";
                 break;
-            case Item.EItemCategory.Etc:
+            case SO_Item.EItemCategory.Etc:
                 value = "기타";
                 break;
         }

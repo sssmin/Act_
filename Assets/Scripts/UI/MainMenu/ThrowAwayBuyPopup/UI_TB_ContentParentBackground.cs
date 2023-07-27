@@ -8,11 +8,11 @@ public class UI_TB_ContentParentBackground : MonoBehaviour, IPointerEnterHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        backgroundButton.enabled = false;
+        backgroundButton.interactable = false;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        backgroundButton.enabled = true;
+        backgroundButton.interactable = true;
     }
 }

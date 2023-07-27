@@ -2,7 +2,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "Infinity", menuName ="Data/Item/InfinityWeapon")]
-public class InfinityWeapon : SO_BaseWeapon
+public class SO_InfinityWeapon : SO_BaseWeapon
 {
     public override void Init(StatManager ownerStatManager)
     {

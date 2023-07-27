@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +19,10 @@ public class UI_Option : UI_Popup
     {
         closeButton.onClick.RemoveListener(CloseOption);
         closeButton.onClick.AddListener(CloseOption);
+        
+        GI.Inst.UIManager.SetNormalButtonColorPreset(soundButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(displayButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(bindKeyButton);
         
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Option_SoundContent", contentUIParent);
         SoundContentUI = go.GetComponent<UI_Option_SoundContent>();
@@ -50,24 +53,24 @@ public class UI_Option : UI_Popup
         SoundContentUI.transform.SetParent(null);
         DisplayContentUI.transform.SetParent(null);
         BindKeyContentUI.transform.SetParent(null);
-        
-        soundButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-        displayButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
-        bindKeyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(255f);
+
+        soundButton.interactable = true;
+        displayButton.interactable = true;
+        bindKeyButton.interactable = true;
 
         switch (type)
         {
             case Define.EOptionType.Sound:
                 SoundContentUI.transform.SetParent(contentUIParent);
-                soundButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                soundButton.interactable = false;
                 break;
             case Define.EOptionType.Display:
                 DisplayContentUI.transform.SetParent(contentUIParent);
-                displayButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                displayButton.interactable = false;
                 break;
             case Define.EOptionType.BindKey:
                 BindKeyContentUI.transform.SetParent(contentUIParent);
-                bindKeyButton.colors = GI.Inst.UIManager.GetPressedButtonPreset(176f);
+                bindKeyButton.interactable = false;
                 break;
         }
     }
