@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SteelWeapon_", menuName ="Data/Item/SteelWeapon")]
-public class SteelWeapon : BaseWeapon
+public class SteelWeapon : SO_BaseWeapon
 {
     public override void Init(StatManager ownerStatManager)
     {

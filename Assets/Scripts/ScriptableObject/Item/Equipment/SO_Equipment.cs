@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : Item
+public class Equipment : SO_Item
 {
     [Header("Equipment")]
     [HideInInspector] public bool bIsEquipped;

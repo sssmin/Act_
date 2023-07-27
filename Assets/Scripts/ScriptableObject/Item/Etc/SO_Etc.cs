@@ -9,7 +9,7 @@ public enum ESkillMatId
 }
 
 [CreateAssetMenu(fileName = "Etc_", menuName ="Data/Item/Etc")]
-public class Etc : Item
+public class Etc : SO_Item
 {
     public Etc()
     {

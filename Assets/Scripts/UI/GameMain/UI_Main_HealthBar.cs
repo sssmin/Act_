@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class UI_HealthBar : MonoBehaviour
+public class UI_Main_HealthBar : MonoBehaviour
 {
     [SerializeField] private RectTransform HealthBarLate;
     [SerializeField] private RectTransform HealthBarCurrent;

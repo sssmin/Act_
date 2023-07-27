@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_HotkeyBarParent : MonoBehaviour
+public class UI_Main_HotkeyBarParent : MonoBehaviour
 {
     [SerializeField] private List<UI_BindKey> bindKeys = new List<UI_BindKey>();
     

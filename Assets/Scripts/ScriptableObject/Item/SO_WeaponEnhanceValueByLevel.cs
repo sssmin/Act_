@@ -5,7 +5,7 @@ using UnityEngine;
 [Serializable]
 public class EnhanceValueByRarity
 {
-    [SerializeField] public Item.ERarity rarity;
+    [SerializeField] public SO_Item.ERarity rarity;
     [SerializeField] public List<int> enhanceValue;
 }
 

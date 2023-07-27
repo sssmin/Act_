@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Heros", menuName ="Data/Item/HerosWeapon")]
-public class HerosWeapon : BaseWeapon
+[CreateAssetMenu(fileName = "Guardians", menuName ="Data/Item/GuardiansWeapon")]
+public class GuardiansWeapon : SO_BaseWeapon
 {
     public override void Init(StatManager ownerStatManager)
     {
@@ -19,20 +19,20 @@ public class HerosWeapon : BaseWeapon
         
         if (EnhanceLevel > 0)
         {
-            desc = $"스킬 쿨타임 {EnhanceLevel}% 감소";
+            desc = $"스킬 피해량 {EnhanceLevel}% 증가";
             effectDescs.Add(desc);
             
             EffectInfo effectInfo = new EffectInfo();
             effectInfo.onExecuteIncreaseStat = 
-                () => ownerStatManager.characterStats.skillCooltimeDecRate.AddModifier(EnhanceLevel);
+                () => ownerStatManager.characterStats.skillAttackDamageIncPer.AddModifier(EnhanceLevel);
             effectInfo.onExecuteDecreaseStat = 
-                () => ownerStatManager.characterStats.skillCooltimeDecRate.SubModifier(EnhanceLevel);
+                () => ownerStatManager.characterStats.skillAttackDamageIncPer.SubModifier(EnhanceLevel);
             
             Effect effect = new Effect();
             effect.Init(Define.EActivationCondition.None, -1f, 
                 Define.EDamageType.Normal, effectInfo);
             effects.Add(effect);
-            
+
             if (EnhanceLevel < 7)
             {
                 desc = "부가 효과 추가 개방 - +7 강화";
@@ -42,15 +42,15 @@ public class HerosWeapon : BaseWeapon
         
         if (EnhanceLevel >= 7)
         {
-            desc = "크리티컬 피해량 5% 증가";
+            desc = "크리티컬 피해량 10% 증가";
             effectDescs.Add(desc);
             
             EffectInfo effectInfo = new EffectInfo();
             
             effectInfo.onExecuteIncreaseStat = 
-                () => ownerStatManager.characterStats.criticalDamageIncPer.AddModifier(5f);
+                () => ownerStatManager.characterStats.criticalDamageIncPer.AddModifier(10f);
             effectInfo.onExecuteDecreaseStat = 
-                () => ownerStatManager.characterStats.criticalDamageIncPer.SubModifier(5f);
+                () => ownerStatManager.characterStats.criticalDamageIncPer.SubModifier(10f);
             
             Effect effect = new Effect();
             effect.Init(Define.EActivationCondition.None, -1f, 

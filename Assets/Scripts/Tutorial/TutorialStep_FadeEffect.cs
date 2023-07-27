@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TutorialFadeEffect : Tutorial
+public class TutorialStepFadeEffect : TutorialStep
 {
     [SerializeField] private FadeEffect fadeEffect;
     [SerializeField] private bool isFadeIn;
@@ -19,11 +19,11 @@ public class TutorialFadeEffect : Tutorial
         isCompleted = true;
     }
 
-    public override void Execute(TutorialManager tutorialManager)
+    public override void Execute(Tutorial tutorial)
     {
         if (isCompleted)
         {
-            tutorialManager.SetNextTutorial();
+            tutorial.SetNextTutorial();
         }
     }
     
