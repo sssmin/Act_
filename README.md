@@ -43,7 +43,7 @@ public void LoadInventoryData()
         Player.InventoryManager.SetDeserializeInventoryInfo(inventoryInfo);
 ```
 + 그외 데이터들은 json으로 파싱 후 저장하도록 함.
-+ Dictionary 경우 기본적으로 직렬화가 안되기 때문에 따로 클래스를 정의하여 사용
+
 ```c#
 [Serializable]
 public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
@@ -77,6 +77,7 @@ public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
 [Serializable]
 public class EtcDictionary : SerializableDictionary<string, Serializable.StackableItemSaveInfo_Lite> { }
 ```
++ Dictionary 경우 기본적으로 직렬화가 안되기 때문에 따로 클래스를 정의하여 사용
 + 기본 Dictionary를 사용하다가, 저장할 때 커스텀 Dictionary를 이용하여 직렬화 후 저장.
 + 반대로 로드할 때는 커스텀 Dictionary를 역직렬화하여 초기화.
   
@@ -118,7 +119,6 @@ public void DownloadAdvance(List<Define.ELabel> labels, Action callback = null)
 + 플레이어 인벤토리의 아이템 관리 클래스
 + 아이템 추가, 삭제, 사용 등을 효율적으로 관리하여 플레이어 인벤토리 기능 제공
 + 쌓이지 않는 아이템 종류인 장비는 List로 관리, 그 외 아이템들은 Dictionary로 관리.
-+ 인벤토리 칸 분리를 편하게 할 수 있도록 Item ScriptableObject를 포함하는 클래스를 따로 정의하여 Dictionary의 value값으로 사용.
 ``` c#
 [Serializable]
 public class StackableItem
@@ -153,12 +153,13 @@ public class StackableItem
 
 private Dictionary<SO_Item.EConsumableType, StackableItem> ConsumableInventory { get; set; } = new Dictionary<SO_Item.EConsumableType, StackableItem>();
 ```
-
++ 인벤토리 칸 분리를 편하게 할 수 있도록 Item ScriptableObject를 포함하는 클래스를 따로 정의하여 Dictionary의 value값으로 사용.
+  
 ### SkillManager 클래스
 + 무기 종류에 따른 액티브 스킬 관리, 패시브 스킬 관리, 무기의 부가 효과 관리 클래스
 + 액티브 스킬의 경우 플레이어가 사용하고자 할 때 시전하면 되기 때문에 간단했으나, 패시브 스킬의 경우 조건부가 붙어야 해서 이전 포트폴리오때와 마찬가지로 많은 고민을 함..
-  + 이전 포트폴리오와 비교하여 공격 및 피격 여부 확인에 if 문 대신, 스킬 시전 조건 및 효과를 ScriptableObject로 관리하여 유연한 스킬 시스템 제공
-  + => 필요한 함수를 재정의(효과가 발동될 조건을 포함, 스킬 효과를 정의)하고 호출하도록 구현.
+  + 이전 포트폴리오와 비교하여 공격 및 피격 여부 확인에 if 문 대신, 스킬 시전 조건 및 효과를 ScriptableObject로 관리하여 유연하게 스킬을 구현하도록 함
+  + => 필요한 함수를 재정의(효과가 발동될 조건을 포함, 스킬 효과를 정의)하고 호출하도록 구현
 ``` c#
 private void ExecCauseDamageEffect(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult, StatManager victimStatManager)
 {
@@ -205,7 +206,7 @@ public class DurationEffect_DeadlyImpact : DurationEffect
             GI.Inst.CooltimeManager.SetPassiveCooltime(Define.ESkillId.DeadlyImpact, skillCooltime);
             GI.Inst.UIManager.SetPassiveCooltimeSlot(Define.ESkillId.DeadlyImpact, icon);
 ```
-+ 대미지를 받았을 때는 StatManager에서 똑같이 SkillManager의 ExecTakeDamageEffect 함수를 호출하는데 조건만 다르고 ExecCauseDamageEffect와 동일함.
++ 대미지를 받았을 때는 StatManager에서 똑같이 SkillManager의 ExecTakeDamageEffect 함수를 호출하는데 조건만 다르고 ExecCauseDamageEffect와 동일함
 
 ### StatManager 클래스
 + 스탯을 관리하고, 플레이어의 경우 스탯 증가가 되는 스킬 효과의 지속 시간을 관리하는 클래스
@@ -257,7 +258,8 @@ public class StatManager : MonoBehaviour
     public Stats characterStats = new Stats();
 ...
 ```
-+ Stats 클래스로 스탯을 관리하고, Stat 클래스에서 value와 버프나 아이템으로 증가된 수치를 Modifiers 리스트로 관리.
++ Stat 클래스에는 스탯 기본 Value가 있고, 버프나 아이템으로 증가된 수치를 Modifiers 리스트로 관리
++ Stats 클래스에 Stat 들을 저장하고 StatManager에서 Stats로 모든 스탯을 관리
 
 ``` c#
 //StatManager.cs
@@ -272,8 +274,7 @@ public int CompareTo(DurationEffect other)
     return -durationEndTime.CompareTo(other.durationEndTime);
 }
 ```
-
-+ 지속 시간은 우선순위큐를 따로 정의해서 사용. Update 함수에서 가장 먼저 끝나는 지속 시간 효과를 Peek하여 체크하는 방식으로 구현.
++ 지속 시간은 우선순위큐를 따로 정의해서 사용
 ``` c#
 //PlayerStatManager.cs Update 함수
 DurationEffect durationEffect = DurationEffectEndTimePq.Peek();
@@ -282,14 +283,15 @@ if (durationEffect.durationEndTime <= Time.time)//지속시간 끝
     durationEffect = DurationEffectEndTimePq.Pop();
 ...
 ```
-+ 그외 액티브 스킬, 패시브 스킬, 아이템 쿨타임은 CooltimeManager를 이용하여 쿨타임 관리.
-+ 쿨타임은 지속 시간과 다르게 아이콘에도 쿨타임 표시를 각각 해야줘야 해서 코루틴과 Dictionary로 관리.
++ Update 함수에서 가장 먼저 끝나는 지속 시간 효과를 Peek하여 체크하는 방식으로 구현
++ 그외 액티브 스킬, 패시브 스킬, 아이템 쿨타임은 CooltimeManager를 이용하여 쿨타임 관리
++ 쿨타임은 지속 시간과 다르게 아이콘에도 쿨타임 표시를 각각 해줘야 해서 코루틴과 Dictionary로 관리
 
 ### PlayerController
 + 플레이어의 모든 입력을 받고 처리하는 클래스
 + InputSystem을 이용하여 액션에 함수를 바인딩
 + 바인딩된 KeyCode를 UI에 표시, 설정을 통해 키 변경하는 기능
-  + InputAction 클래스의 PerformInteractiveRebinding 함수를 이용하여 리바인딩
+
 ```c#
 rebindingOperation = actionToRebind.PerformInteractiveRebinding()
         ...
@@ -321,13 +323,12 @@ rebindingOperation = actionToRebind.PerformInteractiveRebinding()
     rebindingOperation.Start();
 }
 ```
-[스크린샷]
-
++ InputAction 클래스의 PerformInteractiveRebinding 함수를 이용하여 리바인딩
 
 
 ### FSM
-+ 플레이어와 몬스터의 상태를 FSM으로 관리하여 캐릭터의 상태 전환을 효율적으로 구현.
-+ 각 상태 클래스에서 상태에 따른 로직을 구현하여 가독성이 높고 유지보수가 용이하도록 함.
++ 플레이어와 몬스터의 상태를 FSM으로 관리하여 캐릭터의 상태 전환을 효율적으로 구현
++ 각 상태 클래스에서 상태에 따른 로직을 구현하여 가독성이 높고 유지보수가 용이하도록 함
 ``` c#
 public class Player_WallSlideState : PlayerState
 {
@@ -362,8 +363,7 @@ public class Player_WallSlideState : PlayerState
 }
 ```
 ### AI
-+ AIController에서 몬스터 AI를 모두 제어 관리.
-  + 플레이어가 몬스터의 BoxCollider에 Trigger되면 타겟팅, 추격 상태로 전환하고 추격 상태에서는 타겟과의 거리 계산 후 기본 공격이 되는 거리면 공격 (결국 State에서 해야할 일 정의 = FSM)
++ AIController에서 몬스터 AI를 모두 제어 관리
 ``` c#
 private void OnTriggerEnter2D(Collider2D col)
 {
@@ -373,9 +373,73 @@ private void OnTriggerEnter2D(Collider2D col)
         Target = player;
         ControlledMonster.TransitionState(Define.EMonsterState.Chase);
 ````
-
++ 플레이어가 몬스터의 BoxCollider에 Trigger되면 타겟팅, 추격 상태로 전환하고 추격 상태에서는 타겟과의 거리 계산 후 기본 공격이 되는 거리면 공격 (결국 State에서 해야할 일 정의 = FSM)
+  
 ### UI
++ UI는 최대한 모듈화하여 개발. 유지보수가 좀 더 용이하고 다른 곳에서 같은 UI 요소를 재사용할 수 있어서 효율적
+![InventoryWrapper1](https://github.com/sssmin/Act_/assets/27758519/af5c78a0-4822-40a7-b21e-da41b52fb6d4)
+![InventoryWrapper2](https://github.com/sssmin/Act_/assets/27758519/be6e99b0-d80a-4597-9af7-ae5f47e2e3cc)
 
+
+```c#
+private Stack<UI_Popup> Popups { get; set; } = new Stack<UI_Popup>();
+```
++ 팝업들은 UIManager에서 스택으로 관리하여 나중에 열린 팝업이 먼저 닫히도록 구현
+
+```c#
+public abstract class UI_Popup : MonoBehaviour
+{
+    public abstract void Close();
+}
+
+//UI_MainMenu.cs
+public override void Close()
+{
+    gameObject.SetActive(false);
+}
+
+//UI_Inven_Popup.cs
+public override void Close()
+{
+    GI.Inst.ResourceManager.Destroy(gameObject);
+}
+```
++ 인벤토리 창, 옵션 창 같은 팝업 형태의 UI는 추상 클래스를 상속 받고 추상 메소드를 재정의하도록 함
++ 각 팝업이 닫힐 때 처리를 정의
+
+
+```c#
+private void VisibleEsc()
+{
+    GI.Inst.CinemachineTarget.DeactivateCamera();
+    Popups.Push(EscUI); 
+    EscUI.gameObject.SetActive(true);
+    GI.Inst.ListenerManager.SwitchActionMap(true);
+}
+
+public void ClosePopup()
+{
+    Popups.Pop().Close();
+...
+```
++ 팝업을 열 때 Push, 닫을 때 Pop 후 Close 함수 호출
+``` c#
+private void SwitchActionMap(bool isUI)
+{
+    if (isUI)
+    {
+        PlayerControl.Player.Esc.Disable();
+        PlayerControl.UI.Esc.Enable();
+    }
+    else
+    {
+        PlayerControl.Player.Esc.Enable();
+        PlayerControl.UI.Esc.Disable();
+    }
+}
+```
++ UI 팝업을 활성화할 때 플레이어 입력을 관리했던 PlayerController에서 UI 액션도 활성화하여 Esc 키를 이용해서 팝업을 닫을 수 있도록 구현
+  + Player 액션에서 Esc는 Esc 메뉴를 여는 액션, UI 액션에서 Esc는 열려있는 팝업 UI를 닫는 액션
 
 ### 포트폴리오를 준비하며 느낀 점
 + 2D 게임을 개발해보고 싶기도 했고, C#도 언젠가 공부해놓으면 좋을 거 같아서 이번에 처음으로 C#과 유니티를 공부했는데
@@ -383,10 +447,17 @@ private void OnTriggerEnter2D(Collider2D col)
   그리고 C++에서는 되던 것이 C#에서는 안되거나 C++에서는 안되던 것이 C#에선 '어? 이게 되네?' 경우가 생각보다 많아서 굉장히 혼란스러웠다.
   인프런 강의와 구글링을 통해 공부했는데 금방 끝낼 수 있을 줄 알았으나 위의 이유로 생각보다 오래 걸렸다.
 
+  언리얼은 이미 컴포넌트, 액터 등 만들어져 있는 틀이 있는데,
+  유니티는 아예 빈 깡통에서 시작해서 스크립트에 기능들을 만들고, 게임 오브젝트에 붙여야 해서 
+  처음에는 언리얼보다 어렵겠다라고 생각이 들었는데, 막상 해보고 익숙해지니 오히려 더 쉽고, 자유도가 있는 느낌이 들었다.
   어느 정도 익숙해진 후에는 언리얼로 개발할 때보다 더 편하고, 빠르게 개발할 수 있었던 것 같다.
-  스크립트를 만들어서 기능들을 만들고, 게임 오브젝트에 붙여야 한다는 것이 처음에는 언리얼보다 어렵겠다라고 생각이 들었는데, 막상 해보고 익숙해지니 오히려 더 쉽고, 자유도가 있는 느낌이 들었다.
-
-  또한 유니티도 언리얼 못지 않게 강력한 에디터라는 걸 알게 됐고, 오히려 언리얼보다도 편한 것이 많았던 것 같다. 특히 크래시...
-  따로 공부하면서 느꼈던 것은 에디터 자체를 커스텀하는 것도 접근성이 좋다는 점.
+  
+  또한 유니티도 언리얼 못지 않게 강력한 에디터라는 걸 알게 됐고, 오히려 언리얼보다도 편한 것이 많았던 것 같다. 특히 에디터 크래시...!!!
+  따로 공부하면서 느꼈던 것은 에디터 자체 커스텀하는 것도 접근성이 좋다는 점.
 
   인디 게임 같이 작은 규모의 게임들을 왜 유니티로 많이 개발하는지 몸소 깨달았던 경험이었다.
+
+  이 포트폴리오에는 서버를 붙이지 않아서 관계가 없지만 유니티 공부하면서 게임 서버도 같이 공부하게 됐는데
+  언리얼로 제작했던 포트폴리오에서 게임 서버와 웹 서버 차이를 잘 모르고 웹 서버를 이용해서 인벤토리를 구현했던 기억이 났다...
+  저 당시에는 그래도 나름 머리를 굴려서 아이템은 데이터로만 존재해야 할 것 같다는 생각이 들었고,
+  웹 개발을 공부했을 때 웹 서버를 사용했던 기억이 떠올라 나름대로의 해결책을 찾은 것이었는데 지금 다시 보면 다소 민망하다..
