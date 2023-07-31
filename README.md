@@ -43,7 +43,7 @@ public void LoadInventoryData()
         Player.InventoryManager.SetDeserializeInventoryInfo(inventoryInfo);
 ```
 + 그외 데이터들은 json으로 파싱 후 저장하도록 함.
-
+---
 ```c#
 [Serializable]
 public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>
@@ -260,7 +260,7 @@ public class StatManager : MonoBehaviour
 ```
 + Stat 클래스에는 스탯 기본 Value가 있고, 버프나 아이템으로 증가된 수치를 Modifiers 리스트로 관리
 + Stats 클래스에 Stat 들을 저장하고 StatManager에서 Stats로 모든 스탯을 관리
-
+---
 ``` c#
 //StatManager.cs
 protected PriorityQueue<DurationEffect> DurationEffectEndTimePq { get; set; } = new PriorityQueue<DurationEffect>();
@@ -275,6 +275,7 @@ public int CompareTo(DurationEffect other)
 }
 ```
 + 지속 시간은 우선순위큐를 따로 정의해서 사용
+---
 ``` c#
 //PlayerStatManager.cs Update 함수
 DurationEffect durationEffect = DurationEffectEndTimePq.Peek();
@@ -380,12 +381,12 @@ private void OnTriggerEnter2D(Collider2D col)
 ![InventoryWrapper1](https://github.com/sssmin/Act_/assets/27758519/af5c78a0-4822-40a7-b21e-da41b52fb6d4)
 ![InventoryWrapper2](https://github.com/sssmin/Act_/assets/27758519/be6e99b0-d80a-4597-9af7-ae5f47e2e3cc)
 
-
+---
 ```c#
 private Stack<UI_Popup> Popups { get; set; } = new Stack<UI_Popup>();
 ```
 + 팝업들은 UIManager에서 스택으로 관리하여 나중에 열린 팝업이 먼저 닫히도록 구현
-
+---
 ```c#
 public abstract class UI_Popup : MonoBehaviour
 {
@@ -406,8 +407,7 @@ public override void Close()
 ```
 + 인벤토리 창, 옵션 창 같은 팝업 형태의 UI는 추상 클래스를 상속 받고 추상 메소드를 재정의하도록 함
 + 각 팝업이 닫힐 때 처리를 정의
-
-
+---
 ```c#
 private void VisibleEsc()
 {
@@ -423,6 +423,7 @@ public void ClosePopup()
 ...
 ```
 + 팝업을 열 때 Push, 닫을 때 Pop 후 Close 함수 호출
+---
 ``` c#
 private void SwitchActionMap(bool isUI)
 {
@@ -438,10 +439,61 @@ private void SwitchActionMap(bool isUI)
     }
 }
 ```
-+ UI 팝업을 활성화할 때 플레이어 입력을 관리했던 PlayerController에서 UI 액션도 활성화하여 Esc 키를 이용해서 팝업을 닫을 수 있도록 구현
++ 팝업 UI를 활성화할 때 플레이어 입력을 관리했던 PlayerController에서 UI 액션도 활성화하여 Esc 키를 이용해서 팝업을 닫을 수 있도록 구현
   + Player 액션에서 Esc는 Esc 메뉴를 여는 액션, UI 액션에서 Esc는 열려있는 팝업 UI를 닫는 액션
 
-### 포트폴리오를 준비하며 느낀 점
+### Tutorial 시스템
++ Tutorial 클래스
+![image](https://github.com/sssmin/Act_/assets/27758519/74327ebe-f753-400f-8392-7b3325a9a553)
+``` c#
+public class Tutorial 
+{
+    protected List<TutorialStep> tutorialSteps;
+    private TutorialStep currentTutorialStep;
+    private int currentIndex;
+```
++ Tutorial 클래스에는 해당하는 튜토리얼의 단계들을 List에 담아 저장
+---
+![image](https://github.com/sssmin/Act_/assets/27758519/2a8651a9-8247-4d5a-8ddd-7aef252a9abf)
+``` c#
+public abstract class TutorialStep
+{
+    public abstract void BeginStep();
+    public abstract void Execute(Tutorial tutorial);
+    public abstract void EndStep();
+    public bool IsCompleted { get; set; }
+}
+```
++ TutorialStep 클래스에는 각 단계로 들어섰을 때 실행되어야 할 기능을 구현
+---
+``` c#
+public class Tutorial_NewGame : Tutorial
+{
+    protected override void StepInit()
+    {
+        ...
+        tutorialSteps.Add(typingAndWaitActionStep.AddDialog($"{GI.Inst.Player.PlayerController.GetBindingKeyString(EBindKeyType.Jump)}키를 눌러 점프해보세요." ,700f, 250f));
+        tutorialSteps.Add(new TutorialStep_WaitForAction(EBindKeyType.Jump, EWaitForAction.KeyPress));
+        tutorialSteps.Add(noTypingTransitionCompleteStep);
+        tutorialSteps.Add(hideDialogStep);
+        
+        tutorialSteps.Add(callbackStep.AddCallback(() =>
+        {
+            GI.Inst.UIManager.VisibleMainUIComponent(EMainUIComponent.HealthBar);
+            GI.Inst.UIManager.VisibleMainUIComponent(EMainUIComponent.EffectBar);
+        }));
+        ...
+```
++ Tutorial 클래스를 상속받은 클래스에서는 StepInit 함수를 재정의하고 거기서 단계들을 순서대로 List에 담아 저장
+---
+```c#
+case ETutorial.ItemCraft:
+    CurrentTutorial = new Tutorial_ItemCraft();
+    CurrentTutorial.StartTutorial();
+```
++ TutorialManager에서는 튜토리얼이 완료 상태가 아니라면 Tutorial을 인스턴스화하고 함수를 호출하여 튜토리얼을 시작할 수 있도록 함
+
+## 포트폴리오를 준비하며 느낀 점
 + 2D 게임을 개발해보고 싶기도 했고, C#도 언젠가 공부해놓으면 좋을 거 같아서 이번에 처음으로 C#과 유니티를 공부했는데
   C++을 하다가 C#으로 넘어오니 포인터를 사용하지 않는 것이 오히려 초반에는 헷갈리는 부분이 많았다.
   그리고 C++에서는 되던 것이 C#에서는 안되거나 C++에서는 안되던 것이 C#에선 '어? 이게 되네?' 경우가 생각보다 많아서 굉장히 혼란스러웠다.
