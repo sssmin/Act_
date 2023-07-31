@@ -15,45 +15,60 @@ public class SoundManager : MonoBehaviour
     private string Background => "AudioBackground";
     private string Effect => "AudioEffect";
     
-    public void SFXPlay(string sfxName, ESoundType soundType = ESoundType.Effect)
+    public float PlayEffectSound(string clipName)
     {
-        AudioClip audioClip = GI.Inst.ResourceManager.GetAudioClip(sfxName);
+        AudioClip audioClip = GI.Inst.ResourceManager.GetAudioClip(clipName);
+        return PlayEffectSound(audioClip);
+    }
+    
+    public float PlayEffectSound(AudioClip audioClip)
+    {
         if (audioClip == null)
         {
             Debug.Log("오디오 클립 없음");
-            return;
+            return 0f;
         }
+        GameObject go = GI.Inst.ResourceManager.Instantiate("AudioSourceObject");
+        AudioSource audioSource = go.GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        AudioMixerGroup[] groups = AudioMixer.FindMatchingGroups("Effect");
+        if (groups.Length >= 0)
+        {
+            audioSource.outputAudioMixerGroup = groups[0];
+            GI.Inst.ResourceManager.Destroy(go, audioClip.length);
+        }
+        else
+            Debug.Log("믹스 그룹 없음");
+        audioSource.Play();
+        return audioClip.length;
+    }
 
-        if (soundType == ESoundType.Effect)
+    public float PlayBackgroundSound(string clipName)
+    {
+        AudioClip audioClip = GI.Inst.ResourceManager.GetAudioClip(clipName);
+        return PlayBackgroundSound(audioClip);
+    }
+
+    public float PlayBackgroundSound(AudioClip audioClip)
+    {
+        if (audioClip == null)
         {
-            GameObject go = GI.Inst.ResourceManager.Instantiate("AudioSourceObject");
-            AudioSource audioSource = go.GetComponent<AudioSource>();
-            audioSource.clip = audioClip;
-            AudioMixerGroup[] groups = AudioMixer.FindMatchingGroups("Effect");
-            if (groups.Length >= 0)
-            {
-                audioSource.outputAudioMixerGroup = groups[0];
-                GI.Inst.ResourceManager.Destroy(go, audioClip.length);
-            }
-            else
-                Debug.Log("믹스 그룹 없음");
-            audioSource.Play();
+            Debug.Log("오디오 클립 없음");
+            return 0f;
         }
-        else if (soundType == ESoundType.Background)
+        GameObject go = GI.Inst.ResourceManager.Instantiate("AudioSource_Background");
+        AudioSource audioSource = go.GetComponent<AudioSource>();
+        audioSource.clip = audioClip;
+        AudioMixerGroup[] groups = AudioMixer.FindMatchingGroups("Background");
+        if (groups.Length >= 0)
         {
-            GameObject go = GI.Inst.ResourceManager.Instantiate("AudioSource_Background");
-            AudioSource audioSource = go.GetComponent<AudioSource>();
-            audioSource.clip = audioClip;
-            AudioMixerGroup[] groups = AudioMixer.FindMatchingGroups("Background");
-            if (groups.Length >= 0)
-            {
-                audioSource.outputAudioMixerGroup = groups[0];
-                audioSource.loop = true;
-            }
-            else
-                Debug.Log("믹스 그룹 없음");
-            audioSource.Play();
+            audioSource.outputAudioMixerGroup = groups[0];
+            audioSource.loop = true;
         }
+        else
+            Debug.Log("믹스 그룹 없음");
+        audioSource.Play();
+        return audioClip.length;
     }
 
     public void GetAudioVolume(ESoundType soundType, out float value)

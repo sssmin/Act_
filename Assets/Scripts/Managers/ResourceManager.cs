@@ -9,20 +9,6 @@ using Object = UnityEngine.Object;
 
 public class ResourceManager : MonoBehaviour
 {
-    public enum SaveType
-    {
-        Skills,
-        Items,
-        Prefab,
-        PlayerBaseStat,
-        AudioClip,
-        AudioMixer,
-        StatusSprites,
-        WeaponEnhanceValueByLevel,
-        DungeonInfo,
-        ItemSprites
-    }
-   
     private Dictionary<string, SO_Skill> SkillData { get; } = new Dictionary<string, SO_Skill>();
     private Dictionary<string, SO_Item> ItemData { get; } = new Dictionary<string, SO_Item>();
     private Dictionary<string, GameObject> Prefabs { get; } = new Dictionary<string, GameObject>();
@@ -60,22 +46,22 @@ public class ResourceManager : MonoBehaviour
 
                 if (completedCount == totalCount)
                 {
-                    SaveData<ScriptableObject>(Define.ELabel.Skill, SaveType.Skills);
-                    SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat, SaveType.PlayerBaseStat);
-                    SaveData<ScriptableObject>(Define.ELabel.Item, SaveType.Items);
-                    SaveData<ScriptableObject>(Define.ELabel.WeaponEnhanceValueByLevel, SaveType.WeaponEnhanceValueByLevel);
-                    SaveData<ScriptableObject>(Define.ELabel.DungeonInfo, SaveType.DungeonInfo);
-                    SaveData<AudioClip>(Define.ELabel.AudioClip, SaveType.AudioClip);
-                    SaveData<AudioMixer>(Define.ELabel.AudioMixer, SaveType.AudioMixer);
-                    SaveData<Sprite>(Define.ELabel.StatusSprite, SaveType.StatusSprites);
-                    SaveData<Sprite>(Define.ELabel.ItemSprite, SaveType.ItemSprites);
-                    SaveData<GameObject>(Define.ELabel.Prefab, SaveType.Prefab, callback);
+                    SaveData<ScriptableObject>(Define.ELabel.Skill);
+                    SaveData<ScriptableObject>(Define.ELabel.PlayerBaseStat);
+                    SaveData<ScriptableObject>(Define.ELabel.Item);
+                    SaveData<ScriptableObject>(Define.ELabel.WeaponEnhanceValueByLevel);
+                    SaveData<ScriptableObject>(Define.ELabel.DungeonInfo);
+                    SaveData<AudioClip>(Define.ELabel.AudioClip);
+                    SaveData<AudioMixer>(Define.ELabel.AudioMixer);
+                    SaveData<Sprite>(Define.ELabel.StatusSprite);
+                    SaveData<Sprite>(Define.ELabel.ItemSprite);
+                    SaveData<GameObject>(Define.ELabel.Prefab, callback);
                 }
             };
         }
     }
 
-    private void SaveData<T>(Define.ELabel inLabel, SaveType saveType, Action callback = null) where T : Object
+    private void SaveData<T>(Define.ELabel inLabel, Action callback = null) where T : Object
     {
         string label = Enum.GetName(typeof(Define.ELabel), inLabel);
         var opHandle = Addressables.LoadResourceLocationsAsync(label, typeof(T));

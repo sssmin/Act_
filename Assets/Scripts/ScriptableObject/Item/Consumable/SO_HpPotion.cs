@@ -7,5 +7,6 @@ public class SO_HpPotion : SO_Consumable
     {
         PlayerStatManager playerStatManager = (PlayerStatManager)casterStatManager;
         playerStatManager.HealMaxHpPer(15f);
+        GI.Inst.ResourceManager.Instantiate("HealingParticle", playerStatManager.gameObject.transform.position, Quaternion.identity, casterStatManager.transform);
     }
 }

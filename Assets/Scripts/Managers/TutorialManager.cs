@@ -14,8 +14,6 @@ public class TutorialManager : MonoBehaviour
 {
     //NewGame을 제외한 나머지 완료했는지 여부 true면 완료.
     private Dictionary<ETutorial, bool> TutorialStatusCompleted { get; set; }= new Dictionary<ETutorial, bool>();
-    [SerializeField] private SceneLoadManager sceneLoadManager;
-    [SerializeField] private string nextSceneName;
     public Tutorial CurrentTutorial { get; private set; }
 
     private void Start()

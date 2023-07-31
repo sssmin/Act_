@@ -41,7 +41,7 @@ public class UI_ActiveSkillSlotParent : MonoBehaviour
         }
     }
 
-    public void Clear()
+    private void Clear()
     {
         foreach (UI_Skill_ActiveSkillSlot skillSlot in activeSkillSlots)
         {

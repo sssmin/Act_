@@ -85,6 +85,9 @@ public class Tutorial_NewGame : Tutorial
         tutorialSteps.Add(typingAndNextStepStep.AddDialog("또한 액티브 스킬 레벨업 재료, 패시브 스킬 레벨업 재료를 이용하여 스킬을 레벨업 할 수 있어요." ,700f, 250f));
         tutorialSteps.Add(hideDialogStep);
         
+        tutorialSteps.Add(typingAndNextStepStep.AddDialog("무기가 달라져도 동일한 위치의 액티브 스킬 레벨은 유지돼요." ,700f, 250f));
+        tutorialSteps.Add(hideDialogStep);
+        
         tutorialSteps.Add(typingAndNextStepStep.AddDialog("특정 레벨 구간부터 요구하는 재료 개수가 달라져요." ,700f, 250f));
         tutorialSteps.Add(hideDialogStep);
         

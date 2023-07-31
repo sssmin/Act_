@@ -4,6 +4,7 @@ public class Player_WallSlideState : PlayerState
 {
     public Player_WallSlideState(Animator animator, Rigidbody2D rigidbody2D, BaseCharacter character, BaseController baseController)
         : base(animator, rigidbody2D, character, baseController) { }
+    
     public override void BeginState()
     {
         Animator.SetBool(AnimHash.wallSlide, true);
@@ -13,16 +14,6 @@ public class Player_WallSlideState : PlayerState
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (PlayerController.CheckStateCanWallJump())
-            {
-                TransitionState(Define.EPlayerState.WallJump);
-                return;
-                ;
-            }
-        }
-        
         if (!PlayerController.IsWallDetect())
         {
              TransitionState(Define.EPlayerState.Falling);
@@ -30,7 +21,6 @@ public class Player_WallSlideState : PlayerState
         }
         
         Rb.velocity = new Vector2(0, Rb.velocity.y * 0.7f);
-        
         
         if (PlayerController.IsGroundDetect())
         { 

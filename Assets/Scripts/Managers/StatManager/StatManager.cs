@@ -106,10 +106,8 @@ public class Stat
             }
             return finalValue;
         }
-        set
-        {
-            statValue = value;
-        }
+        set => statValue = value;
+        
     }
 
     private List<float> Modifiers = new List<float>();

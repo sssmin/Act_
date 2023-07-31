@@ -76,7 +76,7 @@ public class UI_Skill_ActiveSkillSlot : UI_Skill_BaseSkillSlot
     public override void OnClickLevelUpButton()
     {
         GI.Inst.ListenerManager.RequestActiveSkillLevelUp(skill, skillIndex);
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
     }
 
     public void Clear()

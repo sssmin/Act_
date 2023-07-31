@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public enum ETutorialStatus
 {
@@ -24,8 +27,9 @@ public class UI_TutorialDialog : MonoBehaviour
     private Coroutine updateDialogCoroutine;
     private TutorialStep tutorialStepDialog;
     private EDialogType dialogType;
+    [SerializeField] List<AudioClip> typingSounds = new List<AudioClip>();
     
-    //함수 두개로 나눠야함. 하나는 타이핑 후에 진행중으로 변경되는거, 하나는 타이핑 후에 시간 초 후에 완료되는거.
+
     public void Init(string text, float x, float y, TutorialStep step, EDialogType type)
     {
         SetStatusText(ETutorialStatus.Blank);
@@ -63,6 +67,7 @@ public class UI_TutorialDialog : MonoBehaviour
     IEnumerator CoUpdateDialog()
     {
         isTypingEffect = true;
+        StartCoroutine(CoPlayTypingEffectSound());
         for (int i = 0; i < dialogText.Length; i++)
         {
             tutorialText.text = dialogText.Substring(0, i);
@@ -77,6 +82,15 @@ public class UI_TutorialDialog : MonoBehaviour
         else if (dialogType == EDialogType.TypingAndNextStep)
             StartCoroutine(CoSetNextTutorialStep(1.5f, tutorialStepDialog));
         
+    }
+
+    IEnumerator CoPlayTypingEffectSound()
+    {
+        while (isTypingEffect)
+        {
+            float length = GI.Inst.SoundManager.PlayEffectSound(typingSounds[Random.Range(0, typingSounds.Count)]);
+            yield return new WaitForSeconds(length + 0.02f);
+        }
     }
 
     public void SetStatusText(ETutorialStatus tutorialStatus)

@@ -15,6 +15,13 @@ public class UI_TitleMainMenu : MonoBehaviour
         continueButton.onClick.AddListener(OnClickContinueButton);
         optionButton.onClick.AddListener(OnClickOptionButton);
         exitButton.onClick.AddListener(OnClickExitButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(continueButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(newGameButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(optionButton);
+        GI.Inst.UIManager.SetNormalButtonColorPreset(exitButton);
+        if (!GI.Inst.IsExistSaveData())
+            continueButton.interactable = false;
+        
     }
 
     private void RemoveListener()
@@ -32,21 +39,21 @@ public class UI_TitleMainMenu : MonoBehaviour
 
     private void OnClickNewGameButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         Destroy(gameObject);
         GI.Inst.SceneLoadManager.OnClickNewGameButton("Tutorial");
     }
     
     private void OnClickContinueButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         Destroy(gameObject);
         GI.Inst.SceneLoadManager.OnClickContinueGameButton();
     }
     
     private void OnClickOptionButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound, true);
     }
     

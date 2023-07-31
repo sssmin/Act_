@@ -26,6 +26,6 @@ public class UI_Merchant_ItemLine : MonoBehaviour
     private void OnClickBuyButton()
     {
         GI.Inst.UIManager.VisibleTBPopup(EThrowawayBuyPopupType.Buy, tempItem);
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
     }
 }

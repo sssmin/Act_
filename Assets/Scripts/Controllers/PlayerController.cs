@@ -121,13 +121,13 @@ public class PlayerController : BaseController
         {
             PlayerControl.Player.Esc.Disable();
             
-            PlayerControl.UI.Cancel.Enable();
+            PlayerControl.UI.Esc.Enable();
         }
         else
         {
             PlayerControl.Player.Esc.Enable();
             
-            PlayerControl.UI.Cancel.Disable();
+            PlayerControl.UI.Esc.Disable();
         }
     }
 
@@ -172,7 +172,7 @@ public class PlayerController : BaseController
         PlayerControl.Player.FifthItemHotkey.performed += FifthItemHotkeyAction;
         PlayerControl.Player.Interaction.performed += InteractionAction;
         PlayerControl.Player.Esc.performed += EscAction;
-        PlayerControl.UI.Cancel.performed += CloseToUIAction;
+        PlayerControl.UI.Esc.performed += CloseToUIAction;
         
         GI.Inst.ListenerManager.switchActionMap += SwitchActionMap;
         GI.Inst.ListenerManager.enablePlayerControl += EnablePlayerControl;
@@ -198,7 +198,7 @@ public class PlayerController : BaseController
         PlayerControl.Player.FifthItemHotkey.performed -= FifthItemHotkeyAction;
         PlayerControl.Player.Interaction.performed -= InteractionAction;
         PlayerControl.Player.Esc.performed -= EscAction;
-        PlayerControl.UI.Cancel.performed -= CloseToUIAction;
+        PlayerControl.UI.Esc.performed -= CloseToUIAction;
         
         GI.Inst.ListenerManager.switchActionMap -= SwitchActionMap;
         GI.Inst.ListenerManager.enablePlayerControl -= EnablePlayerControl;
@@ -232,32 +232,8 @@ public class PlayerController : BaseController
                 bIsCharging = false;
             }
         }
-
-        //test
-        if (Input.GetKey(KeyCode.B))
-        {
-            StartCoroutine(LoadSceneAsync());
-        }
-        if (Input.GetKey(KeyCode.N))
-        {
-            GI.Inst.SaveGame();
-        }
-        if (Input.GetKey(KeyCode.M))
-        {
-            GI.Inst.LoadInventoryData();
-        }
     }
 
-    IEnumerator LoadSceneAsync()
-    {
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync("Town");
-        
-        while (!loadOperation.isDone)
-        {
-            yield return null;
-        }
-    }
-    
     protected override void TransitionMoveState()
     {
         TransitionState(Define.EPlayerState.Move);
@@ -520,24 +496,16 @@ public class PlayerController : BaseController
             .OnPotentialMatch(operation =>
             {
                 string inputKey = ConvertInputKey(operation.selectedControl.path); 
-                string playerControlKey; 
         
                 foreach (InputAction inputAction in PlayerControl)
                 {
                     foreach (InputBinding binding in inputAction.bindings) 
                     {
-                        playerControlKey = ConvertPlayerControlKey(binding.effectivePath);
+                        string playerControlKey = ConvertPlayerControlKey(binding.effectivePath);
         
                         if (inputKey == playerControlKey)
                         {
-                            foreach (InputBinding inputBinding in actionToRebind.bindings) 
-                            {
-                                InputBinding newBinding = new InputBinding(inputBinding.path, binding.action,
-                                    binding.groups, binding.processors, binding.interactions, binding.name);
-                                
-                                inputAction.ChangeBinding(binding).Erase();
-                                inputAction.AddBinding(newBinding);
-                            }
+                            ReplaceBinding(actionToRebind, binding, inputAction);
                             break;
                         }
                     }
@@ -552,12 +520,22 @@ public class PlayerController : BaseController
         rebindingOperation.Start();
     }
 
-    void RebindCompleted()
+    private void ReplaceBinding(InputAction actionToRebind, InputBinding binding, InputAction inputAction)
+    {
+        foreach (InputBinding inputBinding in actionToRebind.bindings)
+        {
+            InputBinding newBinding = new InputBinding(inputBinding.path, binding.action,
+                binding.groups, binding.processors, binding.interactions, binding.name);
+          
+            inputAction.ChangeBinding(binding).Erase();
+            inputAction.AddBinding(newBinding);
+        }
+    }
+
+    private void RebindCompleted()
     {
         rebindingOperation.Dispose();
-        
         GI.Inst.SaveBindKeyData();
-        GI.Inst.LoadBindKeyData();
         GI.Inst.UIManager.RefreshBindKeyUI();
         GI.Inst.UIManager.RefreshHotKeyMainUI(); //HotkeyBar Refresh
     }
@@ -623,6 +601,10 @@ public class PlayerController : BaseController
         if (CheckStateCanJump())
         {
             TransitionState(Define.EPlayerState.InAir);
+        }
+        else if (CheckStateCanWallJump())
+        {
+            TransitionState(Define.EPlayerState.WallJump);
         }
     }
     

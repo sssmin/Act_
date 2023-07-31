@@ -55,6 +55,7 @@ public class UIManager : MonoBehaviour
     
     private UI_TutorialSkipButton TempTutorialSkipButtonUI { get; set; }
     private UI_DungeonSelect TempDungeonSelectUI { get; set; }
+    private FadeEffect FadeEffect { get; set; }
     
     public void Init()
     {
@@ -89,6 +90,8 @@ public class UIManager : MonoBehaviour
         EscUI = go.GetComponent<UI_Esc>();
         go.SetActive(false);
 
+        go = GI.Inst.ResourceManager.Instantiate("FadeEffect", transform);
+        FadeEffect = go.GetComponent<FadeEffect>();
     }
 
     public void ToggleMainMenu(Define.EMainMenuType menuType)
@@ -121,9 +124,8 @@ public class UIManager : MonoBehaviour
         GI.Inst.ListenerManager.SwitchActionMap(true);
     }
 
-    public void VisibleEsc()
+    private void VisibleEsc()
     {
-        Debug.Log("exec visibleEcs Func");
         GI.Inst.CinemachineTarget.DeactivateCamera();
         Popups.Push(EscUI); 
         EscUI.gameObject.SetActive(true);
@@ -263,12 +265,7 @@ public class UIManager : MonoBehaviour
         UI_Main_DamageText damageText = go.GetComponentInChildren<UI_Main_DamageText>();
         damageText.Init(damageTextType, damage);
     }
-
-    public RectTransform GetMainUIRectTransform()
-    {
-        return MainUI.rectTransform;
-    }
-
+    
     public void InitTutorialUI()
     {
         MainUI.InvisibleAllMainUIComponent();
@@ -339,6 +336,22 @@ public class UIManager : MonoBehaviour
             TempTutorialSkipButtonUI = null;
         }
     }
+
+    public void FadeOut(Action callback)
+    {
+        if (FadeEffect)
+        {
+            FadeEffect.FadeOut(callback);
+        }
+    }
+
+    public void FadeIn(Action callback = null)
+    {
+        if (FadeEffect)
+        {
+            FadeEffect.FadeIn(callback);
+        }
+    }
     
     //Main UI 부품별 컨트롤
     #region MainUIComponentControl 
@@ -397,7 +410,7 @@ public class UIManager : MonoBehaviour
             SkillTooltipUI.gameObject.SetActive(false);
     }
 
-    #endregion
+    #endregion //Tooltip
 
     #region Callback
 

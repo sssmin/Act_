@@ -81,9 +81,7 @@ public class GI : MonoBehaviour
         SceneManager.sceneLoaded += SceneLoaded;
     }
     
-
-    //맨처음 게임 씬에 들어갔을 때 호출될. 이게 newgame인지 로드인지
-    void InitializeOnce()
+    private void InitializeOnce()
     {
         Debug.Log("Initialize Once");
         Inst.ResourceManager = Generate<ResourceManager>("ResourceManager");
@@ -108,18 +106,14 @@ public class GI : MonoBehaviour
         {
             //1. 플레이어 생성. 
             InitializePlayer();
-            
             //2. 바인드 키 로드
             LoadBindKeyData();
-            
             //3. 사운드 초기화
             Inst.SoundManager.AudioMixer = Inst.ResourceManager.AudioMixer;
             LoadSoundData();
-            Inst.SoundManager.SFXPlay("Title", ESoundType.Background);
-
+            Inst.SoundManager.PlayBackgroundSound("Title");
             //4. UI 초기화
             InitializeUI();
-            
             //5. 타이틀 메뉴 생성
             Inst.ResourceManager.Instantiate("UI_TitleMainMenu");
         });
@@ -278,7 +272,8 @@ public class GI : MonoBehaviour
                 }
                     break;
             }
-            Inst.SoundManager.SFXPlay(scene.name, ESoundType.Background);
+            Inst.UIManager.FadeIn();
+            Inst.SoundManager.PlayBackgroundSound(scene.name);
         }
     }
     
@@ -506,6 +501,17 @@ public class GI : MonoBehaviour
     }
 
     #endregion //Load
+
+    public bool IsExistSaveData()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "PlayerSaveData.json");
+        if (File.Exists(path))
+        {
+            return true;
+        }
+
+        return false;
+    }
     
     public void ApplyResolution(int width, int height)
     {

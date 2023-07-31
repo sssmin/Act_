@@ -155,7 +155,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public void SetActiveSkillCuzEquip(SO_Item.EWeaponType type)
+    private void SetActiveSkillCuzEquip(SO_Item.EWeaponType type)
     {
         Define.ESkillId[] skillIds = GetActiveSkillType(type);
         
@@ -188,13 +188,9 @@ public class SkillManager : MonoBehaviour
         if (PassiveSkills.ContainsKey(skillId))
         {
             if (PassiveSkills[skillId].equipIndex != -1)
-            {
                 Debug.Log("이미 장착됨");
-            }
             else
-            {
                 PassiveSkills[skillId].equipIndex = equipIndex;
-            }
         }
         else
         {
@@ -205,16 +201,12 @@ public class SkillManager : MonoBehaviour
     private void UnequipPassiveSkill(Define.ESkillId skillId)
     {
         if (PassiveSkills.ContainsKey(skillId))
-        {
             PassiveSkills[skillId].equipIndex = -1;
-        }
         else
-        {
             Debug.Log("존재하지 않는 패시브.");
-        }
     }
     
-    public bool IsSkillReady(EActiveSkillOrder skillOrder)
+    private bool IsSkillReady(EActiveSkillOrder skillOrder)
     {
         switch (skillOrder)
         {
@@ -232,7 +224,7 @@ public class SkillManager : MonoBehaviour
         return false;
     }
 
-    public void UpdateActiveSkill()
+    private void UpdateActiveSkill()
     {
         int i = 0;
         foreach (KeyValuePair<ActiveSkillIdentify,SO_ActiveSkill> pair in ActiveSkills)
@@ -241,7 +233,7 @@ public class SkillManager : MonoBehaviour
         }
     }
     
-    public void RequestActiveSkillLevelUp(ActiveSkill_ShortVer skill, int index)
+    private void RequestActiveSkillLevelUp(ActiveSkill_ShortVer skill, int index)
     {
         if (skill.activeSkillOrder != EActiveSkillOrder.Max) 
         {
@@ -258,7 +250,7 @@ public class SkillManager : MonoBehaviour
         }
     }
     
-    public void RequestPassiveSkillLevelUp(PassiveSkill_ShortVer skill)
+    private void RequestPassiveSkillLevelUp(PassiveSkill_ShortVer skill)
     {
         if (PassiveSkills.ContainsKey(skill.skillId))
         {
@@ -269,19 +261,6 @@ public class SkillManager : MonoBehaviour
             GI.Inst.UIManager.RefreshPassiveSkillUI(GetAllPassiveSkills());
         }
     }
-    
-    //장착되었으면 을 확인 하고 되어있으면 해제 후 다시 착용
-    public void ReEquipPassive(Define.ESkillId skillId)
-    {
-        if (PassiveSkills.ContainsKey(skillId))
-        {
-            if (PassiveSkills[skillId].equipIndex != -1)
-            {
-                UnequipPassiveSkill(skillId);
-                EquipPassiveSkill(skillId, PassiveSkills[skillId].equipIndex);
-            }
-        }
-    }
 
     public void CauseDamageSuccessfully(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult,
         StatManager victimStatManager)
@@ -290,20 +269,20 @@ public class SkillManager : MonoBehaviour
     }
     
     //플레이어만 염두에 두고 구현하면 됨. 몬스터는 SkillManager가 없음.
-    public void ExecCauseDamageEffect(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult, StatManager victimStatManager)
+    private void ExecCauseDamageEffect(Define.EDamageType causeDamageType, ETakeDamageResult takeDamageResult, StatManager victimStatManager)
     {
         foreach (var pair in PassiveSkills)
         {
-            SO_PassiveSkill passvieSkill = pair.Value;
-            if (passvieSkill.equipIndex != -1)
+            SO_PassiveSkill passiveSkill = pair.Value;
+            if (passiveSkill.equipIndex != -1)
             {
                 if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
                 {
-                    passvieSkill.ExecSkill(Player.StatManager, Player.PlayerController);
-                    Effect effect = passvieSkill.effect;
+                    passiveSkill.ExecSkill(Player.StatManager, Player.PlayerController);
+                    Effect effect = passiveSkill.effect;
                     
                     effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, 
-                        victimStatManager, Player.StatManager, passvieSkill.icon);
+                        victimStatManager, Player.StatManager, passiveSkill.icon);
                 }
             }
         }
@@ -319,7 +298,6 @@ public class SkillManager : MonoBehaviour
         if (equippedWeapon == null) return;
         foreach (Effect effect in equippedWeapon.effects)
         {
-            
             effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.CauseDamage, victimStatManager, Player.StatManager, null);
         }
     }
@@ -403,11 +381,14 @@ public class SkillManager : MonoBehaviour
     {
         foreach (var pair in PassiveSkills)
         {
-            if (pair.Value.equipIndex != -1)
+            SO_PassiveSkill passiveSkill = pair.Value;
+            if (passiveSkill.equipIndex != -1)
             {
                 if (GI.Inst.CooltimeManager.IsReadyPassive(pair.Key))
                 {
+                    passiveSkill.ExecSkill(Player.StatManager, Player.PlayerController);
                     Effect effect = pair.Value.effect;
+                    
                     effect.CheckConditionAndExecute(causeDamageType, Define.EActivationCondition.TakeDamage,
                         instigatorStatManager, Player.StatManager, pair.Value.icon);
                 }

@@ -8,6 +8,6 @@ public class UI_OptionHolderButton : MonoBehaviour
     public void OnClickButton()
     {
         GI.Inst.UIManager.VisibleOptionCuzPressedHolderButton(type);
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
     }
 }

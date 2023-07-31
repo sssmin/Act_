@@ -62,14 +62,17 @@ public class UI_Option : UI_Popup
         {
             case Define.EOptionType.Sound:
                 SoundContentUI.transform.SetParent(contentUIParent);
+                SoundContentUI.transform.localScale = Vector3.one;
                 soundButton.interactable = false;
                 break;
             case Define.EOptionType.Display:
                 DisplayContentUI.transform.SetParent(contentUIParent);
+                DisplayContentUI.transform.localScale = Vector3.one;
                 displayButton.interactable = false;
                 break;
             case Define.EOptionType.BindKey:
                 BindKeyContentUI.transform.SetParent(contentUIParent);
+                BindKeyContentUI.transform.localScale = Vector3.one;
                 bindKeyButton.interactable = false;
                 break;
         }
@@ -78,7 +81,7 @@ public class UI_Option : UI_Popup
     private void CloseOption()
     {
         GI.Inst.UIManager.ClosePopup();
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
     }
 
     public void OnDisable()

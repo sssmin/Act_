@@ -26,7 +26,7 @@ public class UI_Inven_PopupButton : MonoBehaviour
     void CallbackInvoke(SO_Item item, Action<SO_Item> callback)
     {
         GI.Inst.UIManager.ClosePopup();
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         callback?.Invoke(item);
     }
 }

@@ -132,6 +132,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+  - m_GUID: 878ba7e7601c12247ba9f0306d34f025
+    m_Address: AtkBoostParticle
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+  - m_GUID: 68233f4fbead86842a2f366da07df290
+    m_Address: FadeEffect
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

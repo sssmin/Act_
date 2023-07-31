@@ -555,7 +555,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Cancel",
+                    "name": "Esc",
                     "type": "Button",
                     "id": "16f78290-22a2-4d26-a49e-85c3252e83b7",
                     "expectedControlType": "Button",
@@ -910,7 +910,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cancel",
+                    "action": "Esc",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

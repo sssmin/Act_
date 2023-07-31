@@ -22,7 +22,6 @@ public class AIController : BaseController
         {
             if (ControlledMonster.StatManager.IsDead) return false;
             return bCanNormalAttack;
-            ;
         }
         
         private set
@@ -97,7 +96,6 @@ public class AIController : BaseController
     
     public void ExecNormalAttack()
     {
-        
         Collider2D[] colliders = new Collider2D[10];
         Physics2D.OverlapCircleNonAlloc(NormalAttackCollider.transform.position, 2f, colliders, LayerMask.GetMask("Player"));
         

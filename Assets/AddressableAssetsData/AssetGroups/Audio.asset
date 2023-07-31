@@ -42,6 +42,26 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - AudioClip
+  - m_GUID: 7bd6b897eb5ca4b7d88a205c4a51640c
+    m_Address: StepComplete
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AudioClip
+  - m_GUID: ef951211ee3742545a7f5579aac664db
+    m_Address: BuyItem
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AudioClip
+  - m_GUID: c7783cfe3b0ed5d498390fc09a6abc73
+    m_Address: Equip
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AudioClip
+  - m_GUID: f7b3fac4775572b42a373b94aa923048
+    m_Address: Unequip
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - AudioClip
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

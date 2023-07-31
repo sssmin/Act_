@@ -58,32 +58,32 @@ public class UI_Esc : UI_Popup
 
     private void OnClickOptionButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         GI.Inst.UIManager.VisibleOption(Define.EOptionType.Sound, false);
     }
     
     private void OnClickSaveGameButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         GI.Inst.SaveGame();
     }
     
     private void OnClickGoToTitleButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         GI.Inst.UIManager.InvisibleEsc(false);
         GI.Inst.SceneLoadManager.GoToTitle();
     }
     
     private void OnClickGameExitButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         Application.Quit();
     }
     
     private void OnClickCloseButton()
     {
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
         GI.Inst.UIManager.InvisibleEsc(true);
     }
 

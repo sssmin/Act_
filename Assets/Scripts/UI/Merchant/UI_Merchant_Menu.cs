@@ -123,7 +123,6 @@ public class UI_Merchant_Menu : UI_Popup
     //튜토리얼에서 사용됨
     public void EnableButton(EMerchantType type)
     {
-        
         switch (type)
         {
             case EMerchantType.Buy:

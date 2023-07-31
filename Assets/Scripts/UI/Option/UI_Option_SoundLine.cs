@@ -14,7 +14,7 @@ public class UI_Option_SoundLine : MonoBehaviour
         slider.onValueChanged.AddListener(OnValueChanged);
 
         GI.Inst.SoundManager.GetAudioVolume(soundType, out float value);
-        value = 100 * (value + 80) / 80; //dB -> 0~100
+        value = 100 * (value + 70) / 70; //dB -> 0~100
         slider.value = value * 0.01f;
         valueText.text = Mathf.FloorToInt(value).ToString();
     }
@@ -29,7 +29,7 @@ public class UI_Option_SoundLine : MonoBehaviour
         slider.value = value;
         value *= 100;
         valueText.text = Mathf.FloorToInt(value).ToString();
-        value = (value * 80 / 100) - 80; //0~100 => dB
+        value = (value * 70 / 100) - 70; //0~100 => dB
         GI.Inst.SoundManager.SetAudioVolume(soundType, value);
     }
 }

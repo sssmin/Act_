@@ -63,6 +63,7 @@ public class TutorialStep_Dialog : TutorialStep
                 index++;
                 break;
             case EDialogType.NoTypingTransitionComplete:
+                GI.Inst.SoundManager.PlayEffectSound("StepComplete");
                 tutorialDialogUI.SetStatusText(ETutorialStatus.Complete, this);
                 break;
         }

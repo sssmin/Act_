@@ -76,15 +76,16 @@ public class UI_DungeonEnterParent : MonoBehaviour
     }
 
     private void OnClickEnterButton()
-    {
-       
-        //todo FadeOut.
-      
+    { 
         GI.Inst.UIManager.DestroyDungeonSelectUI();
-        if (detail.dungeonCategory == EDungeonCategory.Normal)
-            GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Dungeon", 3f);
-        else if (detail.dungeonCategory == EDungeonCategory.Boss)
-            GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Boss", 3f);
+        GI.Inst.UIManager.FadeOut(() =>
+        {
+            if (detail.dungeonCategory == EDungeonCategory.Normal)
+                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Dungeon", 1f);
+            else if (detail.dungeonCategory == EDungeonCategory.Boss)
+                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Boss", 1f);
+        });
+
     }
     
     

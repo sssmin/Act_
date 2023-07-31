@@ -75,7 +75,7 @@ public class UI_Merchant_CraftLine : MonoBehaviour
     {
         ItemCraft.CreateRandomItem(ItemCategory);
         GI.Inst.UIManager.RefreshCraftLines();
-        GI.Inst.SoundManager.SFXPlay("ButtonClick");
+        GI.Inst.SoundManager.PlayEffectSound("ButtonClick");
     }
 
     public void Close()

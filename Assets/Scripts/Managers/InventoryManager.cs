@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -67,7 +66,7 @@ public class StackableItem
 }
 
 
-public class InventoryManager : MonoBehaviour //todo ScriptableObject
+public class InventoryManager : MonoBehaviour
 {
    private int playerInstId;
    
@@ -274,7 +273,6 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
             break;
          case SO_Item.EItemCategory.Etc: 
             SO_Etc etc = (SO_Etc)item;
-            
             if (EtcInventory.ContainsKey(etc.itemId))
             {
                EtcInventory[etc.itemId].AddAmount(amount);
@@ -400,6 +398,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       if ((amount <= 0) || (!AddItem(item, false, amount))) return;
       SO_Consumable consumable = item as SO_Consumable;
       AddGold(-(consumable.storeSellPrice * amount));
+      GI.Inst.SoundManager.PlayEffectSound("BuyItem");
       RefreshInventoryUI();
    }
 
@@ -795,7 +794,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       return false;
    }
 
-   private void Equip(SO_Item item, bool shouldRefreshUI = true)
+   private void Equip(SO_Item item, bool shouldRefreshUI = true, bool shouldPlayEquipSound = true)
    {
       SO_Equipment equipment = (SO_Equipment)item;
       equipment.bIsEquipped = true;
@@ -813,21 +812,25 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
          SO_BaseWeapon weapon = (SO_BaseWeapon)equipment;
          GI.Inst.ListenerManager.SetActiveSkillCuzEquip(weapon.weaponType);
       }
+      
       if (shouldRefreshUI)
          RefreshInventoryUI();
+      if (shouldPlayEquipSound)
+         GI.Inst.SoundManager.PlayEffectSound("Equip");
    }
 
-   public void EquipExchange(SO_Item equippedItem, SO_Item newItem)
+   private void EquipExchange(SO_Item equippedItem, SO_Item newItem)
    {
       Unequip(equippedItem);
       Equip(newItem);
    }
 
-   public void Unequip(SO_Item equippedItem)
+   private void Unequip(SO_Item equippedItem)
    {
       SO_Equipment equipment = (SO_Equipment)equippedItem;
       equipment.bIsEquipped = false;
       EquippedItems.Remove(equippedItem);
+      GI.Inst.SoundManager.PlayEffectSound("Unequip");
       
       foreach (Effect effect in equipment.effects)
       {
@@ -835,8 +838,11 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
       }
       GI.Inst.ListenerManager.OnStatSubModifier(playerInstId, equipment.itemStats);
       RefreshInventoryUI();
-      GI.Inst.UIManager.ClearActiveSkillSlots();
-      GI.Inst.UIManager.ClearActiveSkillHotkeySlots();
+      if (equipment.ItemCategory == SO_Item.EItemCategory.Weapon)
+      {
+         GI.Inst.UIManager.ClearActiveSkillSlots();
+         GI.Inst.UIManager.ClearActiveSkillHotkeySlots();
+      }
    }
 
    void RegisterItemHotkey(SO_Item.EItemHotkeyOrder order, SO_Item item)
@@ -996,7 +1002,7 @@ public class InventoryManager : MonoBehaviour //todo ScriptableObject
             WeaponInventory.Add(weapon);
             if (info.isEquipped)
             {
-               Equip(item, false);
+               Equip(item, false, false);
             }
          }
       }

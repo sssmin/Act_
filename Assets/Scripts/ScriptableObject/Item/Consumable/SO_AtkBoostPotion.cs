@@ -32,5 +32,6 @@ public class SO_AtkBoostPotion : SO_Consumable
         
         effect.durationEndTime = duration + Time.time;
         casterStatManager.ExecDurationEffect(effect, itemIcon);
+        GI.Inst.ResourceManager.Instantiate("AtkBoostParticle", casterStatManager.gameObject.transform.position, Quaternion.identity, casterStatManager.transform);
     }
 }

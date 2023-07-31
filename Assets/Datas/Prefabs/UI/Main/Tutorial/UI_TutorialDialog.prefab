@@ -258,6 +258,25 @@ MonoBehaviour:
   backgroundImage: {fileID: 7791377383254140186}
   tutorialText: {fileID: 7791377384060541725}
   statusText: {fileID: 5480731995001103120}
+  typingSounds:
+  - {fileID: 8300000, guid: e4f0fb89cfa5b83468390872a0915dd9, type: 3}
+  - {fileID: 8300000, guid: 188b49c6548d79c4faa079cc4e45404f, type: 3}
+  - {fileID: 8300000, guid: 9b3ff23f11c27e94380b5dca695e99b4, type: 3}
+  - {fileID: 8300000, guid: 4951851babc10c14b8537ced5f749dd0, type: 3}
+  - {fileID: 8300000, guid: 0ab6ff8a5c6bdd84fb2c4fbddb50e208, type: 3}
+  - {fileID: 8300000, guid: 1e830f2e39176e3478f470d39b2edb00, type: 3}
+  - {fileID: 8300000, guid: 613e15a7211b33c428bba6bd30cc3eaa, type: 3}
+  - {fileID: 8300000, guid: 6064244dae9336e43b5e2da96e379e25, type: 3}
+  - {fileID: 8300000, guid: 6064244dae9336e43b5e2da96e379e25, type: 3}
+  - {fileID: 8300000, guid: 47d281a0c804f8a418a0ea805aa6ef5c, type: 3}
+  - {fileID: 8300000, guid: 498d94b56b69ffe4ca2433bf3729a088, type: 3}
+  - {fileID: 8300000, guid: 41b264c46d2ba5240b70014914752986, type: 3}
+  - {fileID: 8300000, guid: b9eeb3b5a297ede4cba2335496f52fca, type: 3}
+  - {fileID: 8300000, guid: fc63538facb229b429566543b6e4d9bc, type: 3}
+  - {fileID: 8300000, guid: 9dbe9bb1c16a95c48a2904c54024c03e, type: 3}
+  - {fileID: 8300000, guid: d143218148dcbc44b849a45fbcf1a84d, type: 3}
+  - {fileID: 8300000, guid: ecd4abd0d3ed4a44d8b5c59329320d9f, type: 3}
+  - {fileID: 8300000, guid: 42edee1719c471849ba5010bb430cee3, type: 3}
 --- !u!114 &1261184156792428110
 MonoBehaviour:
   m_ObjectHideFlags: 0
