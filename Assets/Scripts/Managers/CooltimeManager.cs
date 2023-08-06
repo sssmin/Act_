@@ -139,8 +139,7 @@ public class CooltimeManager : MonoBehaviour
     }
 
     #endregion
-
-
+    
     public void ResetCooltimeRandomActive()
     {
         List<int> runningCooltimeSkillOrder = new List<int>();
@@ -153,7 +152,7 @@ public class CooltimeManager : MonoBehaviour
         if (FourthSkillTimer > Time.time)
             runningCooltimeSkillOrder.Add(4);
 
-        if (runningCooltimeSkillOrder.Count > 1)
+        if (runningCooltimeSkillOrder.Count > 0)
         {
             int rand = Random.Range(0, runningCooltimeSkillOrder.Count);
             

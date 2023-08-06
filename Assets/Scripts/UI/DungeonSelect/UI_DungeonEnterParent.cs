@@ -81,9 +81,9 @@ public class UI_DungeonEnterParent : MonoBehaviour
         GI.Inst.UIManager.FadeOut(() =>
         {
             if (detail.dungeonCategory == EDungeonCategory.Normal)
-                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Dungeon", 1f);
+                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Dungeon", 0f);
             else if (detail.dungeonCategory == EDungeonCategory.Boss)
-                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Boss", 1f);
+                GI.Inst.SceneLoadManager.RequestLoadSceneAsync("Boss", 0f);
         });
 
     }

@@ -8,22 +8,22 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
     [SerializeField] private Image skillIconImage;
     [SerializeField] private Sprite defaultSlotIcon;
     [SerializeField] private Animator animator;
-    private PassiveSkill_ShortVer skill;
+    private PassiveSkill_Lite skill;
 
     public void InitOnce()
     {
         skillIconImage.sprite = defaultSlotIcon;
-        skill = new PassiveSkill_ShortVer();
+        skill = new PassiveSkill_Lite();
         skill.skillId = Define.ESkillId.Max;
     }
 
-    public void Init(PassiveSkill_ShortVer inSkill)
+    public void Init(PassiveSkill_Lite inSkill)
     {
         skillIconImage.sprite = inSkill.icon;
         skill = inSkill;
     }
 
-    public void ClearIfSame(PassiveSkill_ShortVer inSkill)
+    public void ClearIfSame(PassiveSkill_Lite inSkill)
     {
         if (skill.skillId == inSkill.skillId)
             Clear(skill.skillId);
@@ -31,7 +31,7 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
     
     private void Clear(Define.ESkillId skillId)
     {
-        skill = new PassiveSkill_ShortVer();
+        skill = new PassiveSkill_Lite();
         skill.skillId = Define.ESkillId.Max;
         skillIconImage.sprite = defaultSlotIcon;
         
@@ -48,7 +48,7 @@ public class UI_Skill_EquipPassiveSkillSlot : MonoBehaviour, IDropHandler, IPoin
             UI_Skill_PassiveSkillSlot passiveSkillSlot =
                 eventData.pointerDrag.gameObject.GetComponent<UI_Skill_PassiveSkillSlot>();
             
-            PassiveSkill_ShortVer passiveSkill = passiveSkillSlot.PassiveSkill;
+            PassiveSkill_Lite passiveSkill = passiveSkillSlot.PassiveSkill;
             GI.Inst.UIManager.CheckEquippedPassive(passiveSkill); //다른 칸 확인 후 같은 건 제거
             Init(passiveSkill);
             GI.Inst.ListenerManager.EquipPassiveSkill(passiveSkill.skillId, index);

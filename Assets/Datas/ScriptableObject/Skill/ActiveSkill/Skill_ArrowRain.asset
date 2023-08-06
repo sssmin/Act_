@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillId: 8
   skillName: "\uC560\uB85C\uC6B0 \uB808\uC778"
-  skillCooltime: 12
+  skillCooltime: 1
   skillLevel: 0
   icon: {fileID: 21300000, guid: b0fc89766f139a7499d4f0ef0b4e4a36, type: 3}
   bCanLevelUp: 0

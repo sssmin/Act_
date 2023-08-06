@@ -18,6 +18,8 @@ public class UI_Inven_StatsContent : MonoBehaviour
         GameObject go = GI.Inst.ResourceManager.Instantiate("UI_InventoryWrapper", borderTransform);
         inventoryWrapper = go.GetComponent<UI_InventoryWrapper>();
         inventoryWrapper.InitOnce();
+
+        invenEquippedSlotParent.InitOnce();
     }
 
     private void OnDestroy()

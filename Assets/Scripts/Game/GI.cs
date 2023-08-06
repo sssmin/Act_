@@ -83,7 +83,7 @@ public class GI : MonoBehaviour
     
     private void InitializeOnce()
     {
-        Debug.Log("Initialize Once");
+        //Debug.Log("Initialize Once");
         Inst.ResourceManager = Generate<ResourceManager>("ResourceManager");
         Inst.ResourceManager.transform.SetParent(transform);
 
@@ -160,7 +160,7 @@ public class GI : MonoBehaviour
 
     private void DownloadAdvance(Action callback = null)
     {
-        Debug.Log("DownloadAdvance");
+        //Debug.Log("DownloadAdvance");
         Inst.ResourceManager.DownloadAdvance(labels, callback);
     }
     
@@ -472,7 +472,7 @@ public class GI : MonoBehaviour
             ScreenWidth = resolution.width;
             ScreenHeight = resolution.height;
             IsFullscreen = resolution.isFullScreen;
-            Screen.SetResolution(ScreenWidth, ScreenHeight, IsFullscreen);
+            //Screen.SetResolution(ScreenWidth, ScreenHeight, IsFullscreen);
         }
     }
 

@@ -1,3 +1,4 @@
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
 
@@ -27,6 +28,13 @@ public class CinemachineTarget : MonoBehaviour
 
     public void ActivateCamera()
     {
+        foreach (var target in CinemachineTargetGroup.m_Targets)
+        {
+            if (target.target == CameraFocus)
+                return;
+        }
+
+        
         CinemachineTargetGroup.AddMember(CameraFocus, 1f, 2.5f);
         CinemachineTargetGroup.AddMember(cursorTransform, 0.5f, 1f);
     }

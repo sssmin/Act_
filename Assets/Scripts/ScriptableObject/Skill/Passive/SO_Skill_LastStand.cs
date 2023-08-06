@@ -22,7 +22,7 @@ public class SO_Skill_LastStand : SO_PassiveSkill
         EffectInfo effectInfo = new EffectInfo();
 
         float atkIncValue = casterStatManager.characterStats.attack.Value * atkPer * 0.01f;
-        float defIncValue = casterStatManager.characterStats.attack.Value * defPer * 0.01f;
+        float defIncValue = casterStatManager.characterStats.defence.Value * defPer * 0.01f;
         
         effectInfo.onExecuteIncreaseStat = () =>
         {

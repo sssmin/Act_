@@ -27,7 +27,7 @@ public class UIManager : MonoBehaviour
     public Action<List<SO_ActiveSkill>> refreshActiveSkillSlots;
     public Action clearActiveSkillSlots;
     public Action clearActiveSkillHotkeySlots;
-    public Action<PassiveSkill_ShortVer> checkEquippedPassive;
+    public Action<PassiveSkill_Lite> checkEquippedPassive;
     public Action<bool> blinkEquipPassiveSkillSlot;
     public Action<SO_PassiveSkill> setEquipPassive;
     public Action<float> updateFillAmount;
@@ -392,13 +392,13 @@ public class UIManager : MonoBehaviour
             ItemTooltipUI.gameObject.SetActive(false);
     }
     
-    public void VisibleActiveSkillTooltip(ActiveSkill_ShortVer skill, Vector3 slotPos, int pivot)
+    public void VisibleActiveSkillTooltip(ActiveSkill_Lite skill, Vector3 slotPos, int pivot)
     {
         SkillTooltipUI.gameObject.SetActive(true);
         SkillTooltipUI.Init(skill, slotPos, pivot);
     }
     
-    public void VisiblePassiveSkillTooltip(PassiveSkill_ShortVer skill, Vector3 slotPos, int pivot)
+    public void VisiblePassiveSkillTooltip(PassiveSkill_Lite skill, Vector3 slotPos, int pivot)
     {
         SkillTooltipUI.gameObject.SetActive(true);
         SkillTooltipUI.Init(skill, slotPos, pivot);
@@ -500,7 +500,7 @@ public class UIManager : MonoBehaviour
         InvisibleItemTooltip();
     }
 
-    public void CheckEquippedPassive(PassiveSkill_ShortVer passiveSkill)
+    public void CheckEquippedPassive(PassiveSkill_Lite passiveSkill)
     {
         checkEquippedPassive?.Invoke(passiveSkill);
     }

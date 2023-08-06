@@ -36,7 +36,7 @@ public class UI_EquipPassiveSkillSlotParent : MonoBehaviour
     //불러오기 로드시 한번 호출
     private void SetEquipPassive(SO_PassiveSkill passiveSkill)
     {
-        PassiveSkill_ShortVer skillShortVer = new PassiveSkill_ShortVer();
+        PassiveSkill_Lite skillShortVer = new PassiveSkill_Lite();
         skillShortVer.DataCopy(passiveSkill);
         foreach (UI_Skill_EquipPassiveSkillSlot equipPassiveSkillSlot in equipPassiveSkillSlots)
         {
@@ -47,7 +47,7 @@ public class UI_EquipPassiveSkillSlotParent : MonoBehaviour
         }
     }
 
-    private void CheckEquippedPassive(PassiveSkill_ShortVer passiveSkill)
+    private void CheckEquippedPassive(PassiveSkill_Lite passiveSkill)
     {
         foreach (UI_Skill_EquipPassiveSkillSlot skillSlot in equipPassiveSkillSlots)
         {

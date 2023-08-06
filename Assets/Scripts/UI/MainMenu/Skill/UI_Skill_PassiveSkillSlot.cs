@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public struct PassiveSkill_ShortVer
+public struct PassiveSkill_Lite
 {
     public Define.ESkillId skillId;
     public string skillName;
@@ -33,7 +33,7 @@ public struct PassiveSkill_ShortVer
 
 public class UI_Skill_PassiveSkillSlot : UI_Skill_BaseSkillSlot, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public PassiveSkill_ShortVer PassiveSkill;
+    public PassiveSkill_Lite PassiveSkill;
     [SerializeField] private RectTransform slotTransform;
     private GameObject moveSkillIconGo = null;
 
@@ -50,7 +50,7 @@ public class UI_Skill_PassiveSkillSlot : UI_Skill_BaseSkillSlot, IDragHandler, I
         skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
     }
 
-    public void Refresh(PassiveSkill_ShortVer inSkill)
+    public void Refresh(PassiveSkill_Lite inSkill)
     {
         PassiveSkill = inSkill;
         skillIconImage.sprite = PassiveSkill.icon;

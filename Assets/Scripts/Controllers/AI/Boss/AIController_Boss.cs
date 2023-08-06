@@ -64,11 +64,7 @@ public class AIController_Boss : AIController
     {
         
     }
-
-    public virtual void SpecialAttackCompleted()
-    {
-
-    }
+    
     
     private void TryToDodge()
     {

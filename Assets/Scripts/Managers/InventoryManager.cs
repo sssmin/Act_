@@ -176,23 +176,34 @@ public class InventoryManager : MonoBehaviour
    //test
    private void Update()
    {
-      if (Input.GetKeyDown(KeyCode.H))
-      { 
-         SO_Item item = GI.Inst.ResourceManager.GetItemDataCopy("InfinityBow");
-         ((SO_BaseWeapon)item).Element = (EWeaponElement)Random.Range(0, 4);
+      if (Input.GetKeyDown(KeyCode.Alpha7))
+      {
+         AddGold(10000);
+      }
+      
+      if (Input.GetKeyDown(KeyCode.Alpha8))
+      {
+         SO_Item item = GI.Inst.ResourceManager.GetItemData("AccMat");
          AddItem(item, true,1);
-         item = GI.Inst.ResourceManager.GetItemData("WeaponMat");
+         item = GI.Inst.ResourceManager.GetItemData("ArmorMat");
          AddItem(item, true,1);
          item = GI.Inst.ResourceManager.GetItemData("SharedMat");
-         AddItem(item, true,1);
-         item = GI.Inst.ResourceManager.GetItemData("HpPotion");
          AddItem(item, true,1);
          item = GI.Inst.ResourceManager.GetItemData("ActiveNormalMat");
          AddItem(item, true,1);
          item = GI.Inst.ResourceManager.GetItemData("PassiveMat");
          AddItem(item, true,1);
-         AddGold(10000);
+         
       }
+
+      if (Input.GetKeyDown(KeyCode.Alpha9))
+      {
+         SO_Item item = GI.Inst.ResourceManager.GetItemDataCopy("InfinityBow");
+         ((SO_BaseWeapon)item).Element = (EWeaponElement)Random.Range(0, 4);
+         AddItem(item, true,1);
+      }
+
+      
    }
 
   
@@ -531,7 +542,7 @@ public class InventoryManager : MonoBehaviour
    #region PassiveSkillMat
 
    //패시브 스킬 강화 재료 사용했을 때
-   public void UsePassiveSkillMat(PassiveSkill_ShortVer skill) 
+   public void UsePassiveSkillMat(PassiveSkill_Lite skill) 
    {
       string itemId = Enum.GetName(typeof(ESkillMatId), skill.itemIdForLevelUp);
       if (EtcInventory.ContainsKey(itemId))
@@ -541,7 +552,7 @@ public class InventoryManager : MonoBehaviour
    }
    
    //레벨업 누른거 필요 갯수 계산 후 인벤에서 빼고, 뺀 후의 갯수로 레벨업 버튼 활성화/비활성화 (강화 재료 사용할 때)
-   public void CheckPassiveSkillMatSubAmount(ref PassiveSkill_ShortVer passiveSkill, string itemId)
+   public void CheckPassiveSkillMatSubAmount(ref PassiveSkill_Lite passiveSkill, string itemId)
    {
       List<SO_PassiveSkill> skills = GI.Inst.ListenerManager.GetAllPassiveSkills();
       
@@ -551,7 +562,7 @@ public class InventoryManager : MonoBehaviour
    }
 
    //갯수 차감 선처리
-   private void PassiveSkillMatSubAmountPrep(PassiveSkill_ShortVer passiveSkill, string itemId, List<SO_PassiveSkill> skills)
+   private void PassiveSkillMatSubAmountPrep(PassiveSkill_Lite passiveSkill, string itemId, List<SO_PassiveSkill> skills)
    {
       foreach (SO_PassiveSkill skill in skills)
       {
@@ -787,8 +798,26 @@ public class InventoryManager : MonoBehaviour
       {
          if (equippedItem.ItemCategory == item.ItemCategory)
          {
-            EquipExchange(equippedItem, item);
-            return true;
+            switch (item.ItemCategory)
+            {
+               case SO_Item.EItemCategory.Weapon:
+                  EquipExchange(equippedItem, item);
+                  return true;
+               case SO_Item.EItemCategory.Armor:
+                  if (((SO_BaseArmor)equippedItem).armorType == ((SO_BaseArmor)item).armorType)
+                  {
+                     EquipExchange(equippedItem, item);
+                     return true;
+                  }
+                  break;
+               case SO_Item.EItemCategory.Acc:
+                  if (((SO_BaseAcc)equippedItem).accType == ((SO_BaseAcc)item).accType)
+                  {
+                     EquipExchange(equippedItem, item);
+                     return true;
+                  }
+                  break;
+            }
          }
       }
       return false;
@@ -1025,6 +1054,13 @@ public class InventoryManager : MonoBehaviour
       foreach (var pair in consumableInventory)
       {
          SO_Item item = GI.Inst.ResourceManager.GetItemData(pair.Value.itemId);
+         int totalAmount = 0;
+         foreach (int amount in pair.Value.amounts)
+         {
+            totalAmount += amount;
+         }
+         item.amount = totalAmount;
+         
          StackableItem stackableItem = new StackableItem()
          {
             item = item,
@@ -1037,6 +1073,13 @@ public class InventoryManager : MonoBehaviour
       foreach (var pair in etcInventory)
       {
          SO_Item item = GI.Inst.ResourceManager.GetItemData(pair.Value.itemId);
+         int totalAmount = 0;
+         foreach (int amount in pair.Value.amounts)
+         {
+            totalAmount += amount;
+         }
+         item.amount = totalAmount;
+         
          StackableItem stackableItem = new StackableItem()
          {
             item = item,

@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 7292695446289754722}
   - component: {fileID: 7292695446289754723}
   - component: {fileID: 2825055171306167593}
+  - component: {fileID: 8773839863435016058}
   m_Layer: 0
   m_Name: FadeEffect
   m_TagString: Untagged
@@ -223,7 +224,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9d1a15abf5c89946939771e12599d8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 7292695445303057110}
 --- !u!114 &2825055171306167593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,3 +237,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: FadeEffect
+--- !u!95 &8773839863435016058
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7292695446289754720}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9b814dfa89930304eaa68c051e9f6dc4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0

@@ -35,10 +35,7 @@ public class AIController_WindHashashin : AIController_Boss
         }
     }
 
-    public override void SpecialAttackCompleted()
-    {
-
-    }
+    
 
     public void Teleport()
     {

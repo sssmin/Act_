@@ -297,6 +297,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
+  - m_GUID: 8b96d6aa702500b4c8d4c28ebbfc20eb
+    m_Address: UI_Inven_EquippedSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 84de4638b81539940bb09a631f5f2fd8, type: 2}
   m_SchemaSet:

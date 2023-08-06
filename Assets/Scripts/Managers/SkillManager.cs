@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 
 
@@ -233,7 +232,7 @@ public class SkillManager : MonoBehaviour
         }
     }
     
-    private void RequestActiveSkillLevelUp(ActiveSkill_ShortVer skill, int index)
+    private void RequestActiveSkillLevelUp(ActiveSkill_Lite skill, int index)
     {
         if (skill.activeSkillOrder != EActiveSkillOrder.Max) 
         {
@@ -250,7 +249,7 @@ public class SkillManager : MonoBehaviour
         }
     }
     
-    private void RequestPassiveSkillLevelUp(PassiveSkill_ShortVer skill)
+    private void RequestPassiveSkillLevelUp(PassiveSkill_Lite skill)
     {
         if (PassiveSkills.ContainsKey(skill.skillId))
         {
@@ -338,7 +337,7 @@ public class SkillManager : MonoBehaviour
                     weaponEffect = new DurationEffect_Debuff_CriticalResistDecrease();
                     durationEffectId = EDurationEffectId.Frozen;
 
-                    float value = victimStatManager.characterStats.criticalResistPer.Value * 5f * 0.01f;
+                    float value = 5f;
                     effectInfo.onExecuteIncreaseStat = () =>
                     {
                         victimStatManager.characterStats.criticalResistPer.AddModifier(-value);
@@ -355,7 +354,7 @@ public class SkillManager : MonoBehaviour
                     weaponEffect = new DurationEffect_Debuff_AttackDecrease();
                     durationEffectId = EDurationEffectId.Poison;
 
-                    float value = victimStatManager.characterStats.attackIncValue.Value * 5f * 0.01f;
+                    float value = victimStatManager.characterStats.attack.Value * 5f * 0.01f;
                     effectInfo.onExecuteIncreaseStat = () =>
                     {
                         victimStatManager.characterStats.attackIncValue.AddModifier(-value);

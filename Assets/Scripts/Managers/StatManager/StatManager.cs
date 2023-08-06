@@ -249,6 +249,7 @@ public class StatManager : MonoBehaviour
     
     protected virtual void AddCurrentHp(float value)
     {
+        if (IsDead) return;
         characterStats.currentHp.Value = Mathf.Clamp(characterStats.currentHp.Value + value, 0f, characterStats.maxHp.Value);
         
     }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public struct ActiveSkill_ShortVer
+public struct ActiveSkill_Lite
 {
     public Define.ESkillId skillId;
     public string skillName;
@@ -34,7 +34,7 @@ public struct ActiveSkill_ShortVer
 
 public class UI_Skill_ActiveSkillSlot : UI_Skill_BaseSkillSlot
 {
-    private ActiveSkill_ShortVer skill;
+    private ActiveSkill_Lite skill;
     
     [SerializeField] private RectTransform slotTransform;
     private int skillIndex = -1;
@@ -52,7 +52,7 @@ public class UI_Skill_ActiveSkillSlot : UI_Skill_BaseSkillSlot
         skillUpButton.onClick.RemoveListener(OnClickLevelUpButton);
     }
 
-    public void Refresh(ActiveSkill_ShortVer inSkill, int index)
+    public void Refresh(ActiveSkill_Lite inSkill, int index)
     {
         skill = inSkill;
         skillIndex = index;
@@ -81,7 +81,7 @@ public class UI_Skill_ActiveSkillSlot : UI_Skill_BaseSkillSlot
 
     public void Clear()
     {
-        skill = new ActiveSkill_ShortVer();
+        skill = new ActiveSkill_Lite();
         skillIndex = -1;
         SetActiveObject(false);
         skillIconImage.sprite = defaultSlotIcon;

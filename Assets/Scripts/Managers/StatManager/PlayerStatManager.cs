@@ -163,7 +163,8 @@ public class PlayerStatManager : StatManager
             if (DurationEffectDurationDict.ContainsKey(effectId))
             {
                 //이미 있으면 Reset인지, 누적인지 확인
-                if (newDurationEffect.bIsResetDuration) //Reset이면 duration을 리셋 => endTime을 새로운거로 바꿔준다.
+                //Reset이면 duration을 리셋 => endTime을 새로운거로 바꿔준다.
+                if (newDurationEffect.bIsResetDuration) 
                 {
                     DurationEffectDurationDict[effectId] = newDurationEffect.duration;
                     
@@ -239,8 +240,8 @@ public class PlayerStatManager : StatManager
     IEnumerator InitPlayerIfDead(float second, Player player)
     {
         yield return new WaitForSeconds(second);
-        AddCurrentHp(characterStats.maxHp.Value * 0.5f);
         IsDead = false;
+        AddCurrentHp(characterStats.maxHp.Value * 0.5f);
         player.TransitionState(Define.EPlayerState.Idle);
     }
 

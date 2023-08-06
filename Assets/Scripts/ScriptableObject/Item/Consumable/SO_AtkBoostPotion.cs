@@ -11,8 +11,7 @@ public class SO_AtkBoostPotion : SO_Consumable
         EffectInfo effectInfo = new EffectInfo();
         
         float atkIncValue = casterStatManager.characterStats.attack.Value * 0.1f;
-        Debug.Log(atkIncValue);
-        
+
         effectInfo.onExecuteIncreaseStat = 
             () => casterStatManager.characterStats.attackIncValue.AddModifier(atkIncValue);
         

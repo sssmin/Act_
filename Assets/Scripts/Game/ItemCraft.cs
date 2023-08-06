@@ -70,17 +70,20 @@ public class ItemCraft : ScriptableObject
     private void Exchange(string createdItemId, string equipmentMatId, SO_Item.EItemCategory itemCategory)
     {
         SO_Item createdItem = null;
-        
-        if (itemCategory == SO_Item.EItemCategory.Weapon)
-        {
-            createdItem  = GI.Inst.ResourceManager.GetItemDataCopy(createdItemId);
-            ((SO_BaseWeapon)createdItem).Element = (EWeaponElement)Random.Range(0, 4);
-        }
-        else
+
+        if (itemCategory == SO_Item.EItemCategory.Consumable || itemCategory == SO_Item.EItemCategory.Etc)
         {
             createdItem  = GI.Inst.ResourceManager.GetItemData(createdItemId);
         }
-        
+        else
+        {
+            createdItem  = GI.Inst.ResourceManager.GetItemDataCopy(createdItemId);
+            if (itemCategory == SO_Item.EItemCategory.Weapon)
+            {
+                ((SO_BaseWeapon)createdItem).Element = (EWeaponElement)Random.Range(0, 4);
+            }
+        }
+
         RequireMatAmount requireMatAmount = requireMatAmounts.FirstOrDefault(r => r.itemCategory == itemCategory);
         
         SO_Item equipmentMat = GI.Inst.ResourceManager.GetItemData(equipmentMatId);

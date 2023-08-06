@@ -11,11 +11,7 @@ public class SO_Consumable : SO_Item
     [Header("Consumable")]
     public EConsumableType consumableType;
     public float itemCooltime;
-
-    [Header("DropAmount")] 
-    public int dropChance;
-    public int minDropAmount;
-    public int maxDropAmount;
+    
     
     [Header("Price")] 
     public int storeSellPrice; //상점에서의 가격
@@ -30,9 +26,6 @@ public class SO_Consumable : SO_Item
         itemIcon = item.itemIcon;
         maxStackSize = item.maxStackSize;
         name = item.name;
-        dropChance = item.dropChance;
-        minDropAmount = item.minDropAmount;
-        maxDropAmount = item.maxDropAmount;
     }
 
     public virtual void UseItem(StatManager castStatManager)

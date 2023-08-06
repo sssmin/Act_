@@ -55,7 +55,6 @@ public class MonsterAnimTrigger : AnimTrigger
     
     public void SpecialAttackCompleted()
     {
-        ((AIController_Boss)Monster.AIController).SpecialAttackCompleted();
         GoToIdleState();
     }
     

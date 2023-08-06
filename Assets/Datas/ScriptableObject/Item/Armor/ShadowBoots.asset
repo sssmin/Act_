@@ -25,5 +25,5 @@ MonoBehaviour:
   - statType: 3
     statValue: 70
   - statType: 14
-    statValue: 5
+    statValue: 1
   armorType: 4

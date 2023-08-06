@@ -132,12 +132,13 @@ public class SkillAbility_DistortionArrow : MonoBehaviour
         
         foreach (Transform monster in Monsters)
         {
-            AIController aiController = monster.GetComponent<AIController>();
-            aiController.RevertState();
+            if (monster)
+            {
+                AIController aiController = monster.GetComponent<AIController>();
+                aiController.RevertState();
+            }
         }
         Monsters.Clear();
-       
-        
         
         yield return new WaitForSeconds(5f);
         GI.Inst.ResourceManager.Destroy(gameObject);

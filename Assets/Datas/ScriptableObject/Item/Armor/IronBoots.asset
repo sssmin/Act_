@@ -24,6 +24,4 @@ MonoBehaviour:
   itemStats:
   - statType: 3
     statValue: 45
-  - statType: 14
-    statValue: 2
   armorType: 4

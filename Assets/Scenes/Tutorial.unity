@@ -374,7 +374,7 @@ GameObject:
   - component: {fileID: 711545003}
   - component: {fileID: 711545002}
   - component: {fileID: 711545001}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: ThornTrapCollider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.4732437, y: -0.07343459}
@@ -590,7 +590,7 @@ GameObject:
   - component: {fileID: 977105188}
   - component: {fileID: 977105187}
   - component: {fileID: 977105186}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: ThornTrapCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -607,7 +607,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

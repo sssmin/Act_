@@ -16,7 +16,7 @@ public class UI_SkillTooltip : MonoBehaviour
         GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
     }
     
-    public void Init(ActiveSkill_ShortVer skill, Vector3 slotPos, int pivot)
+    public void Init(ActiveSkill_Lite skill, Vector3 slotPos, int pivot)
     {
         InitSize(slotPos, pivot);
         skillIconImage.sprite = skill.icon;
@@ -29,7 +29,7 @@ public class UI_SkillTooltip : MonoBehaviour
             skillCooltimeText.text = "";
     }
     
-    public void Init(PassiveSkill_ShortVer skill, Vector3 slotPos, int pivot)
+    public void Init(PassiveSkill_Lite skill, Vector3 slotPos, int pivot)
     {
         InitSize(slotPos, pivot);
         skillIconImage.sprite = skill.icon;

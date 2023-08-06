@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 48601360725010242}
   - component: {fileID: 48601360725010253}
   - component: {fileID: 48601360725010254}
-  - component: {fileID: 48601360725010255}
+  - component: {fileID: 352054758073094108}
+  - component: {fileID: 1282082857179569147}
+  - component: {fileID: 752536884297494678}
   m_Layer: 12
   m_Name: Dummy
   m_TagString: Monster
@@ -34,6 +36,7 @@ Transform:
   - {fileID: 48601361534839916}
   - {fileID: 48601361107184905}
   - {fileID: 48601362067442745}
+  - {fileID: 4826561986394246374}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -74,7 +77,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.22, y: 0.8291975}
   m_Size: {x: 0.8467002, y: 1.8089674}
   m_Direction: 0
---- !u!114 &48601360725010255
+--- !u!114 &352054758073094108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -83,30 +86,77 @@ MonoBehaviour:
   m_GameObject: {fileID: 48601360725010248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b570eadc9e51fe04d858e90317ba9b0a, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b224f8cd6717548a5baf001fd40a4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stats:
+  characterStats:
     attack:
+      statType: 1
+      statValue: 0
+    attackIncValue:
+      statType: 2
       statValue: 0
     defence:
-      statValue: 0
-    elemAttack:
+      statType: 3
+      statValue: 200
+    defenceIncValue:
+      statType: 4
       statValue: 0
     maxHp:
-      statValue: 500
+      statType: 5
+      statValue: 999999
     currentHp:
-      statValue: 500
+      statType: 6
+      statValue: 999999
     criticalChancePer:
+      statType: 7
       statValue: 0
     criticalResistPer:
+      statType: 8
+      statValue: 0
+    criticalDamageIncPer:
+      statType: 9
+      statValue: 0
+    normalAttackDamageIncPer:
+      statType: 10
+      statValue: 0
+    skillAttackDamageIncPer:
+      statType: 11
       statValue: 0
     evasionChancePer:
+      statType: 12
       statValue: 0
-    skillCooltimeGrowthRate:
+    skillCooltimeDecRate:
+      statType: 13
       statValue: 0
     moveSpeed:
+      statType: 14
       statValue: 0
+  damageSpawnTransform: {fileID: 4826561986394246374}
+--- !u!114 &1282082857179569147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48601360725010248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b33fe1f70af60c64cadd7fed506f50b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &752536884297494678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 48601360725010248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0feb566806a267e4ea128abfa188d3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &48601361107184906
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +291,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -2127732645
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 5
   m_Sprite: {fileID: 1561438721, guid: 577210fd0a118734bab0133e01f52efa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -274,3 +324,34 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!1 &6736941767897287223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4826561986394246374}
+  m_Layer: 9
+  m_Name: DamageTextSpawnPoint
+  m_TagString: DamageSpawnTransform
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4826561986394246374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6736941767897287223}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.33, y: 2.27, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 48601360725010242}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

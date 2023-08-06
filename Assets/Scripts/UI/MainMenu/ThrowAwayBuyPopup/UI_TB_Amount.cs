@@ -12,7 +12,7 @@ public class UI_TB_Amount : MonoBehaviour
     [SerializeField] Button addButton;
     [SerializeField] TMP_InputField amountInputField;
     private SO_Item tempItem;
-    private GoldInvenCapacity _goldInvenCapacity;
+    private GoldInvenCapacity goldInvenCapacity;
     public int Amount { get; private set; }
     private EThrowawayBuyPopupType popupType;
     private Action<string> buyCallback;
@@ -29,7 +29,7 @@ public class UI_TB_Amount : MonoBehaviour
         amountInputField.text = "0";
         amountInputField.onValueChanged.AddListener(OnValueChanged);
         amountInputField.contentType = TMP_InputField.ContentType.IntegerNumber;
-        _goldInvenCapacity = GI.Inst.ListenerManager.GetGoldInvenCapacity();
+        goldInvenCapacity = GI.Inst.ListenerManager.GetGoldInvenCapacity();
     }
 
     private void OnDestroy()
@@ -67,7 +67,7 @@ public class UI_TB_Amount : MonoBehaviour
                 break;
             case EThrowawayBuyPopupType.Buy:
                 int price = ((SO_Consumable)tempItem).storeSellPrice;
-                int canBuyAmount = _goldInvenCapacity.gold / price;
+                int canBuyAmount = goldInvenCapacity.gold / price;
                 amountInputField.text = canBuyAmount.ToString("#,0");
 
                 int maxPrice = canBuyAmount * price;
@@ -78,7 +78,7 @@ public class UI_TB_Amount : MonoBehaviour
     }
     private void OnClickSubButton()
     {
-        Amount = Mathf.Clamp(--Amount, 0, tempItem.amount);
+        Amount = Mathf.Clamp(--Amount, 0, Amount);
         amountInputField.text = Amount.ToString("#,0");
         
         int price = ((SO_Consumable)tempItem).storeSellPrice;
@@ -98,9 +98,9 @@ public class UI_TB_Amount : MonoBehaviour
                 int tempAmount = Amount + 1;
                 
                 int price = ((SO_Consumable)tempItem).storeSellPrice;
-                if ((price * tempAmount) > _goldInvenCapacity.gold)
+                if ((price * tempAmount) > goldInvenCapacity.gold)
                 {
-                    int canBuyAmount = _goldInvenCapacity.gold / price;
+                    int canBuyAmount = goldInvenCapacity.gold / price;
                     amountInputField.text = canBuyAmount.ToString("#,0");
                     Amount = canBuyAmount;
                 }
@@ -119,6 +119,7 @@ public class UI_TB_Amount : MonoBehaviour
     private void OnValueChanged(string value)
     {
         bool success = int.TryParse(value, out int valueToInt);
+        
         Amount = valueToInt;
         if (success)
         {
@@ -126,7 +127,7 @@ public class UI_TB_Amount : MonoBehaviour
             {
                 case EThrowawayBuyPopupType.ThrowAway:
                     //가진 수량에 맞춰야 함
-                    if (valueToInt > tempItem.amount)
+                    if (valueToInt > Amount)
                     {
                         amountInputField.text = tempItem.amount.ToString("#,0");
                         Amount = tempItem.amount;
@@ -135,9 +136,9 @@ public class UI_TB_Amount : MonoBehaviour
                 case EThrowawayBuyPopupType.Buy:
                     //골드에 맞춰야함
                     int price = ((SO_Consumable)tempItem).storeSellPrice;
-                    if ((price * tempItem.amount) > _goldInvenCapacity.gold)
+                    if ((price * Amount) > goldInvenCapacity.gold)
                     {
-                        int canBuyAmount = _goldInvenCapacity.gold / price;
+                        int canBuyAmount = goldInvenCapacity.gold / price;
                         amountInputField.text = canBuyAmount.ToString("#,0");
                         Amount = canBuyAmount;
                     }

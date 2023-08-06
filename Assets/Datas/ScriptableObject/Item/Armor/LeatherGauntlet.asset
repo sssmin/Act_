@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemCategory: 1
   itemName: "\uB808\uB354 \uAC74\uD2C0\uB9BF"
   itemDesc: 
-  itemIcon: {fileID: -558508881, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
+  itemIcon: {fileID: -1667841660, guid: 9cc1bbba0b375b347989c92255938734, type: 3}
   amount: 0
   maxStackSize: 1
   bIsEquipped: 0

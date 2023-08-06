@@ -45,6 +45,6 @@ public class SO_ActiveSkill : SO_Skill
     
     public override void ExecSkill(StatManager castStatManager, PlayerController playerController)
     {
-        Debug.Log("parent");
+        
     }
 }

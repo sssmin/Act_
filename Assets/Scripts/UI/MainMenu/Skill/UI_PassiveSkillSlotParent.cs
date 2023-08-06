@@ -18,7 +18,7 @@ public class UI_PassiveSkillSlotParent : MonoBehaviour
             {
                 GameObject go = GI.Inst.ResourceManager.Instantiate("UI_Skill_PassiveSkillSlot", transform);
                 UI_Skill_PassiveSkillSlot passiveSkillSlot = go.GetComponent<UI_Skill_PassiveSkillSlot>();
-                PassiveSkill_ShortVer skillShortVer = new PassiveSkill_ShortVer();
+                PassiveSkill_Lite skillShortVer = new PassiveSkill_Lite();
                 skillShortVer.DataCopy(skill);
                 passiveSkillSlot.InitOnce();
                 passiveSkillSlot.Refresh(skillShortVer);
@@ -29,7 +29,7 @@ public class UI_PassiveSkillSlotParent : MonoBehaviour
         {
             for (int i = 0; i < passiveSkillSlots.Count; i++)
             {
-                PassiveSkill_ShortVer skillShortVer = new PassiveSkill_ShortVer();
+                PassiveSkill_Lite skillShortVer = new PassiveSkill_Lite();
                 skillShortVer.DataCopy(skills[i]);
                 passiveSkillSlots[i].Refresh(skillShortVer);
             }

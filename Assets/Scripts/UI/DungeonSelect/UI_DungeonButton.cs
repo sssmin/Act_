@@ -51,7 +51,6 @@ public class UI_DungeonButton : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        //isDisable 을가지고, isDisable이게 true면 툴팁 보이게.
         if (isDisable)
         {
             dungeonTooltipUI = GI.Inst.UIManager.GetDungeonTooltipUI();

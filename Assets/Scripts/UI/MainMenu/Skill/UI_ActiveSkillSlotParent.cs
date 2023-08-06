@@ -35,7 +35,7 @@ public class UI_ActiveSkillSlotParent : MonoBehaviour
         for (int i = 0; i < skills.Count; i++)
         {
             UI_Skill_ActiveSkillSlot skillSlot = activeSkillSlots[i];
-            ActiveSkill_ShortVer skillShortVer = new ActiveSkill_ShortVer();
+            ActiveSkill_Lite skillShortVer = new ActiveSkill_Lite();
             skillShortVer.DataCopy(skills[i], GI.Inst.PlayerSkillManager.GetActiveSkillLevel(skills[i].activeSkillOrder));
             skillSlot.Refresh(skillShortVer, index++);
         }

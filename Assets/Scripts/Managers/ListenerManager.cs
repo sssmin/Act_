@@ -20,10 +20,10 @@ public class ListenerManager
     public Action<SO_Item.EItemHotkeyOrder, SO_Item> registerItemHotkey;
     public Action<SO_Item, int> buyItem;
     public Action<SO_BaseWeapon, SO_Item> enhance;
-    public Action<ActiveSkill_ShortVer, int> requestActiveSkillLevelUp;
-    public Action<PassiveSkill_ShortVer> requestPassiveSkillLevelUp;
+    public Action<ActiveSkill_Lite, int> requestActiveSkillLevelUp;
+    public Action<PassiveSkill_Lite> requestPassiveSkillLevelUp;
     public Action<ESkillMatId, EActiveSkillOrder> useActiveSkillMat;
-    public Action<PassiveSkill_ShortVer> usePassiveSkillMat;
+    public Action<PassiveSkill_Lite> usePassiveSkillMat;
     public Action<List<SO_ActiveSkill>> checkSkillMatCanLevelUpSkills;
     public Action<Define.ESkillId, int> equipPassiveSkill;
     public Action<Define.ESkillId> unequipPassiveSkill;
@@ -191,12 +191,12 @@ public class ListenerManager
         registerItemHotkey?.Invoke(order, item);
     }
 
-    public void RequestActiveSkillLevelUp(ActiveSkill_ShortVer skill, int index)
+    public void RequestActiveSkillLevelUp(ActiveSkill_Lite skill, int index)
     {
         requestActiveSkillLevelUp?.Invoke(skill, index);
     }
 
-    public void RequestPassiveSkillLevelUp(ref PassiveSkill_ShortVer skill)
+    public void RequestPassiveSkillLevelUp(ref PassiveSkill_Lite skill)
     {
         requestPassiveSkillLevelUp?.Invoke(skill);
     }
@@ -206,7 +206,7 @@ public class ListenerManager
         useActiveSkillMat?.Invoke(skillMatId, skillOrder);
     }
     
-    public void UsePassiveSkillMat(ref PassiveSkill_ShortVer skill)
+    public void UsePassiveSkillMat(ref PassiveSkill_Lite skill)
     {
         usePassiveSkillMat?.Invoke(skill);
     }
