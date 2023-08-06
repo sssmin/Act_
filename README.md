@@ -3,7 +3,7 @@
 
 > 아래 이미지 클릭하면 유튜브로 이동합니다. 약 10분 길이의 영상입니다. <br>
 
-[![main](https://github.com/sssmin/Act_/assets/27758519/57a59585-2b3a-4ecc-b376-6e1a75729ee8)](https://youtu.be/N4IQJffTa4M)
+[![Image](https://github.com/sssmin/Act_/assets/27758519/57a59585-2b3a-4ecc-b376-6e1a75729ee8)](https://youtu.be/N4IQJffTa4M)
 
 
 <br>
