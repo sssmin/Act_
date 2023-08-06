@@ -1,9 +1,9 @@
 # Act 포트폴리오
 
 
-> 아래 이미지 클릭하면 유튜브로 이동합니다. 약 7분 길이의 영상입니다. <br>
+> 아래 이미지 클릭하면 유튜브로 이동합니다. 약 10분 길이의 영상입니다. <br>
 
-[![Image](https://user-images.githubusercontent.com/27758519/230600186-e4bb837b-e38f-4dfa-9073-b8daaf09665c.jpg)](https://youtu.be/VU1xKQi2RtI)
+[![main](https://github.com/sssmin/Act_/assets/27758519/57a59585-2b3a-4ecc-b376-6e1a75729ee8)](https://youtu.be/N4IQJffTa4M)
 
 
 <br>
