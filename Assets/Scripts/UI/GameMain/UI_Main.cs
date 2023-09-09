@@ -18,6 +18,8 @@ public class UI_Main : MonoBehaviour
     [SerializeField] private UI_Main_GetAnItemParent getAnItemParent;
     [SerializeField] private Canvas canvas;
     [SerializeField] public RectTransform rectTransform;
+    public FloatingJoystick FloatingJoystick { get; set; } 
+    
     
     public void InitOnce()
     {
@@ -26,6 +28,7 @@ public class UI_Main : MonoBehaviour
         hotkeyBarParent.InitOnce();
         getAnItemParent.InitOnce();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        FloatingJoystick = gameObject.GetComponentInChildren<FloatingJoystick>();
     }
 
     public void SetHpBar(float ratio)

@@ -11,6 +11,8 @@ public class Player : BaseCharacter
     
     public CapsuleCollider2D CapsuleCollider { get; private set; }
     [SerializeField] public Transform arrowSpawnPoint;
+
+    public PlayerTouchMovement PlayerTouchMovement { get; set; }
     
     public float JumpForce { get; private set; }
     public float GroundSlideSpeed { get; private set; }
@@ -25,6 +27,7 @@ public class Player : BaseCharacter
         CapsuleCollider = GetComponent<CapsuleCollider2D>();
         InventoryManager = GetComponent<InventoryManager>();
         StatManager = GetComponent<PlayerStatManager>();
+        PlayerTouchMovement = GetComponent<PlayerTouchMovement>();
 
         JumpForce = 5f;
         GroundSlideSpeed = 13f;

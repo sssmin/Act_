@@ -1,8 +1,8 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem.EnhancedTouch;
+using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public enum EBindKeyType
 {
@@ -64,12 +64,14 @@ public class PlayerController : BaseController
     private InputActionRebindingExtensions.RebindingOperation rebindingOperation;
     
     public Vector2 AttackDir { get; private set; }
+    //private TouchControl TouchControl { get; set; }
+    //private float horizontalInput;
 
     private Vector2 moveDir;
     public Vector2 MoveDir
     {
         get => moveDir;
-        private set
+        set
         {
             moveDir = value;
          
@@ -136,8 +138,20 @@ public class PlayerController : BaseController
         base.Awake();
         ControlledPlayer = GetComponent<Player>();
         PlayerControl = new PlayerControl();
+        //TouchControl = new TouchControl();
         normalAttackReserveDuration = 0.3f;
         WallDetectDist = 0.3f;
+        var type = SystemInfo.deviceType;
+        switch (type)
+        {
+            case DeviceType.Desktop:
+                Debug.Log("데탑");
+                break;
+            case DeviceType.Handheld:
+                Debug.Log("모바일");
+                break;
+        }
+        
     }
     
     private void OnEnable()
@@ -209,6 +223,7 @@ public class PlayerController : BaseController
     void Update()
     {
         MoveDir = MoveInputValue.ReadValue<Vector2>();
+        
         normalAttackReserveTimer -= Time.deltaTime;
         if (normalAttackReserveTimer < 0f)
         {
@@ -238,6 +253,12 @@ public class PlayerController : BaseController
     {
         TransitionState(Define.EPlayerState.Move);
     }
+
+    // public void TouchMoveHorizontal(InputAction.CallbackContext context)
+    // {
+    //     horizontalInput = context.ReadValue<float>();
+    //     Debug.Log(horizontalInput);
+    // }
     
     private void InitCharge(KeyCode keycode, float skillMaxChargeTime)
     {

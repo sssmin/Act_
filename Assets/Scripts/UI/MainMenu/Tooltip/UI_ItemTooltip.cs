@@ -37,6 +37,9 @@ public class UI_ItemTooltip : MonoBehaviour
             if (equipment.effectDescs.Count > 0)
             {
                 EffectDescObject = GI.Inst.ResourceManager.Instantiate("UI_ItemTooltip_EffectDescObject", contentParent.transform);
+                RectTransform effectDescObjRect = EffectDescObject.GetComponent<RectTransform>();
+                if (effectDescObjRect)
+                    effectDescObjRect.localScale = Vector3.one;
                 IncreaseWrapperSize();
                 InitEffectDescs(equipment);
             }

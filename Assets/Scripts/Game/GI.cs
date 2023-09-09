@@ -114,6 +114,7 @@ public class GI : MonoBehaviour
             Inst.SoundManager.PlayBackgroundSound("Title");
             //4. UI 초기화
             InitializeUI();
+            InitializePlayer();
             //5. 타이틀 메뉴 생성
             Inst.ResourceManager.Instantiate("UI_TitleMainMenu");
         });
@@ -130,6 +131,9 @@ public class GI : MonoBehaviour
         Player.GetComponent<InventoryManager>()?.BindAction();
         Player.gameObject.SetActive(false);
         PlayerSkillManager = go.GetComponent<SkillManager>();
+        if (UIManager && UIManager.GetFloatingJoystick() != null)
+            Player.PlayerTouchMovement.joystick = UIManager.GetFloatingJoystick();
+        
         DontDestroyOnLoad(go);
     }
 

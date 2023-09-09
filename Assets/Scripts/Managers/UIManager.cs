@@ -352,7 +352,9 @@ public class UIManager : MonoBehaviour
             FadeEffect.FadeIn(callback);
         }
     }
-    
+
+    public FloatingJoystick GetFloatingJoystick() => MainUI.FloatingJoystick;
+
     //Main UI 부품별 컨트롤
     #region MainUIComponentControl 
 
