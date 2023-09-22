@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -59,6 +60,10 @@ public class UI_TitleMainMenu : MonoBehaviour
     
     private void OnClickExitButton()
     {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
         Application.Quit();
+#endif
     }
 }
